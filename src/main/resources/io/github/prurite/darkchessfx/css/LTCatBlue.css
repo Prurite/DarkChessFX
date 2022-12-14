@@ -1,0 +1,26 @@
+/*
+    CSS file for color theme LTCat Blue
+ */
+* {
+    -edge-color: #707070;
+    -text-color: #36404a;
+    -light-button-hover-color: #e7f1fd;
+    -theme-button-hover-color: #408AD2;
+    -light-gray-color: #CECECE;
+    -dark-gray-color: -edge-color;
+
+    -theme-color: #116ecb;
+    -theme-background-color: linear-gradient(to right bottom, rgba(183,211,220) 0%, rgba(194,203,227,1) 100%);
+    -white-background-color: #ffffff;
+    -panel-background-color: #f5f8fc;
+
+    -black-piece-color: #101216;
+    -red-piece-color: #ba323e;
+    -grey-piece-color: #707070;
+    -piece-backround-color: linear-gradient(to left bottom, rgba(254,227,181,1) 80%, rgba(212,185,146,1) 100%);
+    -board-border-color: #c01a1f;
+    -board-background-color: #f9dc9d;
+
+    -switch-on-color: #bbdefb;
+    -switch-off-color: -light-gray-color;
+}

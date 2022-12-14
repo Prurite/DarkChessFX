@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Text?>
+<HBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="io.github.prurite.darkchessfx.controllers.GamePageController"
+      styleClass="rootPane" stylesheets="@../css/GamePage.css">
+    <VBox>
+        <HBox styleClass="titleBar" HBox.hgrow="ALWAYS">
+            <Button styleClass="themeButton" onAction="#returnToHome">
+                <graphic>
+                    <SVGPath content="m 0 0 h 20 m -10 10 l -10 -10 l 10 -10" styleClass="buttonIcon" />
+                </graphic>
+            </Button>
+            <Label fx:id="title" styleClass="title" text="LAN Gaming" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button styleClass="themeButton">
+                <graphic>
+                    <SVGPath content="m 0 0 a 0.5 0.5 0 0 0 0 1 a 0.5 0.5 0 0 0 0 -1 m -2 9 l 2 -1 V 20 l 2 -1"
+                             styleClass="buttonIcon" />
+                </graphic>
+            </Button>
+        </HBox>
+        <VBox styleClass="gamePanel">
+            <Label styleClass="generalLabel" text="Round info" />
+            <HBox styleClass="roundInfoHBox">
+                <VBox styleClass="card, roundInfoBox">
+                    <Label fx:id="player1Name" styleClass="playerName" text="Player 1" />
+                    <GridPane alignment="CENTER">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="70" halignment="CENTER" />
+                            <ColumnConstraints percentWidth="30" halignment="CENTER" />
+                        </columnConstraints>
+                        <Label fx:id="player1Time" styleClass="roundInfoNumber" text="00:00"
+                               GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                        <Label fx:id="player1Score" styleClass="roundInfoNumber" text="0"
+                               GridPane.rowIndex="0" GridPane.columnIndex="1" />
+                        <Label styleClass="smallLabel" text="Time left"
+                               GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                        <Label styleClass="smallLabel" text="Score"
+                               GridPane.rowIndex="1" GridPane.columnIndex="1" />
+                    </GridPane>
+                </VBox>
+                <VBox styleClass="card, roundInfoBox">
+                    <Label fx:id="player2Name" styleClass="playerName" text="Player 2" />
+                    <GridPane alignment="CENTER">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="70" halignment="CENTER" />
+                            <ColumnConstraints percentWidth="30" halignment="CENTER" />
+                        </columnConstraints>
+                        <Label fx:id="player2Time" styleClass="roundInfoNumber" text="00:00"
+                               GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                        <Label fx:id="player2Score" styleClass="roundInfoNumber" text="0"
+                               GridPane.rowIndex="0" GridPane.columnIndex="1" />
+                        <Label styleClass="smallLabel" text="Time left"
+                               GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                        <Label styleClass="smallLabel" text="Score"
+                               GridPane.rowIndex="1" GridPane.columnIndex="1" />
+                    </GridPane>
+                </VBox>
+            </HBox>
+            <HBox styleClass="turnInfoHBox">
+                <Label styleClass="generalLabel" text="Current turn" />
+                <HBox styleClass="turnInfoBox">
+                    <Label fx:id="currentPlayerName" styleClass="playerName" text="Player 1" />
+                    <Label fx:id="currentPlayerTime" styleClass="generalLabel" text="00:00" />
+                </HBox>
+                <Label styleClass="generalLabel" text="Time left" />
+            </HBox>
+            <GridPane styleClass="actionsPane">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="30" halignment="LEFT" />
+                    <ColumnConstraints percentWidth="35" halignment="CENTER" />
+                    <ColumnConstraints percentWidth="35" halignment="CENTER" />
+                </columnConstraints>
+                <Label fx:id="actionLabel" styleClass="generalLabel" text="Ask for/to..."
+                       GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                <Button styleClass="generalButton, buttonLabel" text="Pause"
+                        GridPane.rowIndex="0" GridPane.columnIndex="1" />
+                <Button styleClass="generalButton, buttonLabel" text="Save"
+                        GridPane.rowIndex="0" GridPane.columnIndex="2" />
+                <Button styleClass="generalButton, buttonLabel" text="Draw"
+                        GridPane.rowIndex="1" GridPane.columnIndex="1" />
+                <Button styleClass="generalButton, buttonLabel" text="Surrender"
+                        GridPane.rowIndex="1" GridPane.columnIndex="2" />
+                <Button styleClass="generalButton, buttonLabel" text="Withdraw"
+                        GridPane.rowIndex="2" GridPane.columnIndex="1" />
+                <Button styleClass="generalButton, buttonLabel" text="Cheat"
+                        GridPane.rowIndex="2" GridPane.columnIndex="2" />
+            </GridPane>
+            <VBox>
+                <ScrollPane styleClass="card, messagePane">
+                    <VBox fx:id="messagesBox" styleClass="messageBox">
+                        <Text styleClass="message">Here are the messages...</Text>
+                    </VBox>
+                </ScrollPane>
+                <HBox>
+                    <TextField fx:id="messageInput" styleClass="card, messageInput" HBox.hgrow="ALWAYS"
+                               promptText="Type your message here..." />
+                    <Button styleClass="generalButton, buttonLabel, mainButton, sendButton" text="Send" />
+                </HBox>
+            </VBox>
+        </VBox>
+    </VBox>
+    <StackPane styleClass="gameArea" >
+
+    </StackPane>
+</HBox>

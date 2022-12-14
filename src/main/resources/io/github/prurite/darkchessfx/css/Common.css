@@ -1,0 +1,153 @@
+@import "LTCatBlue.css";
+
+.root {
+	-fx-font-size: 8;
+	-fx-text-fill: -text-color;
+	-fx-min-height: 90em;
+	-fx-min-width: 160em;
+}
+
+.rootPane {
+	-fx-background-color: -theme-background-color;
+	-fx-min-height: 90em;
+	-fx-min-width: 160em;
+}
+
+.themeColoredText {
+	-fx-text-fill: -theme-color;;
+}
+
+.titleBar {
+	-fx-background-color: -theme-background-color;
+	-fx-background-radius: 0;
+	-fx-border-width: 0;
+}
+
+.generalLabel {
+	-fx-font-size: 2.8em;
+}
+
+.buttonLabel {
+	-fx-font-size: 2.2em;
+}
+
+.smallLabel {
+	-fx-font-size: 1.8em;
+}
+
+.card {
+	-fx-padding: 3em 5em 3em 5em;
+	-fx-spacing: 2em;
+	-fx-background-color: -white-background-color;
+	-fx-border-color: -edge-color;
+	-fx-border-width: 0.1em;
+	-fx-border-radius: 2em;
+	-fx-background-radius: 2em;
+	-fx-border-insets: -0.1em;
+	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 0.1em, 0, 0.1em, 0.1em);
+}
+
+.cardTitle {
+	-fx-font-size: 4em;
+	-fx-text-fill: -theme-color;
+}
+
+.myToggle {
+	-fx-pref-width: 8em;
+}
+
+.radio-button .radio {
+	-fx-pref-width: 0.85em;
+	-fx-pref-height: 0.85em;
+	-fx-background-color: -white-background-color;
+	-fx-border-width: 0.1em;
+	-fx-border-color: -theme-color;
+	-fx-border-radius: 5em;
+}
+
+.radio-button:selected .radio .dot {
+	-fx-padding: 0.2em;
+    -fx-background-color: -theme-color;
+    -fx-background-insets: 0;
+}
+
+.slider .thumb {
+	-fx-pref-height: 3em;
+	-fx-pref-width: 3em;
+	-fx-background-radius: 3em;
+}
+
+.combo-box {
+	-fx-background-color: -white-background-color;
+	-fx-border-color: -theme-color;
+	-fx-border-radius: 0.5em;
+	-fx-background-radius: 0.5em;
+}
+
+.text-field {
+	-fx-background-color: -white-background-color;
+	-fx-border-color: -theme-color;
+	-fx-border-radius: 0.5em;
+	-fx-background-radius: 0.5em;
+}
+
+.generalButton {
+	-fx-pref-width: 8em;
+	-fx-pref-height: 2em;
+	-fx-background-color: -white-background-color;
+	-fx-background-radius: 0.5em;
+	-fx-border-color: -edge-color;
+	-fx-border-width: 0.1em;
+	-fx-border-radius: 0.5em;
+	-fx-border-insets: -0.1em;
+	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 0.1em, 0, 0.1em, 0.1em);
+}
+
+.generalButton:hover {
+	-fx-background-color: -light-button-hover-color;
+}
+
+.mainButton {
+	-fx-text-fill: -theme-color;
+	-fx-border-color: -theme-color;
+}
+
+.dialogButtonGroup {
+	-fx-alignment: center-right;
+	-fx-spacing: 4em;
+}
+
+.combo-box-popup .list-view .list-cell:hover {
+    -fx-background-color: -theme-color;
+}
+
+.titleBar {
+	-fx-min-height: 10em;
+	-fx-background-color: -theme-color;
+	-fx-padding: 2.5em 2.5em 2.5em 2.5em;
+	-fx-spacing: 2.5em;
+}
+
+.title {
+	-fx-font-size: 3.5em;
+	-fx-text-fill: -white-background-color;
+}
+
+.buttonIcon {
+	-fx-min-width: 2em;
+	-fx-min-height: 2em;
+	-fx-stroke: -white-background-color;
+	-fx-stroke-width: 0.4em;
+	-fx-fill: transparent;
+}
+
+.themeButton {
+	-fx-background-radius: 5em;
+	-fx-min-height: 5em;
+	-fx-min-width: 5em;
+	-fx-background-color: transparent;
+}
+
+.themeButton:hover {
+	-fx-background-color: -theme-button-hover-color;
+}

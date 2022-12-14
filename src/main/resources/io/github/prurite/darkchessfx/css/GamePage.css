@@ -1,0 +1,91 @@
+@import "Common.css";
+
+.gamePanel {
+    -fx-min-width: 65em;
+    -fx-min-height: 90em;
+    -fx-background-color: -panel-background-color;
+    -fx-padding: 2em;
+    -fx-spacing: 2em;
+}
+
+.gameArea {
+}
+
+.roundInfoHBox {
+    -fx-spacing: 6em;
+    -fx-alignment: center;
+}
+
+.roundInfoBox {
+    -fx-min-width: 30em;
+    -fx-padding: 1em 2em 1em 2em;
+    -fx-spacing: 0.2em;
+    -fx-alignment: center;
+}
+
+.turnInfoHBox {
+    -fx-alignment: center-left;
+    -fx-spacing: 2em;
+}
+
+.turnInfoBox {
+    -fx-padding: 1em 2em 1em 2em;
+    -fx-spacing: 4em;
+    -fx-border-color: -edge-color;
+    -fx-border-width: 0.1em;
+    -fx-border-radius: 0.5em;
+    -fx-border-insets: -0.1em;
+    -fx-background-color: -white-background-color;
+    -fx-background-radius: 0.5em;
+}
+
+.playerName {
+    -fx-font-size: 2.8em;
+    -fx-font-weight: bold;
+}
+
+.textRed {
+    -fx-text-fill: -red-piece-color;
+}
+
+.textBlack {
+    -fx-text-fill: -black-piece-color;
+}
+
+.roundInfoNumber {
+    -fx-font-size: 6em;
+}
+
+.actionsPane {
+    -fx-vgap: 2em;
+}
+
+.messagePane {
+    -fx-pref-width: 65em;
+    -fx-pref-height: 30em;
+    -fx-padding: 3em;
+    -fx-fit-to-width: true;
+    -fx-fit-to-height: true;
+    -fx-background-radius: 1em 1em 0 0;
+    -fx-border-radius: 1em 1em 0 0;
+}
+
+.messageBox {
+    -fx-background-color: -white-background-color;
+}
+
+.message {
+    -fx-wrap-text: true;
+    -fx-font-size: 2.5em;
+    -fx-background-color: null;
+}
+
+.messageInput {
+    -fx-font-size: 2em;
+    -fx-padding: 0.4em 0.4em 0.4em 0.6em;
+    -fx-border-color: -edge-color;
+}
+
+.sendButton {
+    -fx-pref-width: 4em;
+}

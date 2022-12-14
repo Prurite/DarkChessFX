@@ -1,0 +1,40 @@
+@import "Common.css";
+
+.rootPane {
+    -fx-spacing: 7em;
+}
+
+.gameTitle {
+    -fx-font-size: 10em;
+    -fx-font-weight: bold;
+    -fx-text-fill: -theme-color;
+}
+
+.homeButtonGroup {
+    -fx-spacing: 4.5em;
+    -fx-alignment: center;
+    -fx-min-height: 53.5em;
+}
+
+.homePageButton {
+    -fx-font-size: 4em;
+
+    -fx-min-width: 10em;
+    -fx-min-height: 2.5em;
+    -fx-background-color: -white-background-color;
+    -fx-background-radius: 0.5em;
+    -fx-border-color: -edge-color;
+    -fx-border-width: 0.1em;
+    -fx-border-radius: 0.5em;
+    -fx-border-insets: -0.1em;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 0.1em, 0, 0.1em, 0.1em);
+}
+
+.homePageButton:hover {
+    -fx-background-color: -light-button-hover-color;
+}
+
+.homePageButtonSmall {
+    -fx-min-width: 2.5em;
+    -fx-min-height: 2.5em;
+}

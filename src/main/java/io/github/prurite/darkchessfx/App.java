@@ -1,0 +1,108 @@
+package io.github.prurite.darkchessfx;
+
+import fr.brouillard.oss.cssfx.CSSFX;
+import io.github.prurite.darkchessfx.controllers.DFXController;
+import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.scene.transform.Scale;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+
+public class App extends Application {
+    private Stage primaryStage;
+
+    @Override
+    public void start(Stage primaryStage) throws IOException {
+        this.primaryStage = primaryStage;
+        CSSFX.start();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(DarkchessFXResourcesLoader.loadURL("fxml/HomePage.fxml"));
+        Pane root = (Pane) loader.load();
+        ((DFXController)loader.getController()).setApp(this);
+        Scene scene = new Scene(root);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("DarkChessFX");
+        primaryStage.show();
+
+        // TODO: Add zooming support
+        // fix aspect ratio and handle zoom
+        /*
+        final double aspectRadio = scene.getWidth() / scene.getHeight();
+        DoubleBinding heightRestriction = primaryStage.widthProperty().divide(aspectRadio).add(28);
+        primaryStage.minHeightProperty().bind(heightRestriction);
+        primaryStage.maxHeightProperty().bind(heightRestriction);
+        */
+        // letterbox(scene, root);
+    }
+
+    public void changePage(String newPage) throws IOException
+    {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(DarkchessFXResourcesLoader.loadURL("fxml/" + newPage + ".fxml"));
+        Pane root = (Pane) loader.load();
+        ((DFXController)loader.getController()).setApp(this);
+        Scene scene = new Scene(root);
+        primaryStage.setScene(scene);
+    }
+
+    public static void main(String[] args) {
+        launch();
+    }
+
+    // Zooming functions
+
+    private void letterbox(final Scene scene, final Pane contentPane) {
+        final double initWidth = scene.getWidth();
+        final double initHeight = scene.getHeight();
+        final double ratio = initWidth / initHeight;
+
+        SceneSizeChangeListener sizeListener = new SceneSizeChangeListener(scene, ratio, initHeight, initWidth, contentPane);
+        scene.widthProperty().addListener(sizeListener);
+        scene.heightProperty().addListener(sizeListener);
+    }
+
+    private static class SceneSizeChangeListener implements ChangeListener<Number> {
+        private final Scene scene;
+        private final double ratio;
+        private final double initHeight;
+        private final double initWidth;
+        private final Pane contentPane;
+
+        public SceneSizeChangeListener(Scene scene, double ratio, double initHeight, double initWidth, Pane contentPane) {
+            this.scene = scene;
+            this.ratio = ratio;
+            this.initHeight = initHeight;
+            this.initWidth = initWidth;
+            this.contentPane = contentPane;
+        }
+
+        @Override
+        public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
+            final double newWidth = scene.getWidth();
+            final double newHeight = scene.getHeight();
+
+            double scaleFactor =
+                    newWidth / newHeight > ratio
+                            ? newHeight / initHeight
+                            : newWidth / initWidth;
+
+            if (scaleFactor >= 1) {
+                Scale scale = new Scale(scaleFactor, scaleFactor);
+                scale.setPivotX(0);
+                scale.setPivotY(0);
+                scene.getRoot().getTransforms().setAll(scale);
+
+                contentPane.setPrefWidth(newWidth / scaleFactor);
+                contentPane.setPrefHeight(newHeight / scaleFactor);
+            } else {
+                contentPane.setPrefWidth(Math.max(initWidth, newWidth));
+                contentPane.setPrefHeight(Math.max(initHeight, newHeight));
+            }
+        }
+    }
+}

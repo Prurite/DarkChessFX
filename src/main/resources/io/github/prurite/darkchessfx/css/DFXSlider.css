@@ -1,0 +1,21 @@
+@import "Common.css";
+
+.slider .track {
+    -fx-background-color: null;
+}
+
+.slider .thumb {
+    -fx-background-color: -white-background-color;
+    -fx-border-color: -theme-color;
+    -fx-border-width: 0.5em;
+    -fx-background-radius: 3em;
+    -fx-border-radius: 3em;
+}
+
+.progressRec {
+    /* Make the corners rounded */
+    -fx-arc-height: 1em;
+    -fx-arc-width: 1em;
+    /* Default gradient */
+    -fx-fill: linear-gradient(to right, -theme-color 0%, -light-gray-color 0%);
+}

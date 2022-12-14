@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.SVGPath?>
+
+<?import io.github.prurite.darkchessfx.components.DFXSlider?>
+<?import io.github.prurite.darkchessfx.components.DFXSwitch?>
+<VBox styleClass="rootPane" stylesheets="@../css/StartGamePage.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.prurite.darkchessfx.controllers.StartGamePageController">
+    <HBox styleClass="titleBar" HBox.Hgrow="ALWAYS" >
+        <Button styleClass="themeButton" onAction="#returnToHome">
+            <graphic>
+                <SVGPath content="m 0 0 h 20 m -10 10 l -10 -10 l 10 -10" styleClass="buttonIcon" />
+            </graphic>
+        </Button>
+        <Label fx:id="title" styleClass="title" text="Load game / Start game" />
+    </HBox>
+    <VBox styleClass="card">
+        <Label styleClass="cardTitle" text="Game settings" />
+        <GridPane styleClass="grid1">
+            <Label styleClass="generalLabel" GridPane.columnIndex="0" GridPane.rowIndex="0" text="Maximum turn time for player" />
+            <Label styleClass="generalLabel" GridPane.columnIndex="0" GridPane.rowIndex="1" text="Maximum total time for player" />
+            <Label styleClass="generalLabel" GridPane.columnIndex="0" GridPane.rowIndex="2" text="Minimum score required to win" />
+            <DFXSlider fx:id="turnTimeDFXSlider" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+            <DFXSlider fx:id="totalTimeDFXSlider" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <DFXSlider fx:id="scoreDFXSlider" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label styleClass="generalLabel" GridPane.columnIndex="2" GridPane.rowIndex="0"
+                   fx:id="turnTimeLabel" text="0s" />
+            <Label styleClass="generalLabel" GridPane.columnIndex="2" GridPane.rowIndex="1"
+                   fx:id="totalTimeLabel" text="0s" />
+            <Label styleClass="generalLabel" GridPane.columnIndex="2" GridPane.rowIndex="2"
+                   fx:id="scoreLabel" text="0" />
+        </GridPane>
+        <GridPane styleClass="grid2">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="30" />
+                <ColumnConstraints percentWidth="20" />
+                <ColumnConstraints percentWidth="30" />
+                <ColumnConstraints percentWidth="20" />
+            </columnConstraints>
+            <Label styleClass="generalLabel" text="Allow cheat" GridPane.columnIndex="0" />
+            <DFXSwitch fx:id="cheatToggle" GridPane.columnIndex="1" />
+            <Label styleClass="generalLabel" text="Allow withdraw" GridPane.columnIndex="2" />
+            <DFXSwitch fx:id="withdrawToggle" GridPane.columnIndex="3" />
+            <Label styleClass="smallLabel, themeColoredText" GridPane.rowIndex="1"
+                fx:id="unScoredLabel" text="This game will not be scored." />
+        </GridPane>
+        <GridPane styleClass="grid3">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="30" />
+                <ColumnConstraints percentWidth="15" />
+                <ColumnConstraints percentWidth="15" />
+                <ColumnConstraints percentWidth="15" />
+                <ColumnConstraints percentWidth="25" />
+            </columnConstraints>
+            <Label styleClass="generalLabel" text="Play with AI" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+            <RadioButton styleClass="generalLabel" GridPane.rowIndex="0" GridPane.columnIndex="1"
+                         fx:id="aiNoButton" text="No" />
+            <RadioButton styleClass="generalLabel" GridPane.rowIndex="0" GridPane.columnIndex="2"
+                         fx:id="aiYesButton" text="Yes" />
+            <Label styleClass="generalLabel" text="Difficulty" GridPane.rowIndex="0" GridPane.columnIndex="3" />
+            <ComboBox styleClass="buttonLabel" GridPane.rowIndex="0" GridPane.columnIndex="4" maxWidth="Infinity"
+                      fx:id="difficultyComboBox" promptText="Select..." />
+            <Label styleClass="generalLabel" text="Open on LAN" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+            <RadioButton styleClass="generalLabel" GridPane.rowIndex="1" GridPane.columnIndex="1"
+                         fx:id="lanNoButton" text="No" />
+            <RadioButton styleClass="generalLabel" GridPane.rowIndex="1" GridPane.columnIndex="2"
+                         fx:id="lanYesButton" text="Yes" />
+            <Label styleClass="generalLabel" text="Port" GridPane.rowIndex="1" GridPane.columnIndex="3" />
+            <TextField styleClass="buttonLabel"  GridPane.rowIndex="1" GridPane.columnIndex="4"
+                       fx:id="portTextField" promptText="Port..." />
+            <Label styleClass="generalLabel" text="Password" GridPane.rowIndex="2" GridPane.columnIndex="2" />
+            <Label styleClass="generalLabel" text="(optional)" GridPane.rowIndex="2" GridPane.columnIndex="3" />
+            <TextField styleClass="buttonLabel"  GridPane.rowIndex="2" GridPane.columnIndex="4"
+                       fx:id="passwordTextField" promptText="Password..." />
+        </GridPane>
+        <GridPane styleClass="grid3">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="30" />
+                <ColumnConstraints percentWidth="35" />
+                <ColumnConstraints percentWidth="35" />
+            </columnConstraints>
+            <Label styleClass="generalLabel" text="Player names" GridPane.columnIndex="0" />
+            <TextField styleClass="buttonLabel" GridPane.columnIndex="1"
+                       fx:id="player1TextField" promptText="Player 1" />
+            <TextField styleClass="buttonLabel" GridPane.columnIndex="2"
+                       fx:id="player2TextField" promptText="Player 2" />
+        </GridPane>
+        <HBox styleClass="dialogButtonGroup">
+            <Button styleClass="generalButton, buttonLabel, mainButton"
+                    fx:id="startButton" text="Start game" onAction="#startGame" />
+        </HBox>
+    </VBox>
+</VBox>

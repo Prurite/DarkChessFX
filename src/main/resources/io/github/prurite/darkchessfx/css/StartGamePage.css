@@ -1,0 +1,31 @@
+@import "Common.css";
+
+.rootPane {
+    -fx-alignment: top-center;
+    -fx-spacing: 3em;
+}
+
+.card {
+    -fx-max-width: 120em;
+}
+
+.grid1 {
+    -fx-vgap: 2em;
+    -fx-hgap: 3em;
+}
+
+.grid2 {
+    -fx-vgap: 1em;
+    -fx-hgap: 3em;
+}
+
+.grid3 {
+    -fx-vgap: 1em;
+    -fx-hgap: 3em;
+}
+
+.slider {
+    -fx-min-height: 1em;
+    -fx-min-width: 50em;
+    -fx-show-tick-marks: true;
+}

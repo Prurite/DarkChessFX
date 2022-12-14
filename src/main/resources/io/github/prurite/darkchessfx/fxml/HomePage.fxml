@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.shape.Rectangle?>
+
+<?import javafx.scene.text.Text?>
+
+<?import javafx.geometry.Insets?>
+<VBox  styleClass="rootPane" stylesheets="@../css/HomePage.css"
+      alignment="CENTER"
+      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="io.github.prurite.darkchessfx.controllers.HomePageController">
+    <Label styleClass="gameTitle" text="Chinese Dark Chess" />
+    <VBox fx:id="homeButtons" styleClass="homeButtonGroup">
+        <Button text="Start game" styleClass="homePageButton, mainButton" onAction="#selectMode"/>
+        <Button text="Statistics" styleClass="homePageButton" />
+        <Button text="Settings" styleClass="homePageButton" />
+        <Button text="About" styleClass="homePageButton" />
+    </VBox>
+    <VBox fx:id="selectModeButtons" styleClass="homeButtonGroup">
+        <Button text="New Game" styleClass="homePageButton" onAction="#toNewGame"/>
+        <Button text="Load Game" styleClass="homePageButton" />
+        <Button text="Join LAN Game" styleClass="homePageButton" />
+        <Button text="←" styleClass="homePageButton, homePageButtonSmall" onAction="#returnToHome"/>
+    </VBox>
+</VBox>
