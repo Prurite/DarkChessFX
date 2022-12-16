@@ -1,0 +1,24 @@
+@import "Common.css";
+
+.DFXPieceBack {
+    -fx-fill: -piece-background-color;
+    -fx-stroke-width: 0.1em;
+    -fx-stroke: -edge-color;
+}
+
+.DFXPieceRing {
+    -fx-fill: null;
+    -fx-stroke-width: 0.6em;
+}
+
+.DFXPieceRingRed {
+    -fx-stroke: -red-piece-color;
+}
+
+.DFXPieceRingBlack {
+    -fx-stroke: -black-piece-color;
+}
+
+.DFXPieceRingCovered {
+    -fx-stroke: -grey-piece-color;
+}

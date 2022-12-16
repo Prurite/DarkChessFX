@@ -20,10 +20,7 @@ public class App extends Application {
     public void start(Stage primaryStage) throws IOException {
         this.primaryStage = primaryStage;
         CSSFX.start();
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(DarkchessFXResourcesLoader.loadURL("fxml/HomePage.fxml"));
-        Pane root = (Pane) loader.load();
-        ((DFXController)loader.getController()).setApp(this);
+        Pane root = loadFXML("HomePage");
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.setTitle("DarkChessFX");
@@ -40,12 +37,25 @@ public class App extends Application {
         // letterbox(scene, root);
     }
 
-    public void changePage(String newPage) throws IOException
+    public Pane loadFXML(String filename) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(DarkchessFXResourcesLoader.loadURL("fxml/" + filename + ".fxml"));
+            Pane pane = loader.load();
+            ((DFXController)loader.getController()).setApp(this);
+//            System.out.println("Loading " + filename + ".fxml");
+            return pane;
+        } catch (IOException e) {
+//            System.err.println("Failed to load " + filename + ".fxml");
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void changePage(String newPage)
     {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(DarkchessFXResourcesLoader.loadURL("fxml/" + newPage + ".fxml"));
-        Pane root = (Pane) loader.load();
-        ((DFXController)loader.getController()).setApp(this);
+//        System.out.println("Changing page to " + newPage);
+        Pane root = loadFXML(newPage);
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
     }

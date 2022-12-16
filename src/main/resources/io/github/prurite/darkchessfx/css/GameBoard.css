@@ -1,0 +1,38 @@
+@import "Common.css";
+
+.gameBoardPane{
+    -fx-pref-width: 90em;
+    -fx-fill-height: true;
+    -fx-fit-to-height: true;
+}
+
+.capturedPane{
+    -fx-pref-width: 20em;
+    -fx-pref-height: 90em;
+    -fx-padding: 3em;
+}
+
+.chessBoardBack {
+    -fx-max-height: 84.8em;
+    -fx-max-width: 46.4em;
+    -fx-alignment: center;
+    -fx-padding: 2.7em;
+    -fx-border-color: -board-border-color;
+    -fx-border-width: 0.5em;
+    -fx-background-color: -board-background-color;
+}
+
+.chessBoardCell {
+    -fx-pref-width: 10em;
+    -fx-pref-height: 10em;
+    -fx-max-width: 10em;
+    -fx-max-height: 10em;
+    -fx-border-color: -board-border-color;
+    -fx-border-width: 0.5em;
+    -fx-border-insets: -0.25em;
+}
+
+.chessBoardPiece {
+    -fx-max-width: 10em;
+    -fx-max-height: 10em;
+}

@@ -10,14 +10,14 @@
     -dark-gray-color: -edge-color;
 
     -theme-color: #116ecb;
-    -theme-background-color: linear-gradient(to right bottom, rgba(183,211,220) 0%, rgba(194,203,227,1) 100%);
+    -theme-background-color: linear-gradient(to left bottom, rgba(183,211,220) 0%, rgba(194,203,227,1) 100%);
     -white-background-color: #ffffff;
     -panel-background-color: #f5f8fc;
 
     -black-piece-color: #101216;
     -red-piece-color: #ba323e;
     -grey-piece-color: #707070;
-    -piece-backround-color: linear-gradient(to left bottom, rgba(254,227,181,1) 80%, rgba(212,185,146,1) 100%);
+    -piece-background-color: linear-gradient(to right bottom, rgba(254,227,181,1) 60%, rgba(212,185,146,1) 90%);
     -board-border-color: #c01a1f;
     -board-background-color: #f9dc9d;
 

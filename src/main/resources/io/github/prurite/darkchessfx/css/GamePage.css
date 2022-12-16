@@ -2,7 +2,7 @@
 
 .gamePanel {
     -fx-min-width: 65em;
-    -fx-min-height: 90em;
+    -fx-min-height: 80em;
     -fx-background-color: -panel-background-color;
     -fx-padding: 2em;
     -fx-spacing: 2em;
@@ -62,7 +62,7 @@
 
 .messagePane {
     -fx-pref-width: 65em;
-    -fx-pref-height: 30em;
+    -fx-pref-height: 20em;
     -fx-padding: 3em;
     -fx-fit-to-width: true;
     -fx-fit-to-height: true;
