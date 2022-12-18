@@ -6,7 +6,6 @@ import io.github.prurite.darkchessfx.controllers.GameBoardController;
 import io.github.prurite.darkchessfx.controllers.GamePageController;
 import io.github.prurite.darkchessfx.controllers.StartGamePageController;
 import io.github.prurite.darkchessfx.game.PerformGame.Game;
-import io.github.prurite.darkchessfx.model.GameConfig;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -14,10 +13,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.transform.Scale;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.io.IOException;
 
 public class App extends Application {
@@ -71,8 +68,9 @@ public class App extends Application {
         primaryStage.setScene(scene);
     }
 
-    public void startGame(Game game) {
+    public void startGameFinish(Game game) {
         try {
+            game.startGame();
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(DarkchessFXResourcesLoader.loadURL("fxml/GamePage.fxml"));
             loader.setControllerFactory(c -> new GamePageController(game, this));
@@ -85,7 +83,7 @@ public class App extends Application {
         }
     }
 
-    public void loadGame(Game game) {
+    public void loadGameFinish(Game game) {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(DarkchessFXResourcesLoader.loadURL("fxml/StartGamePage.fxml"));

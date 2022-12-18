@@ -6,6 +6,7 @@
 package io.github.prurite.darkchessfx.game.PerformGame;
 
 import io.github.prurite.darkchessfx.model.GameConfig;
+import io.github.prurite.darkchessfx.model.Player;
 import io.github.prurite.darkchessfx.model.Pos;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.util.Pair;
@@ -13,6 +14,7 @@ import javafx.util.Pair;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.IllegalFormatException;
 
 public interface GameInterface {
     //  Game();
@@ -21,15 +23,18 @@ public interface GameInterface {
     /* Variables needed in Game
     PlayerInGame player1, player2;
     AIPlayer aiPlayer;
-        Move aiPlayer.performMove(Piece[][] board, Side side);
+        Move aiPlayer.makeMove(Piece[][] board, Side side);
      */
 
     Piece[][] getChessBoard(); // Returns current chessboard visible to both players.
     ArrayList<Piece> getCaptured(Side s);
     ArrayList<Pos> getValidMoves(Pos pos);
     String performMove(PlayerInGame p, Move move);
-    String loadGame(File file) throws IOException;
-    String saveGame(File file) throws IOException;
+    void aiMove();
+
+    // method for load game, throws exception when file is not valid or file format is not valid
+    void loadGame(File file) throws IOException, IllegalFormatException;
+    void saveGame(File file) throws IOException;
     int getCurrentMovePos(); // -1 first, 0 mid, 1 last
     void goToPrevMove(); // Return current move id
     void goToNextMove();
@@ -45,6 +50,10 @@ public interface GameInterface {
     void revealPiece(Pair pos); // When this method is called, the piece at pos will be revealed
     void hidePiece(Pair pos);
     void hideAllPieces();
+    void startGame();
+    // When this is called, the game will start
+    // aiPlayer and chessboard etc. may be prepared here
+    void endGame(Player p1, Player p2);
 }
 
 /* PlayerInGame methods needed:
@@ -55,3 +64,7 @@ public interface GameInterface {
 /* Move: Pos pos1, pos2 */
 
 /* Side: BLACK, RED, UNKNOWN */
+
+/* PlayerInGame should not be bonded to a Player object. Instead, the outer object will be updated
+    when endGame is called
+ */

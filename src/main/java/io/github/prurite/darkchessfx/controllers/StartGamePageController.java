@@ -9,7 +9,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -225,11 +224,11 @@ public class StartGamePageController implements Initializable, DFXController {
             player2TextField.setText(gameConfig.player2);
     }
 
-    public void returnToHome() throws IOException {
+    public void returnToHome() {
         app.changePage("HomePage");
     }
 
-    public void startGame() throws IOException {
-        app.startGame(game);
+    public void startGame() {
+        app.startGameFinish(game);
     }
 }

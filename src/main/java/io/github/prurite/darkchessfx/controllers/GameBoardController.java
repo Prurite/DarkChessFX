@@ -6,15 +6,12 @@ import io.github.prurite.darkchessfx.game.PerformGame.Game;
 import io.github.prurite.darkchessfx.game.PerformGame.Move;
 import io.github.prurite.darkchessfx.game.PerformGame.Piece;
 import io.github.prurite.darkchessfx.game.PerformGame.Side;
-import io.github.prurite.darkchessfx.model.ChessSide;
-import io.github.prurite.darkchessfx.model.ChessType;
 import io.github.prurite.darkchessfx.model.Pos;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.util.Pair;
 
 import java.net.URL;
@@ -113,7 +110,7 @@ public class GameBoardController implements Initializable {
                 piece.updatePiece(game.getChessBoard()[i][j]);
             }
         updateCaptured();
-        gamePageController.updatePanel();
+        gamePageController.updatePage();
     }
 
     public void updateCaptured() {

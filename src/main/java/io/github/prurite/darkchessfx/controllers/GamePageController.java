@@ -75,7 +75,7 @@ public class GamePageController implements Initializable {
         player2Name.textProperty().bind(game.getPlayerInGame2().getNameProperty());
         player2Score.textProperty().bind(game.getPlayerInGame2().getScoreProperty().asString());
         currentPlayerName.setText(game.getCurrentPlayer().getNameProperty().getName());
-        updatePanel();
+        updatePage();
     }
 
     public void returnToHome() {
@@ -97,7 +97,7 @@ public class GamePageController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             String s = "Error saving game:";
-            alert.setContentText(s + '\n' + e.toString());
+            alert.setContentText(s + '\n' + e);
             alert.showAndWait();
         }
     }
@@ -133,6 +133,12 @@ public class GamePageController implements Initializable {
         Label message = new Label(messageInput.getText());
         message.getStyleClass().add("message");
         messagesBox.getChildren().add(message);
+    }
+
+    public void updatePage() {
+        updatePanel();
+        if (game.getGameConfig().aiDifficulty > 0 && game.getCurrentPlayer() == game.getPlayerInGame2())
+            game.aiMove();
     }
 
     public void updatePanel() {

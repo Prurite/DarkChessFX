@@ -53,13 +53,15 @@ public class HomePageController implements Initializable, DFXController {
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Dark Chess Game", "*.dcg"));
             fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
             File file = fileChooser.showOpenDialog(app.getPrimaryStage());
-            if (file != null)
-                game.saveGame(file);
-        } catch (IOException e) {
+            if (file != null) {
+                game.loadGame(file);
+                app.loadGameFinish(game);
+            }
+        } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             String s = "Error loading game:";
-            alert.setContentText(s + '\n' + e.toString());
+            alert.setContentText(s + '\n' + e);
             alert.showAndWait();
         }
     }
