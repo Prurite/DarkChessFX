@@ -1,7 +1,5 @@
 package io.github.prurite.darkchessfx.game.PerformGame;
 
-import io.github.prurite.darkchessfx.game.StrongAI.Node;
-
 public class State {
     Piece[][] board;
     EatenPieces eatenPieces;

@@ -3,6 +3,7 @@ package io.github.prurite.darkchessfx.game.PerformGame;
 import io.github.prurite.darkchessfx.game.GameResultWindow;
 import io.github.prurite.darkchessfx.game.UserData.Player;
 import io.github.prurite.darkchessfx.model.GameConfig;
+import javafx.util.Pair;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +16,7 @@ import static java.lang.Integer.signum;
 
 public class Game implements GameInterface {
     // game information
-    final int WINNING_SCORE;
+    private int WINNING_SCORE;
     private boolean scored;
     private double maxTurnTime;
     private double maxTotalTime;
@@ -68,6 +69,7 @@ public class Game implements GameInterface {
     }
 
 
+
     private ArrayList<Board> lastChessboard;
     private ArrayList<Move> lastMove;
     private ArrayList<EatenPieces> lastEatenPieces;
@@ -77,8 +79,34 @@ public class Game implements GameInterface {
     private EatenPieces eatenPieces;
     private EatenPieces revealedPieces;
     public EatenPieces getRevealedPieces() { return revealedPieces; }
+    public Piece[][] getChessBoard() {
+        return chessboard;
+    }
+    public ArrayList<Piece> getCaptured(PlayerInGame p) {
+        ArrayList<Piece> res = new ArrayList<>();
+        for(Chess c : Chess.values()) {
+            int t = eatenPieces.eaten(new Piece(c, p.getSide()));
+            for(int i=0; i<t; ++i) {
+                res.add(new Piece(c, p.getSide()));
+            }
+        }
+        return res;
+    }
+    public ArrayList<Pair<Integer, Integer>> getPossibleMoves(Pair<Integer, Integer> pos) {
+        ArrayList<Pair<Integer, Integer>> res = new ArrayList<>();
+        if(chessboard[pos.getKey()][pos.getValue()].getType() == Chess.Unknown) return null;
+        for(int i=0; i<4; ++i) {
+            for(int j=0; j<8; ++j) {
+                if(chessboard[i][j].getType() == Chess.Unknown) {
+                    if(chessboard[pos.getKey()][pos.getValue()].getType().canMove(pos, new Pair<>(i, j))) {
+                        res.add(new Pair<>(i, j));
+                    }
+                }
+            }
+        }
 
-    @Override
+    }
+
     public EatenPieces getEatenPieces() {
         return eatenPieces;
     }
@@ -171,7 +199,7 @@ public class Game implements GameInterface {
             players[i].getPlayer().addTime(curTime - startTime);
         }
         if(players[0].getScore() != players[1].getScore()) {
-            int winner = players[0].getScore() > players[1].getScore() ? 0 : 1;
+            int winner = players[0].getScore().getValue() > players[1].getScore().getValue() ? 0 : 1;
             players[winner].getPlayer().addWinnedGameCount();
             return players[winner];
         //    GameResultWindow.showResult(players[winner]);
@@ -180,12 +208,12 @@ public class Game implements GameInterface {
         //else GameResultWindow.showResult(null);
     }
     public boolean checkEndGame() {
-        return (players[0].getScore() >= WINNING_SCORE || players[1].getScore() >= WINNING_SCORE);
+        return (players[0].getScore().getValue() >= WINNING_SCORE || players[1].getScore().getValue() >= WINNING_SCORE);
     }
 
-    public PlayerInGame getWinner() {
-        if(players[0].getScore() >= WINNING_SCORE) return players[0];
-        if(players[1].getScore() >= WINNING_SCORE) return players[1];
+    public Player getWinner() {
+        if(players[0].getScore().getValue() >= WINNING_SCORE) return players[0].getPlayer();
+        if(players[1].getScore().getValue() >= WINNING_SCORE) return players[1].getPlayer();
         return null;
     }
 

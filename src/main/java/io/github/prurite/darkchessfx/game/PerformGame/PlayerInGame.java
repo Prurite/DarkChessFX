@@ -1,10 +1,11 @@
 package io.github.prurite.darkchessfx.game.PerformGame;
 
 import io.github.prurite.darkchessfx.game.UserData.Player;
+import javafx.beans.property.IntegerProperty;
 
 public class PlayerInGame {
     private double totalTime;
-    private int score;
+    private IntegerProperty score;
 
     private Side side;
     private final Player player;
@@ -21,10 +22,10 @@ public class PlayerInGame {
         this.player = player;
         this.side = side;
         this.totalTime = 0;
-        this.score = 0;
+        this.score.set(0);
     }
 
-    public void addScore(int x) { score += x; }
+    public void addScore(int x) { score.add(x); }
     public void subTotalTime(double t) { totalTime += t; }
 
     public Player getPlayer() {
@@ -43,12 +44,12 @@ public class PlayerInGame {
         this.totalTime = totalTime;
     }
 
-    public int getScore() {
+    public IntegerProperty getScore() {
         return score;
     }
 
     public void setScore(int score) {
-        this.score = score;
+        this.score.set(score);
     }
 
     public Side getSide() {

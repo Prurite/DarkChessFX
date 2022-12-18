@@ -1,5 +1,6 @@
 package io.github.prurite.darkchessfx.game.UserData;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class Player {
@@ -10,7 +11,7 @@ public class Player {
     private double totalGameTime;
 
     public Player(String s) {
-        this.name = StringProperty(s);
+        this.name = new SimpleStringProperty(s);
         this.gameCount = 0;
         this.scoredGameCount = 0;
         this.winnedGameCount = 0;
@@ -30,7 +31,7 @@ public class Player {
     public void addWinnedGameCount() { winnedGameCount++; }
 
     public String getName() {
-        return name;
+        return name.getValue();
     }
 
     public void setName(String name) {

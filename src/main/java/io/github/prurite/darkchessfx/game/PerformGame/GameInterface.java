@@ -1,15 +1,20 @@
 package io.github.prurite.darkchessfx.game.PerformGame;
 
 import io.github.prurite.darkchessfx.game.UserData.Player;
+import io.github.prurite.darkchessfx.model.GameConfig;
+import javafx.util.Pair;
+
+import java.util.ArrayList;
 
 public interface GameInterface {
-    public Game();
-    public Game(GameConfig config);
+    //public Game();
+    //public Game(GameConfig config);
+    // I've made this 2 comments because they can't be valid interface statement
     public Piece[][] getChessBoard();
-    public Side getPlayerSide(PlayerInGame p);
-    public Arraylist<Piece> getCaptured(Player p);
-    public int getScore(Player p);
-    public Arraylist<Pair> getPossibleMoves(Pair pos);
+    //public Side getPlayerSide(PlayerInGame p);
+    //it's not needed, because we can use p.getSide() instead
+    public ArrayList<Piece> getCaptured(PlayerInGame p);
+    public ArrayList<Pair<Integer, Integer>> getPossibleMoves(Pair<Integer, Integer> pos);
     public String performMove(PlayerInGame p, Move move);
     // Skipping a turn due to timeout is handled by GUI
     public String loadGame(String path);
