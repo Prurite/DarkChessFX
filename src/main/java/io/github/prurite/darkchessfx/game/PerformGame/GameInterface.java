@@ -1,22 +1,30 @@
 package io.github.prurite.darkchessfx.game.PerformGame;
 
 import io.github.prurite.darkchessfx.game.UserData.Player;
+import io.github.prurite.darkchessfx.model.GameConfig;
+import javafx.util.Pair;
+
+import java.util.ArrayList;
 
 public interface GameInterface {
-    public Game();
-    public Game(GameConfig config);
-    public Piece[][] getChessBoard();
-    public Side getPlayerSide(PlayerInGame p);
-    public Arraylist<Piece> getCaptured(Player p);
-    public int getScore(Player p);
-    public Arraylist<Pair> getPossibleMoves(Pair pos);
-    public String performMove(PlayerInGame p, Move move);
+    //  Game();
+    //  Game(GameConfig config);
+    Piece[][] getChessBoard();
+    Side getPlayerSide(PlayerInGame p);
+    ArrayList<Piece> getCaptured(Player p);
+    int getScore(Player p);
+    ArrayList<Pair> getPossibleMoves(Pair pos);
+    String performMove(PlayerInGame p, Move move);
     // Skipping a turn due to timeout is handled by GUI
-    public String loadGame(String path);
-    public String saveGame(String path);
-    public int getCurrentMovePos(); // -1 first, 0 mid, 1 last
-    public int goToPrevMove(); // Return current move id
-    public int goToNextMove();
-    public GameConfig getGameConfig();
-    public Player getWinner(); // null if not ended
+    String loadGame(String path);
+    String saveGame(String path);
+    int getCurrentMovePos(); // -1 first, 0 mid, 1 last
+    int goToPrevMove(); // Return current move id
+    int goToNextMove();
+    GameConfig getGameConfig();
+    Player getWinner(); // null if not ended
+    Player getPlayer1();
+    Player getPlayer2();
+    void setPlayer1(Player p);
+    void setPlayer2(Player p);
 }
