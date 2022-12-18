@@ -2,6 +2,7 @@ package io.github.prurite.darkchessfx.game.PerformGame;
 
 import io.github.prurite.darkchessfx.game.GameResultWindow;
 import io.github.prurite.darkchessfx.game.UserData.Player;
+import io.github.prurite.darkchessfx.model.GameConfig;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,20 +15,19 @@ import static java.lang.Integer.signum;
 
 public class Game implements GameInterface {
     // game information
-    static int WINNING_SCORE = 60;
+    final int WINNING_SCORE;
     private boolean scored;
     private double maxTurnTime;
     private double maxTotalTime;
-
-    public Game(String path) {
-        try {
-            File file = new File(path);
-            Scanner in = new Scanner(file, "utf-8");
-            maxTurnTime = in.nextDouble();
-            maxTotalTime = in.nextDouble();
-        }
-        catch (IOException e) {}
+    private GameConfig config;
+    public Game(GameConfig config) {
+        this.config = config;
+        WINNING_SCORE = config.minimumScore;
+        maxTurnTime = config.maxTurnTime;
+        maxTotalTime = config.maxTotalTime;
         scored = true;
+
+        startGame(config.player1, config.player2);
     }
     public Game() {
         maxTurnTime = 30 * 1000;
@@ -163,7 +163,7 @@ public class Game implements GameInterface {
         players[(x.getSide() == players[1].getSide() ? 0 : 1)].addScore(x.getType().getScore() * sgn);
     }
 
-    public void endGame() {
+    public PlayerInGame endGame() {
         double curTime = System.currentTimeMillis();
         for(int i=0; i<2; ++i) {
             players[i].getPlayer().addGameCount();
@@ -173,9 +173,11 @@ public class Game implements GameInterface {
         if(players[0].getScore() != players[1].getScore()) {
             int winner = players[0].getScore() > players[1].getScore() ? 0 : 1;
             players[winner].getPlayer().addWinnedGameCount();
-            GameResultWindow.showResult(players[winner]);
+            return players[winner];
+        //    GameResultWindow.showResult(players[winner]);
         }
-        else GameResultWindow.showResult(null);
+        return null;
+        //else GameResultWindow.showResult(null);
     }
     public boolean checkEndGame() {
         return (players[0].getScore() >= WINNING_SCORE || players[1].getScore() >= WINNING_SCORE);
