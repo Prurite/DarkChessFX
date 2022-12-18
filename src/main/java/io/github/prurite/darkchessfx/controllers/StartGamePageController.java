@@ -142,12 +142,14 @@ public class StartGamePageController implements Initializable, DFXController {
             if (newValue == aiYesButton) {
                 difficultyComboBox.setDisable(false);
                 gameConfig.aiDifficulty = difficultyComboBox.getSelectionModel().getSelectedIndex() + 1;
+                player2TextField.setText("AI");
                 player2TextField.setDisable(true);
                 scoreSlider.setValue(60);
                 scoreSlider.setDisable(true);
             } else {
                 difficultyComboBox.setDisable(true);
                 gameConfig.aiDifficulty = 0;
+                player2TextField.setText(gameConfig.defaultPlayer2);
                 player2TextField.setDisable(false);
                 scoreSlider.setDisable(false);
             }

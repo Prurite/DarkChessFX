@@ -8,7 +8,8 @@ public enum ChessType {
     CHARIOT("Chariot", "C"),
     CANNON("Cannon", "N"),
     SOLDIER("Soldier", "S"),
-    COVERED("Covered", "X");
+    COVERED("Covered", "X"),
+    EMPTY("Empty", "O");
 
     private final String name, shortName;
 

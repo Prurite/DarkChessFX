@@ -11,5 +11,6 @@ module io.github.prurite.darkchessfx {
     exports io.github.prurite.darkchessfx;
     exports io.github.prurite.darkchessfx.components;
     exports io.github.prurite.darkchessfx.model;
+    exports io.github.prurite.darkchessfx.game.PerformGame;
     opens io.github.prurite.darkchessfx.components to javafx.fxml;
 }

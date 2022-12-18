@@ -14,12 +14,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.transform.Scale;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 
 public class App extends Application {
     private Stage primaryStage;
+
+    public Stage getPrimaryStage() {
+        return primaryStage;
+    }
 
     @Override
     public void start(Stage primaryStage) throws IOException {
@@ -74,14 +80,12 @@ public class App extends Application {
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
         } catch (IOException e) {
-//            System.err.println("Failed to load " + filename + ".fxml");
+//          System.err.println("Failed to load GamePage.fxml");
             e.printStackTrace();
         }
     }
 
-    public void loadGame(String path) {
-        Game game = new Game();
-        game.loadGame(path);
+    public void loadGame(Game game) {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(DarkchessFXResourcesLoader.loadURL("fxml/StartGamePage.fxml"));
@@ -90,16 +94,17 @@ public class App extends Application {
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
         } catch (IOException e) {
-//            System.err.println("Failed to load " + filename + ".fxml");
+//          System.err.println("Failed to load StartGamePage.fxml");
             e.printStackTrace();
         }
     }
 
-    public Pane loadGameBoard(Game game) {
+    public Pane loadGameBoard(Game game, GameBoardController controller) {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(DarkchessFXResourcesLoader.loadURL("fxml/GameBoard.fxml"));
             loader.setControllerFactory(c -> new GameBoardController(game, this));
+            controller = loader.getController();
             return loader.load();
         } catch (IOException e) {
 //            System.err.println("Failed to load " + filename + ".fxml");

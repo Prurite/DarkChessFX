@@ -1,10 +1,14 @@
 package io.github.prurite.darkchessfx.controllers;
 
 import io.github.prurite.darkchessfx.App;
+import io.github.prurite.darkchessfx.game.PerformGame.Game;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -36,7 +40,27 @@ public class HomePageController implements Initializable, DFXController {
         selectModeButtons.setVisible(false);
     }
 
-    public void toNewGame() throws IOException {
+    public void toNewGame() {
         app.changePage("StartGamePage");
+    }
+
+    public void loadGame() {
+        try {
+            Game game = new Game();
+            FileChooser fileChooser = new FileChooser();
+            // Select a file
+            fileChooser.setTitle("Load Game");
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Dark Chess Game", "*.dcg"));
+            fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+            File file = fileChooser.showOpenDialog(app.getPrimaryStage());
+            if (file != null)
+                game.saveGame(file);
+        } catch (IOException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            String s = "Error loading game:";
+            alert.setContentText(s + '\n' + e.toString());
+            alert.showAndWait();
+        }
     }
 }

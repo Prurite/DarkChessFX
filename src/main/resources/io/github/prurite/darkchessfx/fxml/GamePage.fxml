@@ -34,35 +34,19 @@
                 <VBox styleClass="card, roundInfoBox">
                     <Label fx:id="player1Name" styleClass="playerName" text="Player 1" />
                     <GridPane alignment="CENTER">
-                        <columnConstraints>
-                            <ColumnConstraints percentWidth="70" halignment="CENTER" />
-                            <ColumnConstraints percentWidth="30" halignment="CENTER" />
-                        </columnConstraints>
-                        <Label fx:id="player1Time" styleClass="roundInfoNumber" text="00:00"
-                               GridPane.rowIndex="0" GridPane.columnIndex="0" />
                         <Label fx:id="player1Score" styleClass="roundInfoNumber" text="0"
-                               GridPane.rowIndex="0" GridPane.columnIndex="1" />
-                        <Label styleClass="smallLabel" text="Time left"
-                               GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                               GridPane.rowIndex="0" GridPane.columnIndex="0" />
                         <Label styleClass="smallLabel" text="Score"
-                               GridPane.rowIndex="1" GridPane.columnIndex="1" />
+                               GridPane.rowIndex="1" GridPane.columnIndex="0" />
                     </GridPane>
                 </VBox>
                 <VBox styleClass="card, roundInfoBox">
                     <Label fx:id="player2Name" styleClass="playerName" text="Player 2" />
                     <GridPane alignment="CENTER">
-                        <columnConstraints>
-                            <ColumnConstraints percentWidth="70" halignment="CENTER" />
-                            <ColumnConstraints percentWidth="30" halignment="CENTER" />
-                        </columnConstraints>
-                        <Label fx:id="player2Time" styleClass="roundInfoNumber" text="00:00"
-                               GridPane.rowIndex="0" GridPane.columnIndex="0" />
                         <Label fx:id="player2Score" styleClass="roundInfoNumber" text="0"
-                               GridPane.rowIndex="0" GridPane.columnIndex="1" />
-                        <Label styleClass="smallLabel" text="Time left"
-                               GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                               GridPane.rowIndex="0" GridPane.columnIndex="0" />
                         <Label styleClass="smallLabel" text="Score"
-                               GridPane.rowIndex="1" GridPane.columnIndex="1" />
+                               GridPane.rowIndex="1" GridPane.columnIndex="0" />
                     </GridPane>
                 </VBox>
             </HBox>
@@ -70,9 +54,7 @@
                 <Label styleClass="generalLabel" text="Current turn" />
                 <HBox styleClass="turnInfoBox">
                     <Label fx:id="currentPlayerName" styleClass="playerName" text="Player 1" />
-                    <Label fx:id="currentPlayerTime" styleClass="generalLabel" text="00:00" />
                 </HBox>
-                <Label styleClass="generalLabel" text="Time left" />
             </HBox>
             <GridPane styleClass="actionsPane">
                 <columnConstraints>
@@ -82,18 +64,18 @@
                 </columnConstraints>
                 <Label fx:id="actionLabel" styleClass="generalLabel" text="Ask for/to..."
                        GridPane.rowIndex="0" GridPane.columnIndex="0" />
-                <Button styleClass="generalButton, buttonLabel" text="Pause"
+                <Button styleClass="generalButton, buttonLabel" text="Pause" disable="true"
                         GridPane.rowIndex="0" GridPane.columnIndex="1" />
-                <Button styleClass="generalButton, buttonLabel" text="Save"
+                <Button styleClass="generalButton, buttonLabel" text="Save" onAction="#saveGame"
                         GridPane.rowIndex="0" GridPane.columnIndex="2" />
-                <Button styleClass="generalButton, buttonLabel" text="Draw"
+                <Button styleClass="generalButton, buttonLabel" text="Draw" onAction="#askForDraw"
                         GridPane.rowIndex="1" GridPane.columnIndex="1" />
-                <Button styleClass="generalButton, buttonLabel" text="Surrender"
+                <Button styleClass="generalButton, buttonLabel" text="Surrender" onAction="#surrender"
                         GridPane.rowIndex="1" GridPane.columnIndex="2" />
-                <Button styleClass="generalButton, buttonLabel" text="Withdraw"
+                <Button styleClass="generalButton, buttonLabel" text="Withdraw" onAction="#withdraw"
                         GridPane.rowIndex="2" GridPane.columnIndex="1" />
-                <Button styleClass="generalButton, buttonLabel" text="Cheat"
-                        GridPane.rowIndex="2" GridPane.columnIndex="2" />
+                <Button styleClass="generalButton, buttonLabel" text="Cheat" onAction="#toggleCheat"
+                        fx:id="toggleCheatButton" GridPane.rowIndex="2" GridPane.columnIndex="2" />
             </GridPane>
             <VBox>
                 <ScrollPane styleClass="card, messagePane">
@@ -104,7 +86,8 @@
                 <HBox>
                     <TextField fx:id="messageInput" styleClass="card, messageInput" HBox.hgrow="ALWAYS"
                                promptText="Type your message here..." />
-                    <Button styleClass="generalButton, buttonLabel, mainButton, sendButton" text="Send" />
+                    <Button styleClass="generalButton, buttonLabel, mainButton, sendButton"
+                            text="Send" onAction="#sendMessage"/>
                 </HBox>
             </VBox>
         </VBox>

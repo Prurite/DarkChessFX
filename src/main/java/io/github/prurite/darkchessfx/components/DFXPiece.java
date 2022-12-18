@@ -1,6 +1,8 @@
 package io.github.prurite.darkchessfx.components;
 
 import io.github.prurite.darkchessfx.DarkchessFXResourcesLoader;
+import io.github.prurite.darkchessfx.game.PerformGame.Piece;
+import io.github.prurite.darkchessfx.game.PerformGame.Side;
 import io.github.prurite.darkchessfx.model.ChessSide;
 import io.github.prurite.darkchessfx.model.ChessType;
 import javafx.scene.image.Image;
@@ -12,9 +14,41 @@ public class DFXPiece extends StackPane {
     ChessType type;
     ChessSide side;
 
+    public DFXPiece(Piece piece) {
+        updatePiece(piece);
+    }
+
+    public DFXPiece(ChessSide side) {
+        this(side, ChessType.COVERED);
+    }
+
     public DFXPiece(ChessSide side, ChessType type) {
         this.type = type;
         this.side = side;
+        initializeView();
+    }
+
+    public void updatePiece(Piece piece) {
+        side = piece.getSide() == Side.RED ? ChessSide.RED : ChessSide.BLACK;
+        switch (piece.getType()) {
+            case General -> type = ChessType.GENERAL;
+            case Advisor -> type = ChessType.ADVISOR;
+            case Minister -> type = ChessType.ELEPHANT;
+            case Horse -> type = ChessType.HORSE;
+            case Chariot -> type = ChessType.CHARIOT;
+            case Cannon -> type = ChessType.CANNON;
+            case Soldier -> type = ChessType.SOLDIER;
+            case Unknown -> type = ChessType.COVERED;
+            case Empty -> type = ChessType.EMPTY;
+        }
+        initializeView();
+    }
+
+    private void initializeView() {
+        getStylesheets().clear();
+        getChildren().clear();
+        if (type == ChessType.EMPTY)
+            return;
         getStylesheets().add(DarkchessFXResourcesLoader.loadURL("css/DFXPiece.css").toExternalForm());
         Circle back = new Circle(), ring = new Circle();
         back.radiusProperty().bind(maxWidthProperty().divide(2.2));
@@ -40,10 +74,6 @@ public class DFXPiece extends StackPane {
             iv.setSmooth(true);
             getChildren().add(iv);
         }
-    }
-
-    public DFXPiece(ChessSide side) {
-        this(side, ChessType.COVERED);
     }
 
     public ChessType getType() {
