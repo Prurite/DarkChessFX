@@ -2,7 +2,7 @@ package io.github.prurite.darkchessfx.game.WeakAI;
 
 import io.github.prurite.darkchessfx.game.GameResultWindow;
 import io.github.prurite.darkchessfx.game.PerformGame.*;
-import io.github.prurite.darkchessfx.game.UserData.Player;
+import io.github.prurite.darkchessfx.model.Player;
 import javafx.util.Pair;
 
 import java.util.ArrayList;

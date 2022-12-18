@@ -1,4 +1,4 @@
-package io.github.prurite.darkchessfx.game.UserData;
+package io.github.prurite.darkchessfx.model;
 
 public interface PlayerInfoProcessorInterface {
     public Player getPlayer(String name);

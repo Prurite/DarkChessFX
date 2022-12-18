@@ -2,12 +2,10 @@ package io.github.prurite.darkchessfx.game;
 
 import io.github.prurite.darkchessfx.game.PerformGame.PlayerInGame;
 import io.github.prurite.darkchessfx.game.PerformGame.Side;
-import io.github.prurite.darkchessfx.game.UserData.Player;
+import io.github.prurite.darkchessfx.model.Player;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Box;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;

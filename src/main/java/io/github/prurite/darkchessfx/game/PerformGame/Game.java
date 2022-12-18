@@ -1,16 +1,11 @@
 package io.github.prurite.darkchessfx.game.PerformGame;
 
-import io.github.prurite.darkchessfx.game.GameResultWindow;
-import io.github.prurite.darkchessfx.game.UserData.Player;
+import io.github.prurite.darkchessfx.model.Player;
 import io.github.prurite.darkchessfx.model.GameConfig;
 import javafx.util.Pair;
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Scanner;
 
 import static java.lang.Integer.signum;
 

@@ -2,6 +2,7 @@ package io.github.prurite.darkchessfx.controllers;
 
 import io.github.prurite.darkchessfx.App;
 import io.github.prurite.darkchessfx.components.DFXPiece;
+import io.github.prurite.darkchessfx.game.PerformGame.Game;
 import io.github.prurite.darkchessfx.model.ChessSide;
 import io.github.prurite.darkchessfx.model.ChessType;
 import javafx.fxml.FXML;
@@ -14,21 +15,18 @@ import javafx.scene.layout.VBox;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class GameBoardController implements DFXController, Initializable {
-    @FXML
-    private FlowPane chessBoardCellPane;
-    @FXML
-    private FlowPane redCapturedPane;
-    @FXML
-    private FlowPane blackCapturedPane;
-    @FXML
-    private StackPane chessBoardBack;
+public class GameBoardController implements Initializable {
+    @FXML private FlowPane chessBoardCellPane;
+    @FXML private FlowPane redCapturedPane;
+    @FXML private FlowPane blackCapturedPane;
+    @FXML private StackPane chessBoardBack;
+    private Game game;
     private App app;
     private final int row = 8, col = 4;
     private Pane[][] chessBoardCells = new Pane[row][col];
 
-    @Override
-    public void setApp(App app) {
+    public GameBoardController(Game game, App app) {
+        this.game = game;
         this.app = app;
     }
 

@@ -1,10 +1,9 @@
-package io.github.prurite.darkchessfx.game.UserData;
+package io.github.prurite.darkchessfx.model;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.nio.Buffer;
 import java.nio.file.Path;
 import java.util.ArrayList;
 

@@ -1,14 +1,16 @@
 package io.github.prurite.darkchessfx.game.PerformGame;
 
-import io.github.prurite.darkchessfx.game.UserData.Player;
-import javafx.beans.property.IntegerProperty;
+import io.github.prurite.darkchessfx.model.Player;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 
 public class PlayerInGame {
     private double totalTime;
-    private IntegerProperty score;
+    private SimpleIntegerProperty scoreProperty;
 
     private Side side;
     private final Player player;
+    public SimpleStringProperty nameProperty;
 
     @Override
     public boolean equals(Object obj) {
@@ -22,10 +24,15 @@ public class PlayerInGame {
         this.player = player;
         this.side = side;
         this.totalTime = 0;
-        this.score.set(0);
+        this.scoreProperty.set(0);
+        nameProperty = new SimpleStringProperty(player.getName());
     }
 
-    public void addScore(int x) { score.add(x); }
+    public SimpleStringProperty getNameProperty() {
+        return nameProperty;
+    }
+
+    public void addScore(int x) { scoreProperty.add(x); }
     public void subTotalTime(double t) { totalTime += t; }
 
     public Player getPlayer() {
@@ -44,12 +51,12 @@ public class PlayerInGame {
         this.totalTime = totalTime;
     }
 
-    public IntegerProperty getScore() {
-        return score;
+    public SimpleIntegerProperty getScoreProperty() {
+        return scoreProperty;
     }
 
     public void setScore(int score) {
-        this.score.set(score);
+        this.scoreProperty.set(score);
     }
 
     public Side getSide() {

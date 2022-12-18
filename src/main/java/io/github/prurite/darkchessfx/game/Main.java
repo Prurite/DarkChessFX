@@ -4,7 +4,7 @@ import io.github.prurite.darkchessfx.game.PerformGame.Move;
 import io.github.prurite.darkchessfx.game.PerformGame.MoveChessMessage;
 import io.github.prurite.darkchessfx.game.PerformGame.PlayerInGame;
 import io.github.prurite.darkchessfx.game.StrongestAI.Tree;
-import io.github.prurite.darkchessfx.game.UserData.Player;
+import io.github.prurite.darkchessfx.model.Player;
 
 import io.github.prurite.darkchessfx.game.WeakAI.MakeMove;
 import javafx.application.Application;

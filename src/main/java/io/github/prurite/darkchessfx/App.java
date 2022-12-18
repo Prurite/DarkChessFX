@@ -2,6 +2,11 @@ package io.github.prurite.darkchessfx;
 
 import fr.brouillard.oss.cssfx.CSSFX;
 import io.github.prurite.darkchessfx.controllers.DFXController;
+import io.github.prurite.darkchessfx.controllers.GameBoardController;
+import io.github.prurite.darkchessfx.controllers.GamePageController;
+import io.github.prurite.darkchessfx.controllers.StartGamePageController;
+import io.github.prurite.darkchessfx.game.PerformGame.Game;
+import io.github.prurite.darkchessfx.model.GameConfig;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -58,6 +63,49 @@ public class App extends Application {
         Pane root = loadFXML(newPage);
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
+    }
+
+    public void startGame(Game game) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(DarkchessFXResourcesLoader.loadURL("fxml/GamePage.fxml"));
+            loader.setControllerFactory(c -> new GamePageController(game, this));
+            Pane root = loader.load();
+            Scene scene = new Scene(root);
+            primaryStage.setScene(scene);
+        } catch (IOException e) {
+//            System.err.println("Failed to load " + filename + ".fxml");
+            e.printStackTrace();
+        }
+    }
+
+    public void loadGame(String path) {
+        Game game = new Game();
+        game.loadGame(path);
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(DarkchessFXResourcesLoader.loadURL("fxml/StartGamePage.fxml"));
+            loader.setControllerFactory(c -> new StartGamePageController(game, this));
+            Pane root = loader.load();
+            Scene scene = new Scene(root);
+            primaryStage.setScene(scene);
+        } catch (IOException e) {
+//            System.err.println("Failed to load " + filename + ".fxml");
+            e.printStackTrace();
+        }
+    }
+
+    public Pane loadGameBoard(Game game) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(DarkchessFXResourcesLoader.loadURL("fxml/GameBoard.fxml"));
+            loader.setControllerFactory(c -> new GameBoardController(game, this));
+            return loader.load();
+        } catch (IOException e) {
+//            System.err.println("Failed to load " + filename + ".fxml");
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public static void main(String[] args) {

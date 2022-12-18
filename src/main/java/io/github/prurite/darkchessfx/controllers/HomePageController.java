@@ -11,10 +11,8 @@ import java.util.ResourceBundle;
 
 public class HomePageController implements Initializable, DFXController {
     private App app;
-    @FXML
-    private VBox homeButtons;
-    @FXML
-    private VBox selectModeButtons;
+    @FXML private VBox homeButtons;
+    @FXML private VBox selectModeButtons;
 
     @Override
     public void setApp(App app) {

@@ -3,6 +3,7 @@ package io.github.prurite.darkchessfx.controllers;
 import io.github.prurite.darkchessfx.App;
 import io.github.prurite.darkchessfx.components.DFXSlider;
 import io.github.prurite.darkchessfx.components.DFXSwitch;
+import io.github.prurite.darkchessfx.game.PerformGame.Game;
 import io.github.prurite.darkchessfx.model.GameConfig;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,50 +14,39 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class StartGamePageController implements Initializable, DFXController {
-    @FXML
-    private RadioButton aiNoButton;
-    @FXML
-    private RadioButton aiYesButton;
-    @FXML
-    private RadioButton lanNoButton;
-    @FXML
-    private RadioButton lanYesButton;
-    @FXML
-    private Label title;
-    @FXML
-    private DFXSlider turnTimeDFXSlider;
-    @FXML
-    private DFXSlider totalTimeDFXSlider;
-    @FXML
-    private DFXSlider scoreDFXSlider;
-    @FXML
-    private Label turnTimeLabel;
-    @FXML
-    private Label totalTimeLabel;
-    @FXML
-    private Label scoreLabel;
-    @FXML
-    private DFXSwitch cheatToggle;
-    @FXML
-    private DFXSwitch withdrawToggle;
-    @FXML
-    private Label unScoredLabel;
-    @FXML
-    private ComboBox<String> difficultyComboBox;
-    @FXML
-    private TextField portTextField;
-    @FXML
-    private TextField passwordTextField;
-    @FXML
-    private TextField player1TextField;
-    @FXML
-    private TextField player2TextField;
-    @FXML
-    private Button loadButton;
-    @FXML
-    private Button startButton;
+    @FXML private RadioButton aiNoButton;
+    @FXML private RadioButton aiYesButton;
+    @FXML private RadioButton lanNoButton;
+    @FXML private RadioButton lanYesButton;
+    @FXML private Label title;
+    @FXML private DFXSlider turnTimeDFXSlider;
+    @FXML private DFXSlider totalTimeDFXSlider;
+    @FXML private DFXSlider scoreDFXSlider;
+    @FXML private Label turnTimeLabel;
+    @FXML private Label totalTimeLabel;
+    @FXML private Label scoreLabel;
+    @FXML private DFXSwitch cheatToggle;
+    @FXML private DFXSwitch withdrawToggle;
+    @FXML private Label unScoredLabel;
+    @FXML private ComboBox<String> difficultyComboBox;
+    @FXML private TextField portTextField;
+    @FXML private TextField passwordTextField;
+    @FXML private TextField player1TextField;
+    @FXML private TextField player2TextField;
     private App app;
+    private Game game;
     private GameConfig gameConfig;
+
+    public StartGamePageController() {
+        game = new Game();
+        gameConfig = game.getGameConfig();
+    }
+
+    public StartGamePageController(Game loadedGame, App app) {
+        game = loadedGame;
+        gameConfig = game.getGameConfig();
+        this.app = app;
+    }
 
     @Override
     public void setApp(App app) {
@@ -153,10 +143,13 @@ public class StartGamePageController implements Initializable, DFXController {
                 difficultyComboBox.setDisable(false);
                 gameConfig.aiDifficulty = difficultyComboBox.getSelectionModel().getSelectedIndex() + 1;
                 player2TextField.setDisable(true);
+                scoreSlider.setValue(60);
+                scoreSlider.setDisable(true);
             } else {
                 difficultyComboBox.setDisable(true);
                 gameConfig.aiDifficulty = 0;
                 player2TextField.setDisable(false);
+                scoreSlider.setDisable(false);
             }
         });
         if (gameConfig.aiDifficulty > 0)
@@ -235,6 +228,6 @@ public class StartGamePageController implements Initializable, DFXController {
     }
 
     public void startGame() throws IOException {
-        app.changePage("GamePage");
+        app.startGame(game);
     }
 }

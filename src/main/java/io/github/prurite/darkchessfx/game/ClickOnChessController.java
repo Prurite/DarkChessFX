@@ -1,21 +1,16 @@
 package io.github.prurite.darkchessfx.game;
 
 import io.github.prurite.darkchessfx.game.PerformGame.PlayerInGame;
-import io.github.prurite.darkchessfx.game.UserData.Player;
-import javafx.event.EventHandler;
+import io.github.prurite.darkchessfx.model.Player;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import io.github.prurite.darkchessfx.game.PerformGame.Game;
-import javafx.scene.layout.*;
-
-import javax.security.auth.callback.UnsupportedCallbackException;
 
 public class ClickOnChessController implements Initializable {
     private Game game;
