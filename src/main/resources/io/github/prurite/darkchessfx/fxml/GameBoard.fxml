@@ -11,8 +11,9 @@
       fx:controller="io.github.prurite.darkchessfx.controllers.GameBoardController"
       styleClass="gameBoardPane" stylesheets="@../css/GameBoard.css">
     <left>
-        <VBox fx:id="redCapturedPane" styleClass="capturedPane">
+        <VBox styleClass="capturedBox">
             <Label text="Captured&#xD;by red" styleClass="generalLabel" />
+            <FlowPane fx:id="redCapturedPane" styleClass="capturedPane" />
         </VBox>
     </left>
     <center>
@@ -23,8 +24,9 @@
         </StackPane>
     </center>
     <right>
-        <VBox fx:id="blackCapturedPane" styleClass="capturedPane">
+        <VBox styleClass="capturedBox">
             <Label text="Captured&#xD;by black" styleClass="generalLabel" />
+            <FlowPane fx:id="blackCapturedPane" styleClass="capturedPane" />
         </VBox>
     </right>
 </BorderPane>

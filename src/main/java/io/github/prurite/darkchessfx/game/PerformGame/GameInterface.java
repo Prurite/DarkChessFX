@@ -3,6 +3,7 @@ package io.github.prurite.darkchessfx.game.PerformGame;
 import io.github.prurite.darkchessfx.game.UserData.Player;
 
 public interface GameInterface {
+    State getState();
 
     //public Game(String path); // constructor
     public PlayerInGame[] startGame(Player p1, Player p2);

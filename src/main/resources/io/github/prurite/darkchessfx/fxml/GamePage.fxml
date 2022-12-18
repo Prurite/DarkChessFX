@@ -109,7 +109,5 @@
             </VBox>
         </VBox>
     </VBox>
-    <StackPane styleClass="gameArea" >
-
-    </StackPane>
+    <StackPane fx:id="gameArea" styleClass="gameArea" />
 </HBox>

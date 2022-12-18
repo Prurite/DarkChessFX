@@ -18,11 +18,11 @@ public class GameBoardController implements DFXController, Initializable {
     @FXML
     private FlowPane chessBoardCellPane;
     @FXML
-    private VBox redCapturedPane;
+    private FlowPane redCapturedPane;
+    @FXML
+    private FlowPane blackCapturedPane;
     @FXML
     private StackPane chessBoardBack;
-    @FXML
-    private VBox blackCapturedPane;
     private App app;
     private final int row = 8, col = 4;
     private Pane[][] chessBoardCells = new Pane[row][col];
@@ -43,9 +43,22 @@ public class GameBoardController implements DFXController, Initializable {
                 long type = Math.round(Math.random() * 7);
                 DFXPiece piece = new DFXPiece(ChessSide.values()[(int) side], ChessType.values()[(int) type]);
                 piece.getStyleClass().add("chessBoardPiece");
+                // TODO: debug
+                piece.setOnMouseClicked(event -> {
+                    pane.getChildren().remove(piece);
+                    piece.getStyleClass().remove("chessBoardPiece");
+                    piece.getStyleClass().add("capturedPiece");
+                    if (piece.getSide() == ChessSide.RED) {
+                        redCapturedPane.getChildren().add(piece);
+                    } else {
+                        blackCapturedPane.getChildren().add(piece);
+                    }
+                    // remove the event handler afterwards
+                    piece.setOnMouseClicked(null);
+                });
                 pane.getChildren().add(piece);
                 chessBoardCells[i][j] = pane;
-            } // TODO
+            }
         }
     }
 }

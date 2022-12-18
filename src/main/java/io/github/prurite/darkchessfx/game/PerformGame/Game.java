@@ -75,6 +75,8 @@ public class Game implements GameInterface {
     public Piece[][] getChessboard() { return chessboard; }
     private Piece[][] revealedChessboard; // = new Chess[4][8];
     private EatenPieces eatenPieces;
+    private EatenPieces revealedPieces;
+    public EatenPieces getRevealedPieces() { return revealedPieces; }
 
     @Override
     public EatenPieces getEatenPieces() {
@@ -134,6 +136,7 @@ public class Game implements GameInterface {
         chessboard = new Piece[4][8];
         for(int i=0; i<4; ++i) for(int j=0; j<8; ++j) chessboard[i][j] = new Piece(Chess.Unknown, Side.RED);
         eatenPieces = new EatenPieces();
+        revealedPieces = new EatenPieces();
         lastChessboard = new ArrayList<>();
         lastEatenPieces = new ArrayList<>();
         lastMove = new ArrayList<>();
@@ -201,13 +204,15 @@ public class Game implements GameInterface {
         Move move = lastMove.get(p);
         int newx = move.getNewx(), newy = move.getNewy();
         assert(move.getCurx() !=-1 && move.getCury() != -1);
-        if(newx!=-1 && newy !=-1 && chessboard[newx][newy].getType() != Chess.Empty)
-            eatPiece(revealedChessboard[newx][newy], -1);
+        if(newx!=-1 && newy !=-1 && chessboard[newx][newy].getType() != Chess.Empty) {
+            if(chessboard[newx][newy].getType() == Chess.Unknown)
+                eatPiece(revealedChessboard[newx][newy], -1);
+            else eatPiece(chessboard[newx][newy], -1);
+        }
         lastChessboard.remove(p);
         lastEatenPieces.remove(p);
         lastMove.remove(p);
         changePlayer();
-        updEndGUI();
         return move;
     }
 
@@ -275,12 +280,13 @@ public class Game implements GameInterface {
         if(chessboard[x2][y2].getType() != Chess.Empty) {
             if(chessboard[x2][y2].getType() == Chess.Unknown) {
                 eatPiece(revealedChessboard[x2][y2], 1);
+                revealedPieces.eatPiece(revealedChessboard[x2][y2]);
             }
             else {
                 eatPiece(chessboard[x2][y2], 1);
             }
         }
-        chessboard[x2][y2] = chessboard[x1][y1];
+        chessboard[x2][y2] = new Piece(chessboard[x1][y1]);
         chessboard[x1][y1] = new Piece(Chess.Empty, Side.RED);
         updGUI(curMove);
         changePlayer();
@@ -291,7 +297,8 @@ public class Game implements GameInterface {
     private void turnUpChess(int x, int y) {
         storeLastMove();
         //int x = curMove.getCurx(), y = curMove.getCury();
-        chessboard[x][y] = revealedChessboard[x][y];
+        chessboard[x][y] = new Piece(revealedChessboard[x][y]);
+        revealedPieces.eatPiece(revealedChessboard[x][y]);
         updGUI(x, y);
         changePlayer();
     }
@@ -358,6 +365,9 @@ public class Game implements GameInterface {
     public void resume() {
         lastTurnTime += System.currentTimeMillis() - lastPauseTime;
         pausing = false;
+    }
+    public State getState() {
+        return new State(chessboard, eatenPieces, revealedPieces);
     }
 
     public String debugChessboard() {

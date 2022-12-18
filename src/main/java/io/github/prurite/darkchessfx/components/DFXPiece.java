@@ -17,9 +17,9 @@ public class DFXPiece extends StackPane {
         this.side = side;
         getStylesheets().add(DarkchessFXResourcesLoader.loadURL("css/DFXPiece.css").toExternalForm());
         Circle back = new Circle(), ring = new Circle();
-        back.radiusProperty().bind(widthProperty().divide(2.2));
+        back.radiusProperty().bind(maxWidthProperty().divide(2.2));
         back.getStyleClass().add("DFXPieceBack");
-        ring.radiusProperty().bind(widthProperty().divide(2.2).multiply(0.8));
+        ring.radiusProperty().bind(maxWidthProperty().divide(2.2).multiply(0.8));
         ring.getStyleClass().add("DFXPieceRing");
         if (type == ChessType.COVERED)
             ring.getStyleClass().add("DFXPieceRingCovered");
@@ -46,4 +46,11 @@ public class DFXPiece extends StackPane {
         this(side, ChessType.COVERED);
     }
 
+    public ChessType getType() {
+        return type;
+    }
+
+    public ChessSide getSide() {
+        return side;
+    }
 }

@@ -6,12 +6,15 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class GamePageController implements Initializable, DFXController {
+    @FXML
+    private StackPane gameArea;
     @FXML
     private HBox rootPane;
     @FXML
@@ -25,7 +28,7 @@ public class GamePageController implements Initializable, DFXController {
         this.app = app;
         if (!gameBoardLoaded) {
             Pane gameBoard = app.loadFXML("GameBoard");
-            rootPane.getChildren().add(gameBoard);
+            gameArea.getChildren().add(gameBoard);
             gameBoardLoaded = true;
         }
     }

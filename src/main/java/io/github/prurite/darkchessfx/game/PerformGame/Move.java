@@ -11,6 +11,14 @@ public class Move {
         newx = a;
         newy = b;
     }
+    public Move(Move move) {
+        if(move != null) {
+            curx = move.getCurx();
+            cury = move.getCury();
+            newx = move.getNewx();
+            newy = move.getNewy();
+        }
+    }
     public boolean sameX() { return curx == newx; }
     public boolean sameY() { return cury == newy; }
     public int getDis() {
@@ -46,5 +54,8 @@ public class Move {
 
     public void setNewy(int newy) {
         this.newy = newy;
+    }
+    public String toString() {
+        return "(" + curx + ", " + cury + ") -> (" + newx + ", " + newy + ")";
     }
 }

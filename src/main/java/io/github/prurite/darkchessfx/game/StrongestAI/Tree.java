@@ -1,11 +1,11 @@
-package io.github.prurite.darkchessfx.game.StrongAI;
+package io.github.prurite.darkchessfx.game.StrongestAI;
 
 import io.github.prurite.darkchessfx.game.PerformGame.*;
 import io.github.prurite.darkchessfx.game.WeakAI.MakeMove;
 
 import static java.lang.Math.min;
 
-public class Tree implements TreeInterface{
+public class Tree implements TreeInterface {
     private Node root;
     private boolean myfirst;
     private int lastx, lasty;
@@ -38,32 +38,41 @@ public class Tree implements TreeInterface{
                 }
                 else {
                     root = new Node(state, chess.getSide().getOpposite(), null, 1, true, null);
-                    init();
+                    root.workOn();
                 }
             }
         } else {
             Side tmp = root.getMySide();
             //MakeMove.debug("going to find child  -- " + tmp.toString() + state.debugBoard());
             root = root.findChild(state, 0);
+            if(root.getMySide() != side) {
+                MakeMove.debug("error");
+            }
             root.setParent(null);
             init();
         }
 
+        int lim = state.getEatenPieces().getTot() > 10 ? MCTS_TIMES : 1;
 
         int N = 1;
-        for(int ii = 0; ii< MCTS_TIMES; ++ii) {
+        for(int ii = 0; ii< lim; ++ii) {
             Node node = root.chooseChild(N);
-            if(node == null) continue;
+            if(node == null || node.getVisitCount() <= 1e-6) continue;
             node.workOn();
             ++N;
         }
 
         double mx = -114514;
+        int cnt = 0;
         Node res = null;
         for(Node node: root.getChildren()) if(node.getVisitCount() > 0) {
-            double rate = -node.getWinCount() / node.getVisitCount();
+            double rate = lim>1 ? (-node.getWinCount() / node.getVisitCount()) : node.getState().getScore(side.ordinal());
             if(rate > mx || res == null) {
                 mx = rate;
+                res = node;
+                cnt = 1;
+            }
+            else if(rate >= mx - 1e-6 && Math.random() < 1.0 / (++cnt)) {
                 res = node;
             }
         }

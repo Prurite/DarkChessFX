@@ -1,4 +1,4 @@
-package io.github.prurite.darkchessfx.game.StrongAI;
+package io.github.prurite.darkchessfx.game.StrongestAI;
 
 import io.github.prurite.darkchessfx.game.PerformGame.*;
 import io.github.prurite.darkchessfx.game.WeakAI.MakeMove;
@@ -10,11 +10,11 @@ public class Node {
     static double EPS = 1e-6;
     static double BIAS = 0.75;
     static double COE_D = 0.01;
-    static double COE_S = 0.1;
+    static double COE_S = 0.0001;
     static double PGL = 150;
     static double MAX_UTC = 40;
-    static int MAX_SIMULATION_LENGTH = 200;
-    static int MAX_INEFFECTIVE_STEP = 23;
+    static int MAX_SIMULATION_LENGTH = 300;
+    static int MAX_INEFFECTIVE_STEP = 40;
 
 
     private boolean isDeterminant;
@@ -69,10 +69,7 @@ public class Node {
         if(!state.getRevealedPieces().includes(this.state.getRevealedPieces())) return null;
 //        if(state.getRevealedPieces().equals(this.state.getRevealedPieces())) return this;
 //        if(state.getEatenPieces().equals(this.state.getEatenPieces())) return this;
-        if(children.size() == 0) {
-            //generateChildren();
-            workOn();
-        }
+        if(children.size() == 0) generateChildren();
         for(int i=0; i<children.size(); ++i) {
             Node child = children.get(i);
             Node tmp = child.findChild(state, depth + 1);
@@ -183,6 +180,12 @@ public class Node {
         double res = 0;
         int lastmove = 0;
 
+        if(state.endGame()) {
+            winCount = (state.getWinner() == mySide.ordinal() ? 1 : -1) * 3;
+            visitCount = 1;
+            return;
+        }
+
         for(int curmove = 1; curmove - lastmove <= MAX_INEFFECTIVE_STEP && curmove <= MAX_SIMULATION_LENGTH; ++curmove) {
             if(state.endGame()) {
                 res = (1 + COE_D * (PGL - curmove) ) * (mySide.ordinal() == state.getWinner() ? 1 : -1);
@@ -220,7 +223,7 @@ public class Node {
             }
             side = side.getOpposite();
         }
-        winCount = res + COE_S * state.getScore(mySide.ordinal());
+        winCount = res /*+ COE_S * state.getScore(mySide.ordinal())*/;
         visitCount = 1;
     }
 

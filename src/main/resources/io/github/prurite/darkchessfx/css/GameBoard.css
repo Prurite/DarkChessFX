@@ -6,10 +6,15 @@
     -fx-fit-to-height: true;
 }
 
-.capturedPane{
+.capturedBox {
     -fx-pref-width: 20em;
     -fx-pref-height: 90em;
-    -fx-padding: 3em;
+    -fx-padding: 2em 0em 2em 0em;
+    -fx-alignment: top-center;
+}
+
+.capturedPane{
+    -fx-padding: 2em;
 }
 
 .chessBoardBack {
@@ -35,4 +40,9 @@
 .chessBoardPiece {
     -fx-max-width: 10em;
     -fx-max-height: 10em;
+}
+
+.capturedPiece {
+    -fx-max-width: 8em;
+    -fx-max-height: 8em;
 }

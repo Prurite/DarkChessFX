@@ -1,12 +1,15 @@
 package io.github.prurite.darkchessfx.game.WeakAI;
 
+import io.github.prurite.darkchessfx.game.GameResultWindow;
 import io.github.prurite.darkchessfx.game.PerformGame.*;
+import io.github.prurite.darkchessfx.game.UserData.Player;
+import javafx.util.Pair;
 
 import java.util.ArrayList;
 
 import static java.lang.Integer.valueOf;
 
-public class MakeMove {
+public class MakeMove implements MakeMoveInterface {
     private Side mySide;
 
     public MakeMove(Side side) {
@@ -24,8 +27,22 @@ public class MakeMove {
     static int WIDTH = 4;
     static int HEIGHT = 8;
     static int[][] d = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
-    private boolean isChess(Piece x) { return x.getType() != Chess.Empty && x.getType() != Chess.Unknown; }
-    public Move makeMove(Piece[][] chessboard) {
+    static private boolean isChess(Piece x) { return x.getType() != Chess.Empty && x.getType() != Chess.Unknown; }
+    static public Move makeMove(Piece[][] chessboard, Side mySide) {
+        Pair<ArrayList<Move>, ArrayList<Move>> moves = getMoves(chessboard, mySide);
+        if(moves.getKey().size() != 0) return moves.getKey().get((int)(Math.random()*moves.getKey().size()));
+        if(moves.getValue().size() != 0) return moves.getValue().get((int)(Math.random()*moves.getValue().size()));
+        return null;
+    }
+    public Move makeMove(Piece[][] chessboard) { return makeMove(chessboard, mySide); }
+    public Pair<ArrayList<Move>, ArrayList<Move>> getMoves(Piece[][] chessboard) {
+        return getMoves(chessboard, mySide);
+    }
+    static public void debug(String s) {
+        GameResultWindow.showResult(new PlayerInGame(new Player(s), Side.RED));
+    }
+
+    public static Pair<ArrayList<Move>, ArrayList<Move>> getMoves(Piece[][] chessboard, Side mySide) {
         ArrayList<Move> res = new ArrayList<>();
         ArrayList<Move> valid = new ArrayList<>();
         int mx = 0;
@@ -48,14 +65,13 @@ public class MakeMove {
                         // check if valid capture
                         if(!isChess(chessboard[a][b])) continue;
                         if(chessboard[a][b].getSide() == mySide) continue;
-                        if(chessboard[a][b].getType().CompareTo(chessboard[x][y].getType()) > 0) continue;
+               if(chessboard[a][b].getType().CompareTo(chessboard[x][y].getType()) > 0) continue;
                         valid.add(new Move(x,y,a,b));
                         // check if optimized and update
-                        if(chessboard[a][b].getType().getScore() > mx) { mx = chessboard[a][b].getType().getScore(); res.clear(); }
-                        if(chessboard[a][b].getType().getScore() == mx) res.add(new Move(x, y, a, b));
+                        if(chessboard[a][b].getType().getScore() > mx) { mx = chessboard[a][b].getType().getScore(); res.clear(); /*debug("EAT:"  + mx);*/ }
+                        if(chessboard[a][b].getType().getScore() == mx) { res.add(new Move(x, y, a, b)); /*debug("ADDED TO RES");*/ }
                     }
-                }
-                else {
+                } else {
                     for(int u=0; u<4; ++u) {
                         int cnt = 0;
                         for(int l=1; ; ++l) {
@@ -77,8 +93,7 @@ public class MakeMove {
                     }
                 }
             }
-
-        if(res.size() == 0) return valid.get((int)(Math.random() * valid.size()));
-        return res.get((int)(Math.random() * res.size()));
+        //if(res.size() != 0) debug("" + valid.size()+ "  " + res.size());
+        return new Pair<>(res, valid);
     }
 }
