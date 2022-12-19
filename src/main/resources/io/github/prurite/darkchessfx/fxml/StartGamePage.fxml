@@ -18,16 +18,18 @@
     <VBox styleClass="card">
         <Label styleClass="cardTitle" text="Game settings" />
         <GridPane styleClass="grid1">
+            <!--
             <Label styleClass="generalLabel" GridPane.columnIndex="0" GridPane.rowIndex="0" text="Maximum turn time for player" />
             <Label styleClass="generalLabel" GridPane.columnIndex="0" GridPane.rowIndex="1" text="Maximum total time for player" />
+            -->
+            <DFXSlider fx:id="turnTimeDFXSlider" GridPane.columnIndex="1" GridPane.rowIndex="0" visible="false" managed="false" />
+            <DFXSlider fx:id="totalTimeDFXSlider" GridPane.columnIndex="1" GridPane.rowIndex="1" visible="false" managed="false" />
             <Label styleClass="generalLabel" GridPane.columnIndex="0" GridPane.rowIndex="2" text="Minimum score required to win" />
-            <DFXSlider fx:id="turnTimeDFXSlider" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-            <DFXSlider fx:id="totalTimeDFXSlider" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <DFXSlider fx:id="scoreDFXSlider" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label styleClass="generalLabel" GridPane.columnIndex="2" GridPane.rowIndex="0"
-                   fx:id="turnTimeLabel" text="0s" />
+                   fx:id="turnTimeLabel" text="0s" visible="false" managed="false" />
             <Label styleClass="generalLabel" GridPane.columnIndex="2" GridPane.rowIndex="1"
-                   fx:id="totalTimeLabel" text="0s" />
+                   fx:id="totalTimeLabel" text="0s" visible="false" managed="false" />
             <Label styleClass="generalLabel" GridPane.columnIndex="2" GridPane.rowIndex="2"
                    fx:id="scoreLabel" text="0" />
         </GridPane>

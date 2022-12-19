@@ -160,7 +160,7 @@ public class StartGamePageController implements Initializable, DFXController {
 
         difficultyComboBox.getItems().addAll("Easy", "Medium", "Hard");
         difficultyComboBox.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
-            gameConfig.aiDifficulty = newValue.intValue() + 1;
+            gameConfig.aiDifficulty = newValue.intValue();
             System.out.println("AI difficulty:" + gameConfig.aiDifficulty);
         });
 

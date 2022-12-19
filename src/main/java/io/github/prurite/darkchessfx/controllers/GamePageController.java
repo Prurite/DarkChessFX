@@ -160,9 +160,8 @@ public class GamePageController implements Initializable {
 
     public void performMoveFinish() {
         updatePage();
-        if (game.getGameConfig().aiDifficulty > 0 && game.getCurrentPlayer() == game.getPlayerInGame2()) {
+        if (game.getWinner() == null && game.getGameConfig().aiDifficulty > 0 && game.getCurrentPlayer() == game.getPlayerInGame2()) {
             gameBoardController.setStatus(GameBoardController.BoardStatus.LOCKED);
-            // Use Timeline to wait 500ms
             javafx.animation.Timeline timeline = new javafx.animation.Timeline(new KeyFrame(
                     Duration.millis(1000),
                     ae -> {
