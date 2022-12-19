@@ -214,14 +214,14 @@ public class GamePageController implements Initializable {
             player2Name.getStyleClass().add("textRed");
         }
         if (game.getCurrentPlayer() == game.getPlayerInGame1()) {
-            currentPlayerName.setText(game.getPlayerInGame1().getNameProperty().getName());
+            currentPlayerName.setText(game.getPlayerInGame1().getNameProperty().get());
             currentPlayerName.getStyleClass().removeAll("textRed", "textBlack");
             if (game.getPlayerInGame1().getSide() == Side.RED)
                 currentPlayerName.getStyleClass().add("textRed");
             else
                 currentPlayerName.getStyleClass().add("textBlack");
         } else {
-            currentPlayerName.setText(game.getPlayerInGame2().getNameProperty().getName());
+            currentPlayerName.setText(game.getPlayerInGame2().getNameProperty().get());
             currentPlayerName.getStyleClass().removeAll("textRed", "textBlack");
             if (game.getPlayerInGame2().getSide() == Side.RED)
                 currentPlayerName.getStyleClass().add("textRed");

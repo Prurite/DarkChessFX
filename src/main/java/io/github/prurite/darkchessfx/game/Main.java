@@ -30,7 +30,7 @@ public class Main extends Application {
     }
     private void startLocalGame(Stage stage) {
         game = new Game();
-        /*PlayerInGame[] tmp =*/ p = game.startGame(players.get(0), players.get(1));
+        /*PlayerInGame[] tmp =*/ // p = game.startGame(players.get(0), players.get(1));
         //p = new PlayerInGame[2];
         //System.arraycopy(tmp, 0, p, 0, 2);
         cur = 0;
@@ -89,7 +89,7 @@ public class Main extends Application {
     }
     private void startAIGame(Stage stage) {
         game = new Game();
-        /*PlayerInGame[] tmp =*/ p = game.startGame(players.get(0), players.get(1));
+        /*PlayerInGame[] tmp =*/ // p = game.startGame(players.get(0), players.get(1));
         //p = new PlayerInGame[2];
         //System.arraycopy(tmp, 0, p, 0, 2);
         cur = 0; // you are p[0]
@@ -185,7 +185,7 @@ public class Main extends Application {
     }
     private void startStrongAIGame(Stage stage) {
         game = new Game();
-        /*PlayerInGame[] tmp =*/ p = game.startGame(players.get(0), players.get(1));
+        /*PlayerInGame[] tmp =*/ // p = game.startGame(players.get(0), players.get(1));
         //p = new PlayerInGame[2];
         //System.arraycopy(tmp, 0, p, 0, 2);
         cur = 0; // you are p[0]

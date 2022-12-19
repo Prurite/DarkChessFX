@@ -11,10 +11,8 @@ public class Pos {
     public void setX(int x) { this.x = x; }
     public void setY(int y) { this.y = y; }
 
-    public void swapXY() {
-        int t = x;
-        x = y;
-        y = t;
+    public Pos swapXY() {
+        return new Pos(y, x);
     }
 
     @Override

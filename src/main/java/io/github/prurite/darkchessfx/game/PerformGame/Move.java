@@ -29,13 +29,8 @@ public class Move {
         }
     }
     // swap X and Y in move
-    public void swapXY() {
-        int temp = curx;
-        curx = cury;
-        cury = temp;
-        temp = newx;
-        newx = newy;
-        newy = temp;
+    public Move swapXY() {
+        return new Move(cury, curx, newy, newx);
     }
 
     public boolean sameX() { return curx == newx; }

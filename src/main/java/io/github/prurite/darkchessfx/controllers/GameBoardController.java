@@ -67,34 +67,36 @@ public class GameBoardController implements Initializable {
                     if (isCheatMode)
                         return;
                     if (status == BoardStatus.WAITING) {
+                        status = BoardStatus.SELECTED;
                         selectedPos = new Pos(finalI, finalJ);
                         chessBoardCells[finalI][finalJ].getStyleClass().add("cellSelected");
                         if (game.getPieceOnBoard(selectedPos).getType() != Chess.Unknown) {
                             ArrayList<Pos> moves = game.getValidMoves(selectedPos);
-                            for (Pos move : moves)
+                            System.out.println("Valid moves: ");
+                            for (Pos move : moves) {
+                                System.out.printf("%d %d, ", move.getX(), move.getY());
                                 chessBoardCells[move.getX()][move.getY()].getStyleClass().add("cellValidMoves");
+                            }
+                            System.out.println();
                         }
-                        status = BoardStatus.SELECTED;
                     } else if (status == BoardStatus.SELECTED) {
-                        // If the selected is an unknown piece
+                        status = BoardStatus.WAITING;
+                        chessBoardCells[selectedPos.getX()][selectedPos.getY()].getStyleClass().remove("cellSelected");
                         if (game.getPieceOnBoard(selectedPos).getType() == Chess.Unknown)
                             if (selectedPos.equals(new Pos(finalI, finalJ))) {
-                                chessBoardCells[finalI][finalJ].getStyleClass().remove("cellSelected");
                                 game.performMove(game.getCurrentPlayer(), new Move(selectedPos, new Pos(-1, -1)));
-                            } else
-                                chessBoardCells[selectedPos.getX()][selectedPos.getY()].getStyleClass().remove("cellSelected");
+                                gamePageController.performMoveFinish();
+                            }
                         else {
                             ArrayList<Pos> moves = game.getValidMoves(selectedPos);
-                            if (moves.contains(new Pos(finalI, finalJ))) {
+                            if (moves != null && moves.contains(new Pos(finalI, finalJ))) {
                                 game.performMove(game.getCurrentPlayer(), new Move(selectedPos, new Pos(finalI, finalJ)));
                                 gamePageController.performMoveFinish();
-                            } else {
-                                chessBoardCells[selectedPos.getX()][selectedPos.getY()].getStyleClass().remove("cellSelected");
+                            }
+                            if (moves != null)
                                 for (Pos move : moves)
                                     chessBoardCells[move.getX()][move.getY()].getStyleClass().remove("cellValidMoves");
-                            }
                         }
-                        status = BoardStatus.WAITING;
                     }
                 });
                 piece.setOnMousePressed(e -> {
@@ -116,6 +118,7 @@ public class GameBoardController implements Initializable {
     }
 
     public void updateBoard() {
+        System.out.println(status.toString());
         boolean changed = false;
         for (int i = 0; i < row; i++)
             for (int j = 0; j < col; j++) {
