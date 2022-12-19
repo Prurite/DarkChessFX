@@ -51,8 +51,11 @@ public class Game implements GameInterface {
     private boolean pausing;
     private double startTime;
 
+    static double getCurrentTime() {
+        return (double)((long)System.currentTimeMillis() / 1000.0 - 1671459391266l);
+    }
     private void initTime() {
-        lastTurnTime = System.currentTimeMillis();
+        lastTurnTime = getCurrentTime();
         lastPauseTime = lastTurnTime;
         startTime = lastPauseTime;
         pausing = false;
@@ -147,6 +150,8 @@ public class Game implements GameInterface {
     // FirstMoveFlag
     // curMove
     public void saveGame(File file) throws IOException {
+        pause();
+
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
         writer.write(config.toString() + "\n");
 
@@ -176,10 +181,10 @@ public class Game implements GameInterface {
 
         writer.write(currentMovePos + "\n");
 
-        writer.write(lastTurnTime + "\n");
-        writer.write(lastPauseTime + "\n");
+        writer.write((long)lastTurnTime + "\n");
+        writer.write((long)lastPauseTime + "\n");
         writer.write(pausing + "\n");
-        writer.write(startTime + "\n");
+        writer.write((long)startTime + "\n");
 
         writer.write(revealedPos.size() + "\n");
         for(Pos p : revealedPos) {
@@ -189,18 +194,24 @@ public class Game implements GameInterface {
         writer.write(firstMoveFlag + "\n");
 
         writer.write(curMove.toString() + "\n");
+
+        writer.close();
     }
     public void loadGame(File file) throws IOException, IllegalFormatCodePointException {
         BufferedReader reader = new BufferedReader(new FileReader(file));
 
+        System.out.println("FINE");
+
         config.init(reader.readLine());
 
-        State s1 = new State(new Piece[4][8], new EatenPieces(), new EatenPieces()); s1.init(reader.readLine());
-        State s2 = new State(new Piece[4][8], new EatenPieces(), new EatenPieces()); s2.init(reader.readLine());
+
+        State s1 = new State(); s1.init(reader.readLine());
+        State s2 = new State(); s2.init(reader.readLine());
         chessboard = s1.getBoard();
         revealedChessboard = s2.getBoard();
         eatenPieces = s1.getEatenPieces();
         revealedPieces = s1.getRevealedPieces();
+
 
         players[0].init(reader.readLine());
         players[1].init(reader.readLine());
@@ -210,9 +221,10 @@ public class Game implements GameInterface {
         int n = Integer.parseInt(reader.readLine());
         lastChessboard = new ArrayList<>();
         for(int i=0; i<n; ++i) {
-            State s = new State(new Piece[4][8], new EatenPieces(), new EatenPieces()); s.init(reader.readLine());
+            State s = new State(); s.init(reader.readLine());
             lastChessboard.add(new Board(s.getBoard()));
         }
+
 
         n = Integer.parseInt(reader.readLine());
         lastMove = new ArrayList<>();
@@ -221,6 +233,7 @@ public class Game implements GameInterface {
             lastMove.add(m);
         }
 
+
         n = Integer.parseInt(reader.readLine());
         lastEatenPieces = new ArrayList<>();
         for(int i=0; i<n; ++i) {
@@ -228,6 +241,7 @@ public class Game implements GameInterface {
             lastEatenPieces.add(e);
         }
 
+        System.out.println("FINE");
         currentMovePos = Integer.parseInt(reader.readLine());
 
         lastTurnTime = Long.parseLong(reader.readLine());
@@ -241,6 +255,16 @@ public class Game implements GameInterface {
             Pos p = new Pos(0, 0); p.init(reader.readLine());
             revealedPos.add(p);
         }
+
+        firstMoveFlag = Boolean.parseBoolean(reader.readLine());
+
+        curMove = new Move();
+        curMove.init(reader.readLine());
+
+        reader.close();
+
+        resume();
+
     }
 
     public void aiMove() {
@@ -290,8 +314,8 @@ public class Game implements GameInterface {
     };
     private void setPlayers(GameConfig config) {
         players = new PlayerInGame[2];
-        players[0] = new PlayerInGame(new Player(config.player1), Side.RED);
-        players[1] = new PlayerInGame(new Player(config.player2), Side.BLACK);
+        players[0] = new PlayerInGame(new Player(config.player1), null);
+        players[1] = new PlayerInGame(new Player(config.player2), null);
         currentPlayer = 0;
     }
     public void startGame() {
@@ -329,7 +353,7 @@ public class Game implements GameInterface {
     }
 
     public void endGame(Player p1, Player p2, PlayerInGame winner) {
-        double curTime = System.currentTimeMillis();
+        double curTime = getCurrentTime();
         if(p2.getName().equals(players[0].getNameProperty().getValue())) {
             Player tmp = p1;
             p1 = p2;
@@ -380,7 +404,7 @@ public class Game implements GameInterface {
     // when cononection lost for more than 10s
 
     private void changePlayer() {
-        double curTime = System.currentTimeMillis();
+        double curTime = getCurrentTime();
         players[currentPlayer].subTotalTime(curTime - lastTurnTime);
         lastTurnTime = curTime;
         currentPlayer = (currentPlayer + 1) % 2;
@@ -516,6 +540,14 @@ public class Game implements GameInterface {
     public String performMove(PlayerInGame playerInGame, Move move) {
         move = move.swapXY();
 
+        if(firstMoveFlag == false) {
+            firstMoveFlag = true;
+            storeLastMove();
+            int c = playerInGame.equals(players[1]) ? 1 : 0;
+            players[c].setSide(revealedChessboard[move.getCurx()][move.getCury()].getSide());
+            players[c^1].setSide(players[c].getSide().getOpposite());
+        }
+
         if(move.getNewx() == -1) {
             if(chessboard[move.getCurx()][move.getCury()].getType() == Chess.Unknown) {
                 turnUpChess(move.getCurx(), move.getCury());
@@ -596,12 +628,12 @@ public class Game implements GameInterface {
     }
 
     public void pause() {
-        lastPauseTime = System.currentTimeMillis();
+        lastPauseTime = getCurrentTime();
         pausing = true;
         // set limit for pause time
     }
     public void resume() {
-        lastTurnTime += System.currentTimeMillis() - lastPauseTime;
+        lastTurnTime += getCurrentTime() - lastPauseTime;
         pausing = false;
     }
     public State getState() {

@@ -1,5 +1,7 @@
 package io.github.prurite.darkchessfx.game.PerformGame;
 
+import javafx.beans.property.SimpleIntegerProperty;
+
 public class State {
     Piece[][] board;
     EatenPieces eatenPieces;
@@ -17,6 +19,12 @@ public class State {
                 score[1 - s.ordinal()] += c.getScore() * eatenPieces.eaten(new Piece(c, s));
             }
         }
+    }
+    public State() {
+        board = new Piece[4][8];
+        eatenPieces = new EatenPieces();
+        revealedPieces = new EatenPieces();
+        score = new int[2];
     }
     public State(State state) {
         board = new Piece[4][8];
@@ -118,7 +126,7 @@ public class State {
         String s = "";
         for(int i=0; i<4; ++i) {
             for(int j=0; j<8; ++j) {
-                s += board[i][j].getType().toString() + " ";
+                s += board[i][j].toString() + " ";
             }
         }
         s += eatenPieces.getS() + " " + revealedPieces.getS() + " " + score[0] + " " + score[1];
@@ -129,7 +137,10 @@ public class State {
         int k = 0;
         for(int i=0; i<4; ++i) {
             for(int j=0; j<8; ++j) {
-                board[i][j] = new Piece(Chess.valueOf(ss[k++]), Side.RED);
+                board[i][j] = new Piece(Chess.Unknown, Side.RED);
+                String tmp = ss[k++];
+                tmp += " " +  ss[k++];
+                board[i][j].init(tmp);
             }
         }
         eatenPieces.s = Long.parseLong(ss[k++]);

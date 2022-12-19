@@ -55,16 +55,17 @@ public class EatenPieces {
     }
     // check if every piece is eaten and the count
     public String toString() {
-        String res = "";
-        for(int i = 0; i < 2; ++i) {
-            res += Side.values()[i].toString() + ": ";
-            for(int j = 0; j < 7; ++j) {
-                int count = eaten(new Piece(Chess.values()[j], Side.values()[i]));
-                if(count > 0) res += count + " " + Chess.values()[j].toString() + " ";
-            }
-            res += "\n";
-        }
-        return res;
+        return "" + s;
+//        String res = "";
+//        for(int i = 0; i < 2; ++i) {
+//            res += Side.values()[i].toString() + ": ";
+//            for(int j = 0; j < 7; ++j) {
+//                int count = eaten(new Piece(Chess.values()[j], Side.values()[i]));
+//                if(count > 0) res += count + " " + Chess.values()[j].toString() + " ";
+//            }
+//            res += "\n";
+//        }
+//        return res;
 
     }
     public boolean includes(EatenPieces e) {
