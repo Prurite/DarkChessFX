@@ -5,6 +5,7 @@ import io.github.prurite.darkchessfx.game.PerformGame.Game;
 import io.github.prurite.darkchessfx.game.PerformGame.Side;
 import io.github.prurite.darkchessfx.model.GameConfig;
 import io.github.prurite.darkchessfx.model.PlayerInfoProcessor;
+import javafx.animation.KeyFrame;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -15,6 +16,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
@@ -160,17 +162,15 @@ public class GamePageController implements Initializable {
         updatePage();
         if (game.getGameConfig().aiDifficulty > 0 && game.getCurrentPlayer() == game.getPlayerInGame2()) {
             gameBoardController.setStatus(GameBoardController.BoardStatus.LOCKED);
-            // Wait 1 second then perform ai move. Does not freeze the GUI.
-            new Thread(() -> {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                game.aiMove();
-                gameBoardController.setStatus(GameBoardController.BoardStatus.WAITING);
-                updatePage();
-            }).start();
+            // Use Timeline to wait 500ms
+            javafx.animation.Timeline timeline = new javafx.animation.Timeline(new KeyFrame(
+                    Duration.millis(1000),
+                    ae -> {
+                        game.aiMove();
+                        gameBoardController.setStatus(GameBoardController.BoardStatus.WAITING);
+                        updatePage();
+                    }));
+            timeline.play();
         }
     }
 
@@ -202,31 +202,34 @@ public class GamePageController implements Initializable {
             surrenderButton.setDisable(true);
         }
         toggleCheatButton.setDisable(!game.getGameConfig().allowCheat);
-        undoButton.setDisable(game.getCurrentMovePos() == -1);
-        redoButton.setDisable(game.getCurrentMovePos() == game.getMoveCount() - 1);
+        undoButton.setDisable(!game.getGameConfig().allowWithdraw || game.getCurrentMovePos() == -1);
+        redoButton.setDisable(!game.getGameConfig().allowWithdraw || game.getCurrentMovePos() == game.getMoveCount() - 1);
         player1Name.getStyleClass().removeAll("textRed", "textBlack");
         player2Name.getStyleClass().removeAll("textRed", "textBlack");
-        if (game.getPlayerInGame1().getSide() == Side.RED) {
-            player1Name.getStyleClass().add("textRed");
-            player2Name.getStyleClass().add("textBlack");
-        } else {
-            player1Name.getStyleClass().add("textBlack");
-            player2Name.getStyleClass().add("textRed");
-        }
+        if (game.getPlayerInGame1().getSide() != null)
+            if (game.getPlayerInGame1().getSide() == Side.RED) {
+                player1Name.getStyleClass().add("textRed");
+                player2Name.getStyleClass().add("textBlack");
+            } else {
+                player1Name.getStyleClass().add("textBlack");
+                player2Name.getStyleClass().add("textRed");
+            }
         if (game.getCurrentPlayer() == game.getPlayerInGame1()) {
             currentPlayerName.setText(game.getPlayerInGame1().getNameProperty().get());
             currentPlayerName.getStyleClass().removeAll("textRed", "textBlack");
-            if (game.getPlayerInGame1().getSide() == Side.RED)
-                currentPlayerName.getStyleClass().add("textRed");
-            else
-                currentPlayerName.getStyleClass().add("textBlack");
+            if (game.getPlayerInGame1().getSide() != null)
+                if (game.getPlayerInGame1().getSide() == Side.RED)
+                    currentPlayerName.getStyleClass().add("textRed");
+                else
+                    currentPlayerName.getStyleClass().add("textBlack");
         } else {
             currentPlayerName.setText(game.getPlayerInGame2().getNameProperty().get());
             currentPlayerName.getStyleClass().removeAll("textRed", "textBlack");
-            if (game.getPlayerInGame2().getSide() == Side.RED)
-                currentPlayerName.getStyleClass().add("textRed");
-            else
-                currentPlayerName.getStyleClass().add("textBlack");
+            if (game.getPlayerInGame2().getSide() != null)
+                if (game.getPlayerInGame2().getSide() == Side.RED)
+                    currentPlayerName.getStyleClass().add("textRed");
+                else
+                    currentPlayerName.getStyleClass().add("textBlack");
         }
     }
 }

@@ -42,7 +42,7 @@
 }
 
 .cellValidMoves {
-    -fx-background-color: -switch-on-color;
+    -fx-background-color: -theme-background-color;
 }
 
 .chessBoardPiece {

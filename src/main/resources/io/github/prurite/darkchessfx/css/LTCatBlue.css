@@ -10,6 +10,7 @@
     -dark-gray-color: -edge-color;
 
     -theme-color: #116ecb;
+    -theme-gradient: -theme-color;
     -theme-background-color: linear-gradient(to left bottom, rgba(183,211,220) 0%, rgba(194,203,227,1) 100%);
     -white-background-color: #ffffff;
     -panel-background-color: #f5f8fc;

@@ -159,8 +159,9 @@ public class StartGamePageController implements Initializable, DFXController {
             AIGroup.selectToggle(aiNoButton);
 
         difficultyComboBox.getItems().addAll("Easy", "Medium", "Hard");
-        difficultyComboBox.selectionModelProperty().addListener((observable, oldValue, newValue) -> {
-            gameConfig.aiDifficulty = newValue.getSelectedIndex() + 1;
+        difficultyComboBox.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
+            gameConfig.aiDifficulty = newValue.intValue() + 1;
+            System.out.println("AI difficulty:" + gameConfig.aiDifficulty);
         });
 
         LANGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {

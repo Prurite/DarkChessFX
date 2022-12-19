@@ -20,22 +20,43 @@ import java.io.IOException;
 public class App extends Application {
     private Stage primaryStage;
     private Scene scene;
+    private String colorScheme;
 
     public Stage getPrimaryStage() {
         return primaryStage;
+    }
+    public Scene getScene() {
+        return scene;
     }
 
     @Override
     public void start(Stage primaryStage) throws IOException {
         this.primaryStage = primaryStage;
         CSSFX.start();
+        colorScheme = "LTCatBlue";
         Pane root = loadFXML("HomePage");
         scene = new Scene(root);
+        scene.getStylesheets().add(DarkchessFXResourcesLoader.loadURL("css/" + colorScheme + ".css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.setTitle("DarkChessFX");
         primaryStage.show();
 
-        letterbox(scene); // handle zooming
+        // letterbox(scene); // handle zooming
+    }
+
+    public String getColorScheme() {
+        return colorScheme;
+    }
+
+    public void setColorScheme(String colorScheme) {
+        try {
+            scene.getStylesheets().clear();
+            this.colorScheme = colorScheme;
+            scene.getStylesheets().add(DarkchessFXResourcesLoader.loadURL("css/" + this.colorScheme + ".css").toExternalForm());
+            System.out.println("Color scheme changed to " + colorScheme);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     public Pane loadFXML(String filename) {

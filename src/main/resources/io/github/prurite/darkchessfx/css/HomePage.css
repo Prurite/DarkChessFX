@@ -30,11 +30,21 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 0.1em, 0, 0.1em, 0.1em);
 }
 
+.startGameButtonGroup {
+    -fx-spacing: 2.5em;
+    -fx-alignment: center;
+    -fx-min-height: 53.5em;
+}
+
+.startGameButton {
+    -fx-min-height: 2.1em;
+}
+
 .homePageButton:hover {
     -fx-background-color: -light-button-hover-color;
 }
 
 .homePageButtonSmall {
-    -fx-min-width: 2.5em;
-    -fx-min-height: 2.5em;
+    -fx-min-width: 2.1em;
+    -fx-min-height: 2.1em;
 }

@@ -17,14 +17,14 @@
     <VBox fx:id="homeButtons" styleClass="homeButtonGroup">
         <Button text="Start game" styleClass="homePageButton, mainButton" onAction="#selectMode"/>
         <Button text="Statistics" styleClass="homePageButton" />
-        <Button text="Settings" styleClass="homePageButton" />
+        <Button text="Settings" styleClass="homePageButton" onAction="#toSettings" />
         <Button text="About" styleClass="homePageButton" />
     </VBox>
-    <VBox fx:id="selectModeButtons" styleClass="homeButtonGroup">
-        <Button text="New Game" styleClass="homePageButton" onAction="#toNewGame"/>
-        <Button text="Load Game" styleClass="homePageButton" onAction="#loadGame"/>
-        <Button text="Join LAN Game" styleClass="homePageButton" />
-        <Button text="Load Replay" styleClass="homePageButton" onAction="#loadReplay" />
+    <VBox fx:id="selectModeButtons" styleClass="startGameButtonGroup">
+        <Button text="New Game" styleClass="homePageButton, startGameButton" onAction="#toNewGame"/>
+        <Button text="Load Game" styleClass="homePageButton, startGameButton" onAction="#loadGame"/>
+        <Button text="Join LAN Game" styleClass="homePageButton, startGameButton" />
+        <Button text="Load Replay" styleClass="homePageButton, startGameButton" onAction="#loadReplay" />
         <Button text="←" styleClass="homePageButton, homePageButtonSmall" onAction="#returnToHome"/>
     </VBox>
 </VBox>

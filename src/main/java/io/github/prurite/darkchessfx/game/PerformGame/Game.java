@@ -47,7 +47,6 @@ public class Game implements GameInterface {
         for(int i=0; i<32; ++i) revealedChessboard[i >> 3][i & 7] = tmp.get(i);
 
         chessboard = new Piece[4][8];
-        System.out.println("Starting game"); // DEBUG
         for(int i=0; i<4; ++i) for(int j=0; j<8; ++j) chessboard[i][j] = new Piece(Chess.Unknown, Side.RED);
         eatenPieces = new EatenPieces();
         revealedPieces = new EatenPieces();

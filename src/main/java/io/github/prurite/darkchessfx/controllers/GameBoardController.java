@@ -82,13 +82,10 @@ public class GameBoardController implements Initializable {
                         chessBoardCells[finalI][finalJ].getStyleClass().add("cellSelected");
                         if (game.getPieceOnBoard(selectedPos).getType() != Chess.Unknown) {
                             ArrayList<Pos> moves = game.getValidMoves(selectedPos);
-                            System.out.println("Valid moves: ");
                             if (moves != null)
                                 for (Pos move : moves) {
-                                    System.out.printf("%d %d, ", move.getX(), move.getY());
                                     chessBoardCells[move.getX()][move.getY()].getStyleClass().add("cellValidMoves");
                                 }
-                            System.out.println();
                         }
                     } else if (status == BoardStatus.SELECTED) {
                         status = BoardStatus.WAITING;
@@ -114,7 +111,6 @@ public class GameBoardController implements Initializable {
     }
 
     public void updateBoard() {
-        System.out.println(status.toString());
         boolean changed = false;
         for (int i = 0; i < row; i++)
             for (int j = 0; j < col; j++) {

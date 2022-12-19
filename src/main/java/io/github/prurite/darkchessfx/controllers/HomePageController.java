@@ -72,8 +72,13 @@ public class HomePageController implements Initializable, DFXController {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             String s = "Error loading game:";
-            alert.setContentText(s + '\n' + e);
+            alert.getDialogPane().setExpandableContent(new javafx.scene.control.Label(s + '\n' + e));
+            e.printStackTrace();
             alert.showAndWait();
         }
+    }
+
+    public void toSettings() {
+        app.changePage("SettingsPage");
     }
 }

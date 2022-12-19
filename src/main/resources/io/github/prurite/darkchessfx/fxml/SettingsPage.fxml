@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.SVGPath?>
+
+<?import io.github.prurite.darkchessfx.components.DFXSlider?>
+<?import io.github.prurite.darkchessfx.components.DFXSwitch?>
+<VBox styleClass="rootPane" stylesheets="@../css/SettingsPage.css"
+      xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="io.github.prurite.darkchessfx.controllers.SettingsPageController">
+    <HBox styleClass="titleBar" HBox.Hgrow="ALWAYS" >
+        <Button styleClass="themeButton" onAction="#returnToHome">
+            <graphic>
+                <SVGPath content="m 0 0 h 20 m -10 10 l -10 -10 l 10 -10" styleClass="buttonIcon" />
+            </graphic>
+        </Button>
+        <Label styleClass="title" text="Settings" />
+    </HBox>
+    <VBox styleClass="card">
+        <Label styleClass="cardTitle" text="Appearance" />
+        <GridPane styleClass="grid1">
+            <Label styleClass="generalLabel" GridPane.rowIndex="0" GridPane.columnIndex="0" text="Color scheme" />
+            <ComboBox styleClass="buttonLabel" GridPane.rowIndex="0" GridPane.columnIndex="1" maxWidth="Infinity"
+                      fx:id="colorSchemeComboBox" promptText="Select..." />
+        </GridPane>
+    </VBox>
+</VBox>
