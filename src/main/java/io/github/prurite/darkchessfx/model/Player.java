@@ -4,14 +4,14 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class Player {
-    private String name;
+    private SimpleStringProperty name;
     private int gameCount;
     private int scoredGameCount;
     private int winnedGameCount;
     private double totalGameTime;
 
     public Player(String s) {
-        this.name = s;
+        this.name = new SimpleStringProperty(s);
         this.gameCount = 0;
         this.scoredGameCount = 0;
         this.winnedGameCount = 0;
@@ -35,7 +35,7 @@ public class Player {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name.set(name);
     }
 
     public int getGameCount() {
@@ -45,6 +45,7 @@ public class Player {
     public void setGameCount(int gameCount) {
         this.gameCount = gameCount;
     }
+    public SimpleStringProperty getNameProperty() { return name; }
 
     public int getScoredGameCount() {
         return scoredGameCount;

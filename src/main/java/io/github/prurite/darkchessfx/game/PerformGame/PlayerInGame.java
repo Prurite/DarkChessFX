@@ -10,7 +10,6 @@ public class PlayerInGame {
 
     private Side side;
     private final Player player;
-    public SimpleStringProperty nameProperty;
 
     @Override
     public boolean equals(Object obj) {
@@ -25,11 +24,12 @@ public class PlayerInGame {
         this.side = side;
         this.totalTime = 0;
         this.scoreProperty.set(0);
-        nameProperty = new SimpleStringProperty(player.getName());
     }
 
+    public String getName() { return player.getName(); }
+
     public SimpleStringProperty getNameProperty() {
-        return nameProperty;
+        return player.getNameProperty();
     }
 
     public void addScore(int x) { scoreProperty.add(x); }
@@ -54,6 +54,7 @@ public class PlayerInGame {
     public SimpleIntegerProperty getScoreProperty() {
         return scoreProperty;
     }
+    public int getScore() { return scoreProperty.getValue(); }
 
     public void setScore(int score) {
         this.scoreProperty.set(score);

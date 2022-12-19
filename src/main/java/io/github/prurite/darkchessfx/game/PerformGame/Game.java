@@ -2,10 +2,17 @@ package io.github.prurite.darkchessfx.game.PerformGame;
 
 import io.github.prurite.darkchessfx.model.Player;
 import io.github.prurite.darkchessfx.model.GameConfig;
+import io.github.prurite.darkchessfx.model.Pos;
 import javafx.util.Pair;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.IllegalFormatCodePointException;
 
 import static java.lang.Integer.signum;
 
@@ -16,19 +23,28 @@ public class Game implements GameInterface {
     private double maxTurnTime;
     private double maxTotalTime;
     private GameConfig config;
+    AIPlayer aiPlayer;
+    @Override
+    public GameConfig getGameConfig() { return config; }
+
     public Game(GameConfig config) {
         this.config = config;
         WINNING_SCORE = config.minimumScore;
         maxTurnTime = config.maxTurnTime;
         maxTotalTime = config.maxTotalTime;
         scored = true;
+        currentMovePos = -1;
+        revealedPos = new ArrayList<>();
 
-        startGame(config.player1, config.player2);
+
+        aiPlayer = new AIPlayer(config.aiDifficulty);
+        startGame(new Player(config.player1), new Player(config.player2));
     }
     public Game() {
         maxTurnTime = 30 * 1000;
         maxTotalTime = 10000000f * 1000;
         scored = true;
+        currentMovePos = -1;
     }
 
     // current state of countdown
@@ -64,12 +80,20 @@ public class Game implements GameInterface {
     }
 
 
-
+    ArrayList<Pos> revealedPos;
     private ArrayList<Board> lastChessboard;
     private ArrayList<Move> lastMove;
     private ArrayList<EatenPieces> lastEatenPieces;
     private Piece[][] chessboard; // = new Chess[4][8];
-    public Piece[][] getChessboard() { return chessboard; }
+    public Piece[][] getChessboard() {
+        Piece[][] a = new Piece[4][8];
+        for(int i=0; i<4; ++i)
+            System.arraycopy(chessboard[i], 0, a[i], 0, a[i].length);
+        for(Pos p : revealedPos) {
+            a[p.x][p.y] = revealedChessboard[p.x][p.y];
+        }
+        return a;
+    }
     private Piece[][] revealedChessboard; // = new Chess[4][8];
     private EatenPieces eatenPieces;
     private EatenPieces revealedPieces;
@@ -77,29 +101,30 @@ public class Game implements GameInterface {
     public Piece[][] getChessBoard() {
         return chessboard;
     }
-    public ArrayList<Piece> getCaptured(PlayerInGame p) {
+    public ArrayList<Piece> getCaptured(Side s) {
         ArrayList<Piece> res = new ArrayList<>();
         for(Chess c : Chess.values()) {
-            int t = eatenPieces.eaten(new Piece(c, p.getSide()));
+            int t = eatenPieces.eaten(new Piece(c, s));
             for(int i=0; i<t; ++i) {
-                res.add(new Piece(c, p.getSide()));
+                res.add(new Piece(c, s));
             }
         }
         return res;
     }
-    public ArrayList<Pair<Integer, Integer>> getPossibleMoves(Pair<Integer, Integer> pos) {
-        ArrayList<Pair<Integer, Integer>> res = new ArrayList<>();
-        if(chessboard[pos.getKey()][pos.getValue()].getType() == Chess.Unknown) return null;
+    public ArrayList<Pos> getValidMoves(Pos pos) {
+        ArrayList<Pos> res = new ArrayList<>();
+        int x = pos.x, y = pos.y;
+        Piece piece = chessboard[x][y];
+        if(piece.getType() == Chess.Unknown || piece.getType() == Chess.Empty) return null;
+        PlayerInGame p = players[players[1].getSide() == piece.getSide() ? 1 : 0];
         for(int i=0; i<4; ++i) {
             for(int j=0; j<8; ++j) {
-                if(chessboard[i][j].getType() == Chess.Unknown) {
-                    if(chessboard[pos.getKey()][pos.getValue()].getType().canMove(pos, new Pair<>(i, j))) {
-                        res.add(new Pair<>(i, j));
-                    }
+                if(checkMove(p, new Move(x, y, i, j)) == null) {
+                        res.add(new Pos(i,j));
                 }
             }
         }
-
+        return res;
     }
 
     public EatenPieces getEatenPieces() {
@@ -108,10 +133,21 @@ public class Game implements GameInterface {
 
     private Move curMove;
     // save all the information of the game to a file
-    public void saveGame() {
+    public void saveGame(File file) throws IOException {
+        //BufferedWriter writer = new BufferedWriter(new FileWriter(file));
     }
-    public void loadGame() {
+    public void loadGame(File file) throws IOException, IllegalFormatCodePointException {
+
     }
+
+    public void aiMove() {
+        Move move = aiPlayer.makeMove(new State(chessboard, eatenPieces, revealedPieces), players[currentPlayer].getSide());
+        if(move != null) {
+            performMove(players[currentPlayer], move);
+        }
+    }
+
+
 
     // create a static array of Piece with 2 of each kind of Piece on each side
     static Piece[] arrayOfPieces = {
@@ -186,33 +222,53 @@ public class Game implements GameInterface {
         players[(x.getSide() == players[1].getSide() ? 0 : 1)].addScore(x.getType().getScore() * sgn);
     }
 
-    public PlayerInGame endGame() {
+    public void endGame(Player p1, Player p2, PlayerInGame winner) {
         double curTime = System.currentTimeMillis();
-        for(int i=0; i<2; ++i) {
-            players[i].getPlayer().addGameCount();
-            players[i].getPlayer().addScoredGameCount();
-            players[i].getPlayer().addTime(curTime - startTime);
+        if(p2.getName().equals(players[0].getNameProperty().getValue())) {
+            Player tmp = p1
+            p1 = p2;
+            p2 = tmp;
         }
-        if(players[0].getScore() != players[1].getScore()) {
-            int winner = players[0].getScore().getValue() > players[1].getScore().getValue() ? 0 : 1;
-            players[winner].getPlayer().addWinnedGameCount();
-            return players[winner];
+        p1.addGameCount(); p2.addGameCount();
+        p1.addTime(curTime - startTime);
+        p2.addTime(curTime - startTime);
+        if(scored) { p1.addScoredGameCount(); p2.addScoredGameCount(); }
+        if(winner != null) {
+            winner.addWinnedGameCount();
         //    GameResultWindow.showResult(players[winner]);
         }
-        return null;
         //else GameResultWindow.showResult(null);
     }
+    public void endGame(Player p1, Player p2) {
+        PlayerInGame winner = (players[0].getScore() != players[1].getScore() && checkEndGame()) ? (players[0].getScore() > players[1].getScore() ? p1 : p2) : null;
+        endGame(p1, p2, winner);
+    }
+    public void surrender(Player p1, Player p2, PlayerInGame p) {
+        endGame(p1, p2, players[p.getName().equals(players[0].getName()) ? 1 : 0]);
+    }
     public boolean checkEndGame() {
-        return (players[0].getScore().getValue() >= WINNING_SCORE || players[1].getScore().getValue() >= WINNING_SCORE);
+        return (players[0].getScore() >= WINNING_SCORE || players[1].getScore() >= WINNING_SCORE);
+    }
+
+    public void revealPiece(Pos pos) {
+        revealedPos.add(pos);
+    }
+    public void hidePiece(Pos pos) {
+        revealedPos.remove(pos);
+    }
+    public void hideAllPiece() {
+        revealedPos.clear();
     }
 
     public Player getWinner() {
-        if(players[0].getScore().getValue() >= WINNING_SCORE) return players[0].getPlayer();
-        if(players[1].getScore().getValue() >= WINNING_SCORE) return players[1].getPlayer();
+        if(players[0].getScore() >= WINNING_SCORE) return players[0].getPlayer();
+        if(players[1].getScore() >= WINNING_SCORE) return players[1].getPlayer();
         return null;
     }
 
-    public void setUnscored() {}
+    public void setUnscored() {
+        scored = true;
+    }
     // when cononection lost for more than 10s
 
     private void changePlayer() {
@@ -221,25 +277,28 @@ public class Game implements GameInterface {
         lastTurnTime = curTime;
         currentPlayer = (currentPlayer + 1) % 2;
     }
-    public Move withdraw() {
-        assert(lastChessboard.size() > 0);
-        int p = lastChessboard.size() - 1;
+    public Move doLastMove(int p, int sgn) {
         chessboard = lastChessboard.get(p).getChessboard();
         eatenPieces = lastEatenPieces.get(p);
         Move move = lastMove.get(p);
         int newx = move.getNewx(), newy = move.getNewy();
-        assert(move.getCurx() !=-1 && move.getCury() != -1);
         if(newx!=-1 && newy !=-1 && chessboard[newx][newy].getType() != Chess.Empty) {
             if(chessboard[newx][newy].getType() == Chess.Unknown)
-                eatPiece(revealedChessboard[newx][newy], -1);
-            else eatPiece(chessboard[newx][newy], -1);
+                eatPiece(revealedChessboard[newx][newy], sgn);
+            else eatPiece(chessboard[newx][newy], sgn);
         }
-        lastChessboard.remove(p);
-        lastEatenPieces.remove(p);
-        lastMove.remove(p);
-        changePlayer();
-        return move;
     }
+    public void goToPrevMove() {
+        int p = -- currentMovePos;
+        doLastMove(p, -1);
+        changePlayer();
+    }
+    public void goToNextMove() {
+        int p = ++ currentMovePos;
+        doLastMove(p, 1);
+        changePlayer();
+    }
+
 
     private boolean checkIntermediate(Move move) {
         int dx = signum(move.getNewx() - move.getCurx());
@@ -291,15 +350,24 @@ public class Game implements GameInterface {
         return chessboard[x][y].getType().toString() + "-" + chessboard[x][y].getSide().toString() + ".png";
     }
     public PlayerInGame qryCur() { return players[currentPlayer]; }
-
+    private int currentMovePos;
     private void storeLastMove() {
-        lastMove.add(new Move(curMove.getCurx(), curMove.getCury(), curMove.getNewx(), curMove.getNewy()));
-        lastChessboard.add(new Board(chessboard));
-        lastEatenPieces.add(new EatenPieces(eatenPieces));
+//        lastMove.add(new Move(curMove.getCurx(), curMove.getCury(), curMove.getNewx(), curMove.getNewy()));
+//        lastChessboard.add(new Board(chessboard));
+//        lastEatenPieces.add(new EatenPieces(eatenPieces));
+        int pos = ++currentMovePos;
+        if(lastMove.size() < currentMovePos) {
+            lastMove.add(null);
+            lastChessboard.add(null);
+            lastEatenPieces.add(null);
+        }
+        lastMove.set(pos, new Move(curMove.getCurx(), curMove.getCury(), curMove.getNewx(), curMove.getNewy()));
+        lastChessboard.set(pos, new Board(chessboard));
+        lastEatenPieces.set(pos, new EatenPieces(eatenPieces));
     }
+    public int getCurrentMovePos() { return currentMovePos; }
 
     private void makeMove() {
-        storeLastMove();
         int x1 = curMove.getCurx(), y1 = curMove.getCury();
         int x2 = curMove.getNewx(), y2 = curMove.getNewy();
         if(chessboard[x2][y2].getType() != Chess.Empty) {
@@ -315,17 +383,44 @@ public class Game implements GameInterface {
         chessboard[x1][y1] = new Piece(Chess.Empty, Side.RED);
         updGUI(curMove);
         changePlayer();
+        storeLastMove();
         // calculate scores and time spent
         // update chessboard and current player
         // check if the game is over
     }
+
+//    private PlayerInGame getPlayerInGame(Player player) {
+//        if(players[0].getPlayer().getName().equals(player)) return players[0];
+//        if(players[1].getPlayer().getName().equals(player)) return players[1];
+//        return null;
+//    }
+    public PlayerInGame getPlayerInGame1() { return players[0]; }
+    public PlayerInGame getPlayerInGame2() { return players[1]; }
+    public void setPlayerInGame1(PlayerInGame p) { players[0] = p; }
+    public void setPlayerInGame2(PlayerInGame p) { players[1] = p; }
+
+
+    @Override
+    public PlayerInGame getCurrentPlayer() { return players[currentPlayer]; }
+
+    public String performMove(PlayerInGame playerInGame, Move move) {
+        String msg = checkMove(playerInGame, move);
+        curMove = move;
+        if(msg == null) {
+            makeMove();
+            return null;
+        }
+        else return msg;
+    }
+
     private void turnUpChess(int x, int y) {
-        storeLastMove();
         //int x = curMove.getCurx(), y = curMove.getCury();
         chessboard[x][y] = new Piece(revealedChessboard[x][y]);
         revealedPieces.eatPiece(revealedChessboard[x][y]);
         updGUI(x, y);
         changePlayer();
+
+        storeLastMove();
     }
 
     private void setCurMoveFrom(int x, int y) {
@@ -343,6 +438,7 @@ public class Game implements GameInterface {
         if(pausing == true) return MoveChessMessage.MovePausing.getInfo();
         if(firstMoveFlag == false) {
             firstMoveFlag = true;
+            storeLastMove();
             int c = player.equals(players[1]) ? 1 : 0;
             players[c].setSide(revealedChessboard[x][y].getSide());
             players[c^1].setSide(players[c].getSide().getOpposite());

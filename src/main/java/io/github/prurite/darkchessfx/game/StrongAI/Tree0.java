@@ -5,11 +5,11 @@ import io.github.prurite.darkchessfx.game.WeakAI.MakeMove;
 
 import static java.lang.Math.min;
 
-public class Tree implements TreeInterface{
+public class Tree0 implements TreeInterface{
     private Node root;
     private boolean myfirst;
     private int lastx, lasty;
-    public Tree() { myfirst = false; }
+    public Tree0() { myfirst = false; }
     private void init() {
         //root.setVisitCount(1);
         root.simulation();
