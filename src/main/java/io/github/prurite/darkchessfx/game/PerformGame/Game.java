@@ -117,7 +117,7 @@ public class Game implements GameInterface {
     private EatenPieces revealedPieces;
     public EatenPieces getRevealedPieces() { return revealedPieces; }
     public Piece[][] getChessBoard() {
-        return chessboard;
+        return getChessboard();
     }
 
     public Piece getPieceOnBoard(Pos p){

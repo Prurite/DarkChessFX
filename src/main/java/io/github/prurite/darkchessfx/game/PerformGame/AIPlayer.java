@@ -30,9 +30,6 @@ public class AIPlayer {
         else if(difficulty == 1) {
             return tree0.makeMove(state, side);
         }
-        else if(difficulty == 2) {
-            return tree.makeMove(state, side);
-        }
         else {
             return tree.makeMove(state, side);
         }
