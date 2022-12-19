@@ -37,6 +37,14 @@
     -fx-border-insets: -0.25em;
 }
 
+.cellSelected {
+    -fx-background-color: -theme-color;
+}
+
+.cellValidMoves {
+    -fx-background-color: -switch-on-color;
+}
+
 .chessBoardPiece {
     -fx-max-width: 10em;
     -fx-max-height: 10em;

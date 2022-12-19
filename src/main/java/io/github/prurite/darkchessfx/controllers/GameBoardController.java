@@ -2,10 +2,8 @@ package io.github.prurite.darkchessfx.controllers;
 
 import io.github.prurite.darkchessfx.App;
 import io.github.prurite.darkchessfx.components.DFXPiece;
-import io.github.prurite.darkchessfx.game.PerformGame.Game;
-import io.github.prurite.darkchessfx.game.PerformGame.Move;
-import io.github.prurite.darkchessfx.game.PerformGame.Piece;
-import io.github.prurite.darkchessfx.game.PerformGame.Side;
+import io.github.prurite.darkchessfx.game.PerformGame.*;
+import io.github.prurite.darkchessfx.model.ChessType;
 import io.github.prurite.darkchessfx.model.Pos;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -66,25 +64,35 @@ public class GameBoardController implements Initializable {
                 DFXPiece piece = new DFXPiece(game.getPieceOnBoard(new Pos(finalI, finalJ)));
                 piece.getStyleClass().add("chessBoardPiece");
                 piece.setOnMouseClicked(event -> {
+                    if (isCheatMode)
+                        return;
                     if (status == BoardStatus.WAITING) {
                         selectedPos = new Pos(finalI, finalJ);
-                        status = BoardStatus.SELECTED;
                         chessBoardCells[finalI][finalJ].getStyleClass().add("cellSelected");
-                        ArrayList<Pos> moves = game.getValidMoves(selectedPos);
-                        for (Pos move : moves)
-                            chessBoardCells[move.getX()][move.getY()].getStyleClass().add("cellValidMoves");
-                    } else if (status == BoardStatus.SELECTED) {
-                        // if the clicked pos is in valid moves list, move the piece;
-                        // otherwise, cancel the selection.
-                        ArrayList<Pos> moves = game.getValidMoves(selectedPos);
-                        if (moves.contains(new Pos(finalI, finalJ))) {
-                            game.performMove(game.getCurrentPlayer(), new Move(selectedPos, new Pos(finalI, finalJ)));
-                            gamePageController.performMoveFinish();
-                        }
-                        else {
-                            chessBoardCells[selectedPos.getX()][selectedPos.getY()].getStyleClass().remove("cellSelected");
+                        if (game.getPieceOnBoard(selectedPos).getType() != Chess.Unknown) {
+                            ArrayList<Pos> moves = game.getValidMoves(selectedPos);
                             for (Pos move : moves)
-                                chessBoardCells[move.getX()][move.getY()].getStyleClass().remove("cellValidMoves");
+                                chessBoardCells[move.getX()][move.getY()].getStyleClass().add("cellValidMoves");
+                        }
+                        status = BoardStatus.SELECTED;
+                    } else if (status == BoardStatus.SELECTED) {
+                        // If the selected is an unknown piece
+                        if (game.getPieceOnBoard(selectedPos).getType() == Chess.Unknown)
+                            if (selectedPos.equals(new Pos(finalI, finalJ))) {
+                                chessBoardCells[finalI][finalJ].getStyleClass().remove("cellSelected");
+                                game.performMove(game.getCurrentPlayer(), new Move(selectedPos, new Pos(-1, -1)));
+                            } else
+                                chessBoardCells[selectedPos.getX()][selectedPos.getY()].getStyleClass().remove("cellSelected");
+                        else {
+                            ArrayList<Pos> moves = game.getValidMoves(selectedPos);
+                            if (moves.contains(new Pos(finalI, finalJ))) {
+                                game.performMove(game.getCurrentPlayer(), new Move(selectedPos, new Pos(finalI, finalJ)));
+                                gamePageController.performMoveFinish();
+                            } else {
+                                chessBoardCells[selectedPos.getX()][selectedPos.getY()].getStyleClass().remove("cellSelected");
+                                for (Pos move : moves)
+                                    chessBoardCells[move.getX()][move.getY()].getStyleClass().remove("cellValidMoves");
+                            }
                         }
                         status = BoardStatus.WAITING;
                     }
