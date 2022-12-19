@@ -25,4 +25,14 @@ public class Pos {
         }
         else return false;
     }
+
+    public String toString() {
+        return x + " " + y;
+    }
+
+    public void init(String s) {
+        String[] ss = s.split(" ");
+        x = Integer.parseInt(ss[0]);
+        y = Integer.parseInt(ss[1]);
+    }
 }

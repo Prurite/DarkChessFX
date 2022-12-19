@@ -39,7 +39,7 @@ public class MakeMove implements MakeMoveInterface {
         return getMoves(chessboard, mySide);
     }
     static public void debug(String s) {
-        GameResultWindow.showResult(new PlayerInGame(new Player(s), Side.RED));
+        //GameResultWindow.showResult(new PlayerInGame(new Player(s), Side.RED));
     }
 
     public static Pair<ArrayList<Move>, ArrayList<Move>> getMoves(Piece[][] chessboard, Side mySide) {

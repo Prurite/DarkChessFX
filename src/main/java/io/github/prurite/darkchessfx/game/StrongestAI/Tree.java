@@ -48,7 +48,11 @@ public class Tree implements TreeInterface {
             if(root.getMySide() != side) {
                 MakeMove.debug("error");
             }
-            root.setParent(null);
+            if(root == null) {
+                root = new Node(state, side, null, 1, true, null);
+                init();
+            }
+            else root.setParent(null);
             init();
         }
 

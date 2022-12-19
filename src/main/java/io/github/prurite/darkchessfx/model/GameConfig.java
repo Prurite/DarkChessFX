@@ -28,4 +28,25 @@ public class GameConfig {
         player1 = defaultPlayer1;
         player2 = defaultPlayer2;
     }
+
+    // put all information into a string, spaced by space
+    @Override
+    public String toString() {
+        return maxTurnTime + " " + maxTotalTime + " " + minimumScore + " " + allowCheat + " " + allowWithdraw + " " + aiDifficulty + " " + lanPort + " " + lanPassword + " " + player1 + " " + player2;
+    }
+
+    // set all information with String given by toString
+    public void init(String s) {
+        String[] ss = s.split(" ");
+        maxTurnTime = Integer.parseInt(ss[0]);
+        maxTotalTime = Integer.parseInt(ss[1]);
+        minimumScore = Integer.parseInt(ss[2]);
+        allowCheat = Boolean.parseBoolean(ss[3]);
+        allowWithdraw = Boolean.parseBoolean(ss[4]);
+        aiDifficulty = Integer.parseInt(ss[5]);
+        lanPort = Integer.parseInt(ss[6]);
+        lanPassword = ss[7];
+        player1 = ss[8];
+        player2 = ss[9];
+    }
 }

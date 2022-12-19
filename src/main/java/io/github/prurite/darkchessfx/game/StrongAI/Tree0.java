@@ -42,10 +42,14 @@ public class Tree0 implements TreeInterface{
                 }
             }
         } else {
-            Side tmp = root.getMySide();
+            //Side tmp = root.getMySide();
             //MakeMove.debug("going to find child  -- " + tmp.toString() + state.debugBoard());
             root = root.findChild(state, 0);
-            root.setParent(null);
+            if(root == null) {
+                root = new Node(state, side, null, 1, true, null);
+                init();
+            }
+            else root.setParent(null);
             init();
         }
 

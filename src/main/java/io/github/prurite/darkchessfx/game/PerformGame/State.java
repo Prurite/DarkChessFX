@@ -114,4 +114,27 @@ public class State {
         }
         return s;
     }
+    public String toString() {
+        String s = "";
+        for(int i=0; i<4; ++i) {
+            for(int j=0; j<8; ++j) {
+                s += board[i][j].getType().toString() + " ";
+            }
+        }
+        s += eatenPieces.getS() + " " + revealedPieces.getS() + " " + score[0] + " " + score[1];
+        return s;
+    }
+    public void init(String s) {
+        String[] ss = s.split(" ");
+        int k = 0;
+        for(int i=0; i<4; ++i) {
+            for(int j=0; j<8; ++j) {
+                board[i][j] = new Piece(Chess.valueOf(ss[k++]), Side.RED);
+            }
+        }
+        eatenPieces.s = Long.parseLong(ss[k++]);
+        revealedPieces.s = Long.parseLong(ss[k++]);
+        score[0] = Integer.parseInt(ss[k++]);
+        score[1] = Integer.parseInt(ss[k++]);
+    }
 }

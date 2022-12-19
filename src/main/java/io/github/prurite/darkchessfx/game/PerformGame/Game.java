@@ -5,10 +5,7 @@ import io.github.prurite.darkchessfx.model.GameConfig;
 import io.github.prurite.darkchessfx.model.Pos;
 import javafx.util.Pair;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,6 +29,7 @@ public class Game implements GameInterface {
         maxTurnTime = config.maxTurnTime;
         maxTotalTime = config.maxTotalTime;
         aiPlayer = new AIPlayer(config.aiDifficulty);
+        setPlayers(config);
         //startGame(new Player(config.player1), new Player(config.player2));
     }
 
@@ -138,12 +136,111 @@ public class Game implements GameInterface {
     }
 
     private Move curMove;
-    // save all the information of the game to a file
+
+    // save & read all the information of the game from a file, including following information:
+    // GameConfig
+    // chessboard, revealedChessboard, eatenPieces, revealedPieces,
+    // players, currentPlayer
+    // lastChessboard, lastMove, lastEatenPieces, currentMovePos
+    // lastTurnTime, lastPauseTime, pausing, startTime
+    // revealedPos
+    // FirstMoveFlag
+    // curMove
     public void saveGame(File file) throws IOException {
-        //BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+        writer.write(config.toString() + "\n");
+
+        State s1 = new State(chessboard, eatenPieces, revealedPieces);
+        State s2 = new State(revealedChessboard, eatenPieces, revealedPieces);
+        writer.write(s1.toString() + "\n");
+        writer.write(s2.toString() + "\n");
+
+        writer.write(players[0].toString() + "\n");
+        writer.write(players[1].toString() + "\n");
+        writer.write(currentPlayer + "\n");
+
+        writer.write(lastChessboard.size() + "\n");
+        for(Board b : lastChessboard) {
+            writer.write(new State(b.getChessboard(), eatenPieces, revealedPieces).toString() + "\n");
+        }
+
+        writer.write(lastMove.size() + "\n");
+        for(Move m : lastMove) {
+            writer.write(m.toString() + "\n");
+        }
+
+        writer.write(lastEatenPieces.size() + "\n");
+        for(EatenPieces e : lastEatenPieces) {
+            writer.write(e.toString() + "\n");
+        }
+
+        writer.write(currentMovePos + "\n");
+
+        writer.write(lastTurnTime + "\n");
+        writer.write(lastPauseTime + "\n");
+        writer.write(pausing + "\n");
+        writer.write(startTime + "\n");
+
+        writer.write(revealedPos.size() + "\n");
+        for(Pos p : revealedPos) {
+            writer.write(p.toString() + "\n");
+        }
+
+        writer.write(firstMoveFlag + "\n");
+
+        writer.write(curMove.toString() + "\n");
     }
     public void loadGame(File file) throws IOException, IllegalFormatCodePointException {
+        BufferedReader reader = new BufferedReader(new FileReader(file));
 
+        config.init(reader.readLine());
+
+        State s1 = new State(new Piece[4][8], new EatenPieces(), new EatenPieces()); s1.init(reader.readLine());
+        State s2 = new State(new Piece[4][8], new EatenPieces(), new EatenPieces()); s2.init(reader.readLine());
+        chessboard = s1.getBoard();
+        revealedChessboard = s2.getBoard();
+        eatenPieces = s1.getEatenPieces();
+        revealedPieces = s1.getRevealedPieces();
+
+        players[0].init(reader.readLine());
+        players[1].init(reader.readLine());
+
+        currentPlayer = Integer.parseInt(reader.readLine());
+
+        int n = Integer.parseInt(reader.readLine());
+        lastChessboard = new ArrayList<>();
+        for(int i=0; i<n; ++i) {
+            State s = new State(new Piece[4][8], new EatenPieces(), new EatenPieces()); s.init(reader.readLine());
+            lastChessboard.add(new Board(s.getBoard()));
+        }
+
+        n = Integer.parseInt(reader.readLine());
+        lastMove = new ArrayList<>();
+        for(int i=0; i<n; ++i) {
+            Move m = new Move(); m.init(reader.readLine());
+            lastMove.add(m);
+        }
+
+        n = Integer.parseInt(reader.readLine());
+        lastEatenPieces = new ArrayList<>();
+        for(int i=0; i<n; ++i) {
+            EatenPieces e = new EatenPieces(); e.s = Long.parseLong(reader.readLine());
+            lastEatenPieces.add(e);
+        }
+
+        currentMovePos = Integer.parseInt(reader.readLine());
+
+        lastTurnTime = Long.parseLong(reader.readLine());
+        lastPauseTime = Long.parseLong(reader.readLine());
+        pausing = Boolean.parseBoolean(reader.readLine());
+        startTime = Long.parseLong(reader.readLine());
+
+        n = Integer.parseInt(reader.readLine());
+        revealedPos = new ArrayList<>();
+        for(int i=0; i<n; ++i) {
+            Pos p = new Pos(0, 0); p.init(reader.readLine());
+            revealedPos.add(p);
+        }
     }
 
     public void aiMove() {
@@ -199,7 +296,7 @@ public class Game implements GameInterface {
     }
     public void startGame() {
         setGameConfig(config);
-        setPlayers(config);
+        //setPlayers(config);
 
         revealedChessboard = new Piece[4][8];
         ArrayList<Piece> tmp = new ArrayList<Piece>();

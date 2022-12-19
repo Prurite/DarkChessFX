@@ -67,4 +67,16 @@ public class PlayerInGame {
     public void setSide(Side side) {
         this.side = side;
     }
+
+    public String toString() {
+        return player.getName() + " " + side.toString() + " " + totalTime + " " + scoreProperty.getValue();
+    }
+    public String init(String s) {
+        String[] ss = s.split(" ");
+        player.setName(ss[0]);
+        side = Side.valueOf(ss[1]);
+        totalTime = Double.parseDouble(ss[2]);
+        scoreProperty.set(Integer.parseInt(ss[3]));
+        return ss[4];
+    }
 }

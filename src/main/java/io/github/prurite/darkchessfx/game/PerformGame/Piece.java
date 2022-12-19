@@ -38,4 +38,13 @@ public class Piece {
     public void setSide(Side side) {
         this.side = side;
     }
+
+    public String toString() {
+        return type.toString() + " " + side.toString();
+    }
+    public void init(String s) {
+        String[] ss = s.split(" ");
+        type = Chess.valueOf(ss[0]);
+        side = Side.valueOf(ss[1]);
+    }
 }

@@ -70,6 +70,13 @@ public class Move {
         this.newy = newy;
     }
     public String toString() {
-        return "(" + curx + ", " + cury + ") -> (" + newx + ", " + newy + ")";
+        return curx + " " + cury + " " + newx + " " + newy;
+    }
+    public void init(String s) {
+        String[] ss = s.split(" ");
+        curx = Integer.parseInt(ss[0]);
+        cury = Integer.parseInt(ss[1]);
+        newx = Integer.parseInt(ss[2]);
+        newy = Integer.parseInt(ss[3]);
     }
 }
