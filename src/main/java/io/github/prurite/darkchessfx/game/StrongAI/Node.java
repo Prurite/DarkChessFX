@@ -79,7 +79,7 @@ public class Node {
             //MakeMove.debug(child.getState().getRevealedPieces().toString());
             if(tmp != null) return tmp;
             else {
-                children.set(i, null);
+                //children.set(i, null);
             }
         }
         return null;

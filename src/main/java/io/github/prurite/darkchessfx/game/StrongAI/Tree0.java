@@ -28,9 +28,11 @@ public class Tree0 implements TreeInterface{
             else {
                 Piece chess = null;
                 for(int i=0; i<4; ++i) for(int j=0; j<8; ++j) if(state.getBoard()[i][j].getType() != Chess.Unknown) {
+                    if(chess != null) myfirst = true;
                     chess = state.getBoard()[i][j];
                 }
-                if(chess == null) {
+                if(myfirst) root = new Node(state, side, null, 1, true, null);
+                else if(chess == null) {
                     myfirst = true;
                     lastx = min((int)(Math.random()*4), 3);
                     lasty = min((int)(Math.random()*8), 7);
@@ -45,12 +47,17 @@ public class Tree0 implements TreeInterface{
             //Side tmp = root.getMySide();
             //MakeMove.debug("going to find child  -- " + tmp.toString() + state.debugBoard());
             root = root.findChild(state, 0);
-            if(root == null) {
-                root = new Node(state, side, null, 1, true, null);
-                init();
-            }
-            else root.setParent(null);
+//            if(root == null) {
+//                root = new Node(state, side, null, 1, true, null);
+//                init();
+//            }
+//            else {
+//                root.setParent(null);
+//                init();
+//            }
+            root.setParent(null);
             init();
+
         }
 
 
