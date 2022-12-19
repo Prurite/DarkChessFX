@@ -225,7 +225,7 @@ public class Game implements GameInterface {
     public void endGame(Player p1, Player p2, PlayerInGame winner) {
         double curTime = System.currentTimeMillis();
         if(p2.getName().equals(players[0].getNameProperty().getValue())) {
-            Player tmp = p1
+            Player tmp = p1;
             p1 = p2;
             p2 = tmp;
         }
@@ -234,13 +234,13 @@ public class Game implements GameInterface {
         p2.addTime(curTime - startTime);
         if(scored) { p1.addScoredGameCount(); p2.addScoredGameCount(); }
         if(winner != null) {
-            winner.addWinnedGameCount();
+            winner.getPlayer().addWinnedGameCount();
         //    GameResultWindow.showResult(players[winner]);
         }
         //else GameResultWindow.showResult(null);
     }
     public void endGame(Player p1, Player p2) {
-        PlayerInGame winner = (players[0].getScore() != players[1].getScore() && checkEndGame()) ? (players[0].getScore() > players[1].getScore() ? p1 : p2) : null;
+        PlayerInGame winner = (players[0].getScore() != players[1].getScore() && checkEndGame()) ? (players[0].getScore() > players[1].getScore() ? players[0] : players[1]) : null;
         endGame(p1, p2, winner);
     }
     public void surrender(Player p1, Player p2, PlayerInGame p) {
@@ -260,9 +260,9 @@ public class Game implements GameInterface {
         revealedPos.clear();
     }
 
-    public Player getWinner() {
-        if(players[0].getScore() >= WINNING_SCORE) return players[0].getPlayer();
-        if(players[1].getScore() >= WINNING_SCORE) return players[1].getPlayer();
+    public PlayerInGame getWinner() {
+        if(players[0].getScore() >= WINNING_SCORE) return players[0]; //.getPlayer();
+        if(players[1].getScore() >= WINNING_SCORE) return players[1]; //.getPlayer();
         return null;
     }
 
@@ -277,7 +277,7 @@ public class Game implements GameInterface {
         lastTurnTime = curTime;
         currentPlayer = (currentPlayer + 1) % 2;
     }
-    public Move doLastMove(int p, int sgn) {
+    public void doLastMove(int p, int sgn) {
         chessboard = lastChessboard.get(p).getChessboard();
         eatenPieces = lastEatenPieces.get(p);
         Move move = lastMove.get(p);
