@@ -1,5 +1,7 @@
 package io.github.prurite.darkchessfx.game.PerformGame;
 
+import io.github.prurite.darkchessfx.game.LoadingExceptions.InvalidChessType;
+
 public class Piece {
     Chess type;
     Side side;
@@ -42,9 +44,17 @@ public class Piece {
     public String toString() {
         return type.toString() + " " + side.toString();
     }
-    public void init(String s) {
+    public void init(String s) throws InvalidChessType {
         String[] ss = s.split(" ");
-        type = Chess.valueOf(ss[0]);
+        boolean flag = false;
+        for(Chess c : Chess.values()) if(c == Chess.valueOf(ss[0])) {
+            type = c;
+            flag = true;
+            break;
+        }
+        if(flag == false) {
+            throw new InvalidChessType();
+        }
         side = Side.valueOf(ss[1]);
     }
 }

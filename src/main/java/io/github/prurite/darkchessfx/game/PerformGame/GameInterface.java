@@ -5,6 +5,7 @@
 
 package io.github.prurite.darkchessfx.game.PerformGame;
 
+import io.github.prurite.darkchessfx.game.LoadingExceptions.*;
 import io.github.prurite.darkchessfx.model.GameConfig;
 import io.github.prurite.darkchessfx.model.Player;
 import io.github.prurite.darkchessfx.model.Pos;
@@ -33,7 +34,7 @@ public interface GameInterface {
     void aiMove();
 
     // method for load game, throws exception when file is not valid or file format is not valid
-    void loadGame(File file) throws IOException, IllegalFormatException;
+    void loadGame(File file) throws IOException, IllegalFormatException , WrongFileFormatException, WrongChessBoardSize, PlayerInformationMissing, InvalidPreviousMove, InvalidChessType;
     void saveGame(File file) throws IOException;
     int getCurrentMovePos(); // -1 first, 0 mid, 1 last
     void goToPrevMove(); // Return current move id

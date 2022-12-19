@@ -1,5 +1,7 @@
 package io.github.prurite.darkchessfx.game.PerformGame;
 
+import io.github.prurite.darkchessfx.game.LoadingExceptions.InvalidChessType;
+import io.github.prurite.darkchessfx.game.LoadingExceptions.WrongChessBoardSize;
 import javafx.beans.property.SimpleIntegerProperty;
 
 public class State {
@@ -132,8 +134,11 @@ public class State {
         s += eatenPieces.getS() + " " + revealedPieces.getS() + " " + score[0] + " " + score[1];
         return s;
     }
-    public void init(String s) {
+    public void init(String s) throws WrongChessBoardSize, InvalidChessType {
         String[] ss = s.split(" ");
+        if(ss.length != 36) {
+            throw new WrongChessBoardSize();
+        }
         int k = 0;
         for(int i=0; i<4; ++i) {
             for(int j=0; j<8; ++j) {

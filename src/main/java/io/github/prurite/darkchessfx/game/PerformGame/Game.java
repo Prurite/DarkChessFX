@@ -1,5 +1,6 @@
 package io.github.prurite.darkchessfx.game.PerformGame;
 
+import io.github.prurite.darkchessfx.game.LoadingExceptions.*;
 import io.github.prurite.darkchessfx.model.Player;
 import io.github.prurite.darkchessfx.model.GameConfig;
 import io.github.prurite.darkchessfx.model.Pos;
@@ -214,13 +215,19 @@ public class Game implements GameInterface {
 
         writer.close();
     }
-    public void loadGame(File file) throws IOException, IllegalFormatCodePointException {
+    // TODO: 文件格式错误，行棋步骤出错
+    public void loadGame(File file) throws IOException, IllegalFormatCodePointException, WrongFileFormatException, WrongChessBoardSize, PlayerInformationMissing, InvalidPreviousMove, InvalidChessType {
+        String fileName = file.getName();
+        if(!fileName.substring(fileName.length()-4).equals(".dcg")) {
+            throw new WrongFileFormatException();
+        }
+
         BufferedReader reader = new BufferedReader(new FileReader(file));
 
         config.init(reader.readLine());
 
 
-        State s1 = new State(); s1.init(reader.readLine());
+        State s1 = new State();  s1.init(reader.readLine());
         State s2 = new State(); s2.init(reader.readLine());
         chessboard = s1.getBoard();
         revealedChessboard = s2.getBoard();
@@ -231,7 +238,10 @@ public class Game implements GameInterface {
         players[0].init(reader.readLine());
         players[1].init(reader.readLine());
 
-        currentPlayer = Integer.parseInt(reader.readLine());
+        String line = reader.readLine();
+        if(line.equals("0")) currentPlayer = 0;
+        else if(line.equals("1")) currentPlayer = 1;
+        else throw new PlayerInformationMissing();
 
         int n = Integer.parseInt(reader.readLine());
         lastChessboard = new ArrayList<>();
