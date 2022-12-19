@@ -92,18 +92,11 @@ public class App extends Application {
         }
     }
 
-    public Pane loadGameBoard(Game game, GameBoardController controller) {
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(DarkchessFXResourcesLoader.loadURL("fxml/GameBoard.fxml"));
-            loader.setControllerFactory(c -> new GameBoardController(game, this));
-            controller = loader.getController();
-            return loader.load();
-        } catch (IOException e) {
-//            System.err.println("Failed to load " + filename + ".fxml");
-            e.printStackTrace();
-            return null;
-        }
+    public FXMLLoader getGameBoardLoader(Game game) {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(DarkchessFXResourcesLoader.loadURL("fxml/GameBoard.fxml"));
+        loader.setControllerFactory(c -> new GameBoardController(game, this));
+        return loader;
     }
 
     public static void main(String[] args) {

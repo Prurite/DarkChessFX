@@ -6,7 +6,9 @@ import io.github.prurite.darkchessfx.game.PerformGame.Side;
 import io.github.prurite.darkchessfx.model.GameConfig;
 import io.github.prurite.darkchessfx.model.PlayerInfoProcessor;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.fxml.LoadException;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -66,7 +68,15 @@ public class GamePageController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Pane gameBoard = app.loadGameBoard(game, gameBoardController);
+        FXMLLoader loader = app.getGameBoardLoader(game);
+        Pane gameBoard;
+        try {
+            gameBoard = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        gameBoardController = loader.getController();
         gameBoardController.setGamePageController(this);
         gameArea.getChildren().add(gameBoard);
         if (gameConfig.lanPort != 0)
@@ -191,8 +201,9 @@ public class GamePageController implements Initializable {
             drawButton.setDisable(true);
             surrenderButton.setDisable(true);
         }
+        toggleCheatButton.setDisable(!game.getGameConfig().allowCheat);
         undoButton.setDisable(game.getCurrentMovePos() == -1);
-        redoButton.setDisable(game.getCurrentMovePos() == 1);
+        redoButton.setDisable(game.getCurrentMovePos() == game.getMoveCount() - 1);
         player1Name.getStyleClass().removeAll("textRed", "textBlack");
         player2Name.getStyleClass().removeAll("textRed", "textBlack");
         if (game.getPlayerInGame1().getSide() == Side.RED) {

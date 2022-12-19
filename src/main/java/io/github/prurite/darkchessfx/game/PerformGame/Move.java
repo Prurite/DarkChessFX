@@ -28,6 +28,16 @@ public class Move {
             newy = move.getNewy();
         }
     }
+    // swap X and Y in move
+    public void swapXY() {
+        int temp = curx;
+        curx = cury;
+        cury = temp;
+        temp = newx;
+        newx = newy;
+        newy = temp;
+    }
+
     public boolean sameX() { return curx == newx; }
     public boolean sameY() { return cury == newy; }
     public int getDis() {

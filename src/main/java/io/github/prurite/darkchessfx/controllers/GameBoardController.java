@@ -63,7 +63,7 @@ public class GameBoardController implements Initializable {
                 StackPane pane = new StackPane();
                 pane.getStyleClass().add("chessBoardCell");
                 chessBoardCellPane.getChildren().add(pane);
-                DFXPiece piece = new DFXPiece(game.getChessBoard()[i][j]);
+                DFXPiece piece = new DFXPiece(game.getPieceOnBoard(new Pos(finalI, finalJ)));
                 piece.getStyleClass().add("chessBoardPiece");
                 piece.setOnMouseClicked(event -> {
                     if (status == BoardStatus.WAITING) {
@@ -112,7 +112,7 @@ public class GameBoardController implements Initializable {
         for (int i = 0; i < row; i++)
             for (int j = 0; j < col; j++) {
                 DFXPiece piece = (DFXPiece) chessBoardCells[i][j].getChildren().get(0);
-                changed |= piece.updatePiece(game.getChessBoard()[i][j]);
+                changed |= piece.updatePiece(game.getPieceOnBoard(new Pos(i, j)));
             }
         updateCaptured();
     }

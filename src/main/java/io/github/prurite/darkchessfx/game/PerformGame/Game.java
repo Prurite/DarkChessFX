@@ -36,15 +36,11 @@ public class Game implements GameInterface {
         currentMovePos = -1;
         revealedPos = new ArrayList<>();
 
-
         aiPlayer = new AIPlayer(config.aiDifficulty);
         startGame(new Player(config.player1), new Player(config.player2));
     }
     public Game() {
-        maxTurnTime = 30 * 1000;
-        maxTotalTime = 10000000f * 1000;
-        scored = true;
-        currentMovePos = -1;
+        this(new GameConfig());
     }
 
     // current state of countdown
@@ -101,6 +97,11 @@ public class Game implements GameInterface {
     public Piece[][] getChessBoard() {
         return chessboard;
     }
+
+    public Piece getPieceOnBoard(Pos p){
+        return getChessBoard()[p.getY()][p.getX()];
+    }
+
     public ArrayList<Piece> getCaptured(Side s) {
         ArrayList<Piece> res = new ArrayList<>();
         for(Chess c : Chess.values()) {
@@ -112,6 +113,7 @@ public class Game implements GameInterface {
         return res;
     }
     public ArrayList<Pos> getValidMoves(Pos pos) {
+        pos.swapXY();
         ArrayList<Pos> res = new ArrayList<>();
         int x = pos.getX(), y = pos.getY();
         Piece piece = chessboard[x][y];
@@ -143,6 +145,7 @@ public class Game implements GameInterface {
     public void aiMove() {
         Move move = aiPlayer.makeMove(new State(chessboard, eatenPieces, revealedPieces), players[currentPlayer].getSide());
         if(move != null) {
+            move.swapXY();
             performMove(players[currentPlayer], move);
         }
     }
@@ -195,6 +198,7 @@ public class Game implements GameInterface {
         for(int i=0; i<32; ++i) revealedChessboard[i >> 3][i & 7] = tmp.get(i);
 
         chessboard = new Piece[4][8];
+        System.out.println("Starting game"); // DEBUG
         for(int i=0; i<4; ++i) for(int j=0; j<8; ++j) chessboard[i][j] = new Piece(Chess.Unknown, Side.RED);
         eatenPieces = new EatenPieces();
         revealedPieces = new EatenPieces();
@@ -253,9 +257,11 @@ public class Game implements GameInterface {
     }
 
     public void revealPiece(Pos pos) {
+        pos.swapXY();
         revealedPos.add(pos);
     }
     public void hidePiece(Pos pos) {
+        pos.swapXY();
         revealedPos.remove(pos);
     }
     public void hideAllPieces() {
@@ -368,6 +374,7 @@ public class Game implements GameInterface {
         lastEatenPieces.set(pos, new EatenPieces(eatenPieces));
     }
     public int getCurrentMovePos() { return currentMovePos; }
+    public int getMoveCount() { return lastMove.size(); }
 
     private void makeMove() {
         int x1 = curMove.getCurx(), y1 = curMove.getCury();
@@ -406,6 +413,7 @@ public class Game implements GameInterface {
     public PlayerInGame getCurrentPlayer() { return players[currentPlayer]; }
 
     public String performMove(PlayerInGame playerInGame, Move move) {
+        move.swapXY();
         String msg = checkMove(playerInGame, move);
         curMove = move;
         if(msg == null) {

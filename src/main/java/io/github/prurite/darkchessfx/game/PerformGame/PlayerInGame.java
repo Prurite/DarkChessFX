@@ -23,7 +23,7 @@ public class PlayerInGame {
         this.player = player;
         this.side = side;
         this.totalTime = 0;
-        this.scoreProperty.set(0);
+        this.scoreProperty = new SimpleIntegerProperty(0);
     }
 
     public String getName() { return player.getName(); }
