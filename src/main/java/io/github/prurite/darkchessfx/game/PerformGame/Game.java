@@ -26,18 +26,22 @@ public class Game implements GameInterface {
     AIPlayer aiPlayer;
     @Override
     public GameConfig getGameConfig() { return config; }
-
-    public Game(GameConfig config) {
+    public void setGameConfig(GameConfig config) {
         this.config = config;
         WINNING_SCORE = config.minimumScore;
         maxTurnTime = config.maxTurnTime;
         maxTotalTime = config.maxTotalTime;
+        aiPlayer = new AIPlayer(config.aiDifficulty);
+        //startGame(new Player(config.player1), new Player(config.player2));
+    }
+
+    public Game(GameConfig config) {
+        setGameConfig(config);
+
         scored = true;
         currentMovePos = -1;
         revealedPos = new ArrayList<>();
 
-        aiPlayer = new AIPlayer(config.aiDifficulty);
-        startGame(new Player(config.player1), new Player(config.player2));
     }
     public Game() {
         this(new GameConfig());
@@ -187,10 +191,16 @@ public class Game implements GameInterface {
         new Piece(Chess.Soldier, Side.BLACK),
         new Piece(Chess.Soldier, Side.BLACK),
     };
+    private void setPlayers(GameConfig config) {
+        players = new PlayerInGame[2];
+        players[0] = new PlayerInGame(new Player(config.player1), Side.RED);
+        players[1] = new PlayerInGame(new Player(config.player2), Side.BLACK);
+        currentPlayer = 0;
+    }
+    public void startGame() {
+        setGameConfig(config);
+        setPlayers(config);
 
-    public void startGame() {}
-
-    public PlayerInGame[] startGame(Player p1, Player p2) {
         revealedChessboard = new Piece[4][8];
         ArrayList<Piece> tmp = new ArrayList<Piece>();
         for(int i=0; i<32; ++i) tmp.add(new Piece(arrayOfPieces[i].getType(), arrayOfPieces[i].getSide()));
@@ -208,14 +218,7 @@ public class Game implements GameInterface {
 
         initTime();
 
-        players = new PlayerInGame[2];
-        players[0] = new PlayerInGame(p1, Side.RED);
-        players[1] = new PlayerInGame(p2, Side.BLACK);
-        currentPlayer = 0;
-
         curMove = new Move();
-
-        return players;
     }
 //    public String firstMove(PlayerInGame u, int x, int y) {
 //        if(u.getPlayer().getName() != players[currentPlayer].getPlayer().getName()) return MoveChessMessage.NotCurrentTurnPlayer.getInfo();
@@ -414,13 +417,19 @@ public class Game implements GameInterface {
 
     public String performMove(PlayerInGame playerInGame, Move move) {
         move.swapXY();
+
+        if(move.getNewx() == -1) {
+            if(chessboard[move.getNewx()][move.getNewy()].getType() == Chess.Unknown) {
+                turnUpChess(move.getCurx(), move.getCury());
+                return null;
+            }
+            else return MoveChessMessage.FirstClickError.getInfo();
+        }
+
         String msg = checkMove(playerInGame, move);
         curMove = move;
-        if(msg == null) {
-            makeMove();
-            return null;
-        }
-        else return msg;
+        if(msg == null) makeMove();
+        return msg;
     }
 
     private void turnUpChess(int x, int y) {

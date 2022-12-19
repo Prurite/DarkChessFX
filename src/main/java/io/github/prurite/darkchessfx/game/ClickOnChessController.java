@@ -24,12 +24,12 @@ public class ClickOnChessController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //grid = new GridPane();
-        players = new ArrayList<>();
-        players.add(new Player("Player1"));
-        players.add(new Player("Player2"));
+//        players = new ArrayList<>();
+//        players.add(new Player("Player1"));
+//        players.add(new Player("Player2"));
 
         game = new Game();
-        p = game.startGame(players.get(0), players.get(1));
+        game.startGame(/*players.get(0), players.get(1)*/);
         ImageView img = new ImageView(new Image("file:src/main/resources/img/Unknown.png"));
         img.setFitHeight(79);
         img.setFitWidth(79);
