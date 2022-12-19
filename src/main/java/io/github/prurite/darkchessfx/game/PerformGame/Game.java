@@ -145,7 +145,7 @@ public class Game implements GameInterface {
         for(int i=0; i<4; ++i) {
             for(int j=0; j<8; ++j) {
                 if(checkMove(p, new Move(x, y, i, j)) == null) {
-                        res.add(new Pos(j,i));
+                    res.add(new Pos(j,i));
                 }
             }
         }
@@ -294,38 +294,38 @@ public class Game implements GameInterface {
 
     // create a static array of Piece with 2 of each kind of Piece on each side
     static Piece[] arrayOfPieces = {
-        new Piece(Chess.General, Side.RED),
-        new Piece(Chess.Advisor, Side.RED),
-        new Piece(Chess.Advisor, Side.RED),
-        new Piece(Chess.Minister, Side.RED),
-        new Piece(Chess.Minister, Side.RED),
-        new Piece(Chess.Chariot, Side.RED),
-        new Piece(Chess.Chariot, Side.RED),
-        new Piece(Chess.Horse, Side.RED),
-        new Piece(Chess.Horse, Side.RED),
-        new Piece(Chess.Cannon, Side.RED),
-        new Piece(Chess.Cannon, Side.RED),
-        new Piece(Chess.Soldier, Side.RED),
-        new Piece(Chess.Soldier, Side.RED),
-        new Piece(Chess.Soldier, Side.RED),
-        new Piece(Chess.Soldier, Side.RED),
-        new Piece(Chess.Soldier, Side.RED),
-        new Piece(Chess.General, Side.BLACK),
-        new Piece(Chess.Advisor, Side.BLACK),
-        new Piece(Chess.Advisor, Side.BLACK),
-        new Piece(Chess.Minister, Side.BLACK),
-        new Piece(Chess.Minister, Side.BLACK),
-        new Piece(Chess.Chariot, Side.BLACK),
-        new Piece(Chess.Chariot, Side.BLACK),
-        new Piece(Chess.Horse, Side.BLACK),
-        new Piece(Chess.Horse, Side.BLACK),
-        new Piece(Chess.Cannon, Side.BLACK),
-        new Piece(Chess.Cannon, Side.BLACK),
-        new Piece(Chess.Soldier, Side.BLACK),
-        new Piece(Chess.Soldier, Side.BLACK),
-        new Piece(Chess.Soldier, Side.BLACK),
-        new Piece(Chess.Soldier, Side.BLACK),
-        new Piece(Chess.Soldier, Side.BLACK),
+            new Piece(Chess.General, Side.RED),
+            new Piece(Chess.Advisor, Side.RED),
+            new Piece(Chess.Advisor, Side.RED),
+            new Piece(Chess.Minister, Side.RED),
+            new Piece(Chess.Minister, Side.RED),
+            new Piece(Chess.Chariot, Side.RED),
+            new Piece(Chess.Chariot, Side.RED),
+            new Piece(Chess.Horse, Side.RED),
+            new Piece(Chess.Horse, Side.RED),
+            new Piece(Chess.Cannon, Side.RED),
+            new Piece(Chess.Cannon, Side.RED),
+            new Piece(Chess.Soldier, Side.RED),
+            new Piece(Chess.Soldier, Side.RED),
+            new Piece(Chess.Soldier, Side.RED),
+            new Piece(Chess.Soldier, Side.RED),
+            new Piece(Chess.Soldier, Side.RED),
+            new Piece(Chess.General, Side.BLACK),
+            new Piece(Chess.Advisor, Side.BLACK),
+            new Piece(Chess.Advisor, Side.BLACK),
+            new Piece(Chess.Minister, Side.BLACK),
+            new Piece(Chess.Minister, Side.BLACK),
+            new Piece(Chess.Chariot, Side.BLACK),
+            new Piece(Chess.Chariot, Side.BLACK),
+            new Piece(Chess.Horse, Side.BLACK),
+            new Piece(Chess.Horse, Side.BLACK),
+            new Piece(Chess.Cannon, Side.BLACK),
+            new Piece(Chess.Cannon, Side.BLACK),
+            new Piece(Chess.Soldier, Side.BLACK),
+            new Piece(Chess.Soldier, Side.BLACK),
+            new Piece(Chess.Soldier, Side.BLACK),
+            new Piece(Chess.Soldier, Side.BLACK),
+            new Piece(Chess.Soldier, Side.BLACK),
     };
     private void setPlayers(GameConfig config) {
         players = new PlayerInGame[2];
@@ -337,7 +337,7 @@ public class Game implements GameInterface {
         setGameConfig(config);
         //setPlayers(config);
     }
-//    public String firstMove(PlayerInGame u, int x, int y) {
+    //    public String firstMove(PlayerInGame u, int x, int y) {
 //        if(u.getPlayer().getName() != players[currentPlayer].getPlayer().getName()) return MoveChessMessage.NotCurrentTurnPlayer.getInfo();
 //        players[currentPlayer].setSide(revealedChessboard[x][y].getSide());
 //        players[1-currentPlayer].setSide(players[currentPlayer].getSide().getOpposite());
@@ -362,7 +362,7 @@ public class Game implements GameInterface {
         if(scored) { p1.addScoredGameCount(); p2.addScoredGameCount(); }
         if(winner != null) {
             winner.getPlayer().addWinnedGameCount();
-        //    GameResultWindow.showResult(players[winner]);
+            //    GameResultWindow.showResult(players[winner]);
         }
         //else GameResultWindow.showResult(null);
     }
@@ -520,7 +520,7 @@ public class Game implements GameInterface {
         // check if the game is over
     }
 
-//    private PlayerInGame getPlayerInGame(Player player) {
+    //    private PlayerInGame getPlayerInGame(Player player) {
 //        if(players[0].getPlayer().getName().equals(player)) return players[0];
 //        if(players[1].getPlayer().getName().equals(player)) return players[1];
 //        return null;
