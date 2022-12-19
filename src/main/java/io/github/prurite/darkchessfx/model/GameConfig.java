@@ -9,6 +9,7 @@ public class GameConfig {
     public int aiDifficulty; // 0 for disable
     public int lanPort; // 0 for disable
     public int defaultLanPort = 10900;
+    public boolean isReplay;
     public String lanPassword;
     public String player1;
     public String defaultPlayer1 = "Player1";
@@ -24,5 +25,7 @@ public class GameConfig {
         aiDifficulty = 0;
         lanPort = 0;
         lanPassword = "";
+        player1 = defaultPlayer1;
+        player2 = defaultPlayer2;
     }
 }

@@ -9,6 +9,8 @@ import io.github.prurite.darkchessfx.game.PerformGame.Side;
 import io.github.prurite.darkchessfx.model.Pos;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class GameBoardController implements Initializable {
+    @FXML private BorderPane rootPane;
     @FXML private FlowPane chessBoardCellPane;
     @FXML private FlowPane redCapturedPane;
     @FXML private FlowPane blackCapturedPane;
@@ -69,32 +72,33 @@ public class GameBoardController implements Initializable {
                         chessBoardCells[finalI][finalJ].getStyleClass().add("cellSelected");
                         ArrayList<Pos> moves = game.getValidMoves(selectedPos);
                         for (Pos move : moves)
-                            chessBoardCells[move.x][move.y].getStyleClass().add("cellValidMoves");
+                            chessBoardCells[move.getX()][move.getY()].getStyleClass().add("cellValidMoves");
                     } else if (status == BoardStatus.SELECTED) {
                         // if the clicked pos is in valid moves list, move the piece;
                         // otherwise, cancel the selection.
                         ArrayList<Pos> moves = game.getValidMoves(selectedPos);
                         if (moves.contains(new Pos(finalI, finalJ))) {
                             game.performMove(game.getCurrentPlayer(), new Move(selectedPos, new Pos(finalI, finalJ)));
-                            updateBoard();
+                            gamePageController.performMoveFinish();
                         }
                         else {
-                            chessBoardCells[selectedPos.x][selectedPos.y].getStyleClass().remove("cellSelected");
+                            chessBoardCells[selectedPos.getX()][selectedPos.getY()].getStyleClass().remove("cellSelected");
                             for (Pos move : moves)
-                                chessBoardCells[move.x][move.y].getStyleClass().remove("cellValidMoves");
+                                chessBoardCells[move.getX()][move.getY()].getStyleClass().remove("cellValidMoves");
                         }
+                        status = BoardStatus.WAITING;
                     }
                 });
                 piece.setOnMousePressed(e -> {
                     if (isCheatMode) {
-                        game.revealPiece(new Pair<>(finalI, finalJ));
-                        updateBoard();
+                        game.revealPiece(new Pos(finalI, finalJ));
+                        gamePageController.updatePage();
                     }
                 });
                 piece.setOnMouseReleased(e -> {
                     if (isCheatMode) {
-                        game.hidePiece(new Pair(finalI, finalJ));
-                        updateBoard();
+                        game.hidePiece(new Pos(finalI, finalJ));
+                        gamePageController.updatePage();
                     }
                 });
                 pane.getChildren().add(piece);
@@ -104,13 +108,13 @@ public class GameBoardController implements Initializable {
     }
 
     public void updateBoard() {
+        boolean changed = false;
         for (int i = 0; i < row; i++)
             for (int j = 0; j < col; j++) {
                 DFXPiece piece = (DFXPiece) chessBoardCells[i][j].getChildren().get(0);
-                piece.updatePiece(game.getChessBoard()[i][j]);
+                changed |= piece.updatePiece(game.getChessBoard()[i][j]);
             }
         updateCaptured();
-        gamePageController.updatePage();
     }
 
     public void updateCaptured() {
@@ -126,5 +130,9 @@ public class GameBoardController implements Initializable {
             piece.getStyleClass().add("capturedPiece");
             redCapturedPane.getChildren().add(piece);
         }
+    }
+
+    public void setStatus(BoardStatus status) {
+        this.status = status;
     }
 }

@@ -9,6 +9,7 @@
 <BorderPane xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="io.github.prurite.darkchessfx.controllers.GameBoardController"
+      fx:id="rootPane"
       styleClass="gameBoardPane" stylesheets="@../css/GameBoard.css">
     <left>
         <VBox styleClass="capturedBox">

@@ -15,8 +15,10 @@ import java.util.ResourceBundle;
 
 public class HomePageController implements Initializable, DFXController {
     private App app;
-    @FXML private VBox homeButtons;
-    @FXML private VBox selectModeButtons;
+    @FXML
+    private VBox homeButtons;
+    @FXML
+    private VBox selectModeButtons;
 
     @Override
     public void setApp(App app) {
@@ -45,6 +47,14 @@ public class HomePageController implements Initializable, DFXController {
     }
 
     public void loadGame() {
+        loadGame(false);
+    }
+
+    public void loadReplay() {
+        loadGame(true);
+    }
+
+    public void loadGame(boolean isReplay) {
         try {
             Game game = new Game();
             FileChooser fileChooser = new FileChooser();
@@ -55,6 +65,7 @@ public class HomePageController implements Initializable, DFXController {
             File file = fileChooser.showOpenDialog(app.getPrimaryStage());
             if (file != null) {
                 game.loadGame(file);
+                game.getGameConfig().isReplay = isReplay;
                 app.loadGameFinish(game);
             }
         } catch (Exception e) {

@@ -4,6 +4,7 @@ import io.github.prurite.darkchessfx.App;
 import io.github.prurite.darkchessfx.game.PerformGame.Game;
 import io.github.prurite.darkchessfx.game.PerformGame.Side;
 import io.github.prurite.darkchessfx.model.GameConfig;
+import io.github.prurite.darkchessfx.model.PlayerInfoProcessor;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -26,12 +27,17 @@ public class GamePageController implements Initializable {
     @FXML private Label player2Score;
     @FXML private Label currentPlayerName;
     @FXML private Label actionLabel;
-    @FXML private Button toggleCheatButton;
     @FXML private VBox messagesBox;
     @FXML private TextField messageInput;
     @FXML private StackPane gameArea;
     @FXML private HBox rootPane;
     @FXML private Label title;
+    @FXML private Button saveButton;
+    @FXML private Button toggleCheatButton;
+    @FXML private Button drawButton;
+    @FXML private Button surrenderButton;
+    @FXML private Button undoButton;
+    @FXML private Button redoButton;
     private App app;
     private Game game;
     private GameConfig gameConfig;
@@ -103,16 +109,21 @@ public class GamePageController implements Initializable {
     }
 
     public void askForDraw() {
-        game.askForDraw();
+        // game.endGame(); TODO
     }
 
     public void surrender() {
-        game.surrender(game.getCurrentPlayer());
+        // game.surrender(game.getCurrentPlayer()); TODO
     }
 
-    public void withdraw() {
+    public void undoMove() {
         game.goToPrevMove();
-        gameBoardController.updateBoard();
+        updatePage();
+    }
+
+    public void redoMove() {
+        game.goToNextMove();
+        updatePage();
     }
 
     public void toggleCheat() {
@@ -135,13 +146,53 @@ public class GamePageController implements Initializable {
         messagesBox.getChildren().add(message);
     }
 
+    public void performMoveFinish() {
+        updatePage();
+        if (game.getGameConfig().aiDifficulty > 0 && game.getCurrentPlayer() == game.getPlayerInGame2()) {
+            gameBoardController.setStatus(GameBoardController.BoardStatus.LOCKED);
+            // Wait 1 second then perform ai move. Does not freeze the GUI.
+            new Thread(() -> {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                game.aiMove();
+                gameBoardController.setStatus(GameBoardController.BoardStatus.WAITING);
+                updatePage();
+            }).start();
+        }
+    }
+
     public void updatePage() {
+        gameBoardController.updateBoard();
         updatePanel();
-        if (game.getGameConfig().aiDifficulty > 0 && game.getCurrentPlayer() == game.getPlayerInGame2())
-            game.aiMove();
+        if (game.getWinner() != null) {
+            // Pop up a dialog showing the winner's name, with one button to return and another to save replay
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Game Over");
+            alert.setHeaderText("Game Over");
+            alert.setContentText(game.getWinner().getNameProperty().get() + " wins!");
+            ButtonType saveReplay = new ButtonType("Save Replay");
+            ButtonType returnToHome = new ButtonType("Return to Home");
+            alert.getButtonTypes().setAll(saveReplay, returnToHome);
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == saveReplay)
+                saveGame();
+            else
+                returnToHome();
+        }
     }
 
     public void updatePanel() {
+        if (game.getGameConfig().isReplay) {
+            saveButton.setDisable(true);
+            toggleCheatButton.setDisable(true);
+            drawButton.setDisable(true);
+            surrenderButton.setDisable(true);
+        }
+        undoButton.setDisable(game.getCurrentMovePos() == -1);
+        redoButton.setDisable(game.getCurrentMovePos() == 1);
         player1Name.getStyleClass().removeAll("textRed", "textBlack");
         player2Name.getStyleClass().removeAll("textRed", "textBlack");
         if (game.getPlayerInGame1().getSide() == Side.RED) {
@@ -165,22 +216,6 @@ public class GamePageController implements Initializable {
                 currentPlayerName.getStyleClass().add("textRed");
             else
                 currentPlayerName.getStyleClass().add("textBlack");
-        }
-        if (game.getWinner() != null) {
-            // Pop up a dialog showing the winner's name, with one button to return and another to save replay
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Game Over");
-            alert.setHeaderText("Game Over");
-            alert.setContentText(game.getWinner().getNameProperty().getName() + " wins!");
-            ButtonType saveReplay = new ButtonType("Save Replay");
-            ButtonType returnToHome = new ButtonType("Return to Home");
-            alert.getButtonTypes().setAll(saveReplay, returnToHome);
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == saveReplay)
-                saveGame();
-            else if (result.get() == returnToHome)
-                returnToHome();
-            }
         }
     }
 }

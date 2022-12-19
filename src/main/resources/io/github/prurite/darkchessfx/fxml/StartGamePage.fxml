@@ -88,7 +88,7 @@
         </GridPane>
         <HBox styleClass="dialogButtonGroup">
             <Button styleClass="generalButton, buttonLabel, mainButton"
-                    fx:id="startButton" text="Start game" onAction="#startGame" />
+                    text="Start game" onAction="#startGame" />
         </HBox>
     </VBox>
 </VBox>

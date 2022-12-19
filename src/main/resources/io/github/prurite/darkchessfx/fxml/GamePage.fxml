@@ -62,20 +62,20 @@
                     <ColumnConstraints percentWidth="35" halignment="CENTER" />
                     <ColumnConstraints percentWidth="35" halignment="CENTER" />
                 </columnConstraints>
-                <Label fx:id="actionLabel" styleClass="generalLabel" text="Ask for/to..."
+                <Label fx:id="actionLabel" styleClass="generalLabel" text="Actions"
                        GridPane.rowIndex="0" GridPane.columnIndex="0" />
-                <Button styleClass="generalButton, buttonLabel" text="Pause" disable="true"
-                        GridPane.rowIndex="0" GridPane.columnIndex="1" />
                 <Button styleClass="generalButton, buttonLabel" text="Save" onAction="#saveGame"
-                        GridPane.rowIndex="0" GridPane.columnIndex="2" />
-                <Button styleClass="generalButton, buttonLabel" text="Draw" onAction="#askForDraw"
-                        GridPane.rowIndex="1" GridPane.columnIndex="1" />
-                <Button styleClass="generalButton, buttonLabel" text="Surrender" onAction="#surrender"
-                        GridPane.rowIndex="1" GridPane.columnIndex="2" />
-                <Button styleClass="generalButton, buttonLabel" text="Withdraw" onAction="#withdraw"
-                        GridPane.rowIndex="2" GridPane.columnIndex="1" />
+                        fx:id="saveButton" GridPane.rowIndex="0" GridPane.columnIndex="1" />
                 <Button styleClass="generalButton, buttonLabel" text="Cheat" onAction="#toggleCheat"
-                        fx:id="toggleCheatButton" GridPane.rowIndex="2" GridPane.columnIndex="2" />
+                        fx:id="toggleCheatButton" GridPane.rowIndex="0" GridPane.columnIndex="2" />
+                <Button styleClass="generalButton, buttonLabel" text="Draw" onAction="#askForDraw"
+                        fx:id="drawButton" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+                <Button styleClass="generalButton, buttonLabel" text="Surrender" onAction="#surrender"
+                        fx:id="surrenderButton" GridPane.rowIndex="1" GridPane.columnIndex="2" />
+                <Button styleClass="generalButton, buttonLabel" text="Undo Move" onAction="#undoMove"
+                        fx:id="undoButton" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+                <Button styleClass="generalButton, buttonLabel" text="Redo Move" onAction="#redoMove"
+                        fx:id="redoButton" GridPane.rowIndex="2" GridPane.columnIndex="2" />
             </GridPane>
             <VBox>
                 <ScrollPane styleClass="card, messagePane">

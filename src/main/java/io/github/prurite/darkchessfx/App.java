@@ -19,6 +19,7 @@ import java.io.IOException;
 
 public class App extends Application {
     private Stage primaryStage;
+    private Scene scene;
 
     public Stage getPrimaryStage() {
         return primaryStage;
@@ -29,20 +30,12 @@ public class App extends Application {
         this.primaryStage = primaryStage;
         CSSFX.start();
         Pane root = loadFXML("HomePage");
-        Scene scene = new Scene(root);
+        scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.setTitle("DarkChessFX");
         primaryStage.show();
 
-        // TODO: Add zooming support
-        // fix aspect ratio and handle zoom
-        /*
-        final double aspectRadio = scene.getWidth() / scene.getHeight();
-        DoubleBinding heightRestriction = primaryStage.widthProperty().divide(aspectRadio).add(28);
-        primaryStage.minHeightProperty().bind(heightRestriction);
-        primaryStage.maxHeightProperty().bind(heightRestriction);
-        */
-        // letterbox(scene, root);
+        letterbox(scene); // handle zooming
     }
 
     public Pane loadFXML(String filename) {
@@ -64,8 +57,7 @@ public class App extends Application {
     {
 //        System.out.println("Changing page to " + newPage);
         Pane root = loadFXML(newPage);
-        Scene scene = new Scene(root);
-        primaryStage.setScene(scene);
+        scene.setRoot(root);
     }
 
     public void startGameFinish(Game game) {
@@ -75,8 +67,7 @@ public class App extends Application {
             loader.setLocation(DarkchessFXResourcesLoader.loadURL("fxml/GamePage.fxml"));
             loader.setControllerFactory(c -> new GamePageController(game, this));
             Pane root = loader.load();
-            Scene scene = new Scene(root);
-            primaryStage.setScene(scene);
+            scene.setRoot(root);
         } catch (IOException e) {
 //          System.err.println("Failed to load GamePage.fxml");
             e.printStackTrace();
@@ -86,11 +77,15 @@ public class App extends Application {
     public void loadGameFinish(Game game) {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(DarkchessFXResourcesLoader.loadURL("fxml/StartGamePage.fxml"));
-            loader.setControllerFactory(c -> new StartGamePageController(game, this));
+            if (!game.getGameConfig().isReplay) {
+                loader.setLocation(DarkchessFXResourcesLoader.loadURL("fxml/StartGamePage.fxml"));
+                loader.setControllerFactory(c -> new StartGamePageController(game, this));
+            } else {
+                loader.setLocation(DarkchessFXResourcesLoader.loadURL("fxml/GamePage.fxml"));
+                loader.setControllerFactory(c -> new GamePageController(game, this));
+            }
             Pane root = loader.load();
-            Scene scene = new Scene(root);
-            primaryStage.setScene(scene);
+            scene.setRoot(root);
         } catch (IOException e) {
 //          System.err.println("Failed to load StartGamePage.fxml");
             e.printStackTrace();
@@ -117,53 +112,24 @@ public class App extends Application {
 
     // Zooming functions
 
-    private void letterbox(final Scene scene, final Pane contentPane) {
+    // A function that listens the stage size change, locks its ratio and changes font-size accordingly
+    private void letterbox(Scene scene) {
         final double initWidth = scene.getWidth();
         final double initHeight = scene.getHeight();
-        final double ratio = initWidth / initHeight;
+        final double initFontSize = 10;
 
-        SceneSizeChangeListener sizeListener = new SceneSizeChangeListener(scene, ratio, initHeight, initWidth, contentPane);
-        scene.widthProperty().addListener(sizeListener);
-        scene.heightProperty().addListener(sizeListener);
-    }
-
-    private static class SceneSizeChangeListener implements ChangeListener<Number> {
-        private final Scene scene;
-        private final double ratio;
-        private final double initHeight;
-        private final double initWidth;
-        private final Pane contentPane;
-
-        public SceneSizeChangeListener(Scene scene, double ratio, double initHeight, double initWidth, Pane contentPane) {
-            this.scene = scene;
-            this.ratio = ratio;
-            this.initHeight = initHeight;
-            this.initWidth = initWidth;
-            this.contentPane = contentPane;
-        }
-
-        @Override
-        public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
-            final double newWidth = scene.getWidth();
-            final double newHeight = scene.getHeight();
-
-            double scaleFactor =
-                    newWidth / newHeight > ratio
-                            ? newHeight / initHeight
-                            : newWidth / initWidth;
-
-            if (scaleFactor >= 1) {
-                Scale scale = new Scale(scaleFactor, scaleFactor);
+        ChangeListener<Number> stageSizeListener = new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                double factor = Math.min(scene.getWidth() / initWidth, scene.getHeight() / initHeight);
+                Scale scale = new Scale(factor, factor);
                 scale.setPivotX(0);
                 scale.setPivotY(0);
                 scene.getRoot().getTransforms().setAll(scale);
-
-                contentPane.setPrefWidth(newWidth / scaleFactor);
-                contentPane.setPrefHeight(newHeight / scaleFactor);
-            } else {
-                contentPane.setPrefWidth(Math.max(initWidth, newWidth));
-                contentPane.setPrefHeight(Math.max(initHeight, newHeight));
+                scene.getRoot().setStyle("-fx-font-size: " + initFontSize * factor + "px;");
             }
-        }
+        };
+        scene.widthProperty().addListener(stageSizeListener);
+        scene.heightProperty().addListener(stageSizeListener);
     }
 }

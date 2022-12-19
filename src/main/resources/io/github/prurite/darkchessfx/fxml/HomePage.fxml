@@ -22,8 +22,9 @@
     </VBox>
     <VBox fx:id="selectModeButtons" styleClass="homeButtonGroup">
         <Button text="New Game" styleClass="homePageButton" onAction="#toNewGame"/>
-        <Button text="Load Game" styleClass="homePageButton" />
+        <Button text="Load Game" styleClass="homePageButton" onAction="#loadGame"/>
         <Button text="Join LAN Game" styleClass="homePageButton" />
+        <Button text="Load Replay" styleClass="homePageButton" onAction="#loadReplay" />
         <Button text="←" styleClass="homePageButton, homePageButtonSmall" onAction="#returnToHome"/>
     </VBox>
 </VBox>

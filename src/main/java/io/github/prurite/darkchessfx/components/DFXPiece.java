@@ -1,6 +1,7 @@
 package io.github.prurite.darkchessfx.components;
 
 import io.github.prurite.darkchessfx.DarkchessFXResourcesLoader;
+import io.github.prurite.darkchessfx.game.PerformGame.Chess;
 import io.github.prurite.darkchessfx.game.PerformGame.Piece;
 import io.github.prurite.darkchessfx.game.PerformGame.Side;
 import io.github.prurite.darkchessfx.model.ChessSide;
@@ -28,20 +29,37 @@ public class DFXPiece extends StackPane {
         initializeView();
     }
 
-    public void updatePiece(Piece piece) {
-        side = piece.getSide() == Side.RED ? ChessSide.RED : ChessSide.BLACK;
-        switch (piece.getType()) {
-            case General -> type = ChessType.GENERAL;
-            case Advisor -> type = ChessType.ADVISOR;
-            case Minister -> type = ChessType.ELEPHANT;
-            case Horse -> type = ChessType.HORSE;
-            case Chariot -> type = ChessType.CHARIOT;
-            case Cannon -> type = ChessType.CANNON;
-            case Soldier -> type = ChessType.SOLDIER;
-            case Unknown -> type = ChessType.COVERED;
-            case Empty -> type = ChessType.EMPTY;
+    public ChessType toDFXChessType(Chess type) {
+        ChessType res;
+        switch (type) {
+            case General -> res = ChessType.GENERAL;
+            case Advisor -> res = ChessType.ADVISOR;
+            case Minister -> res = ChessType.ELEPHANT;
+            case Horse -> res = ChessType.HORSE;
+            case Chariot -> res = ChessType.CHARIOT;
+            case Cannon -> res = ChessType.CANNON;
+            case Soldier -> res = ChessType.SOLDIER;
+            case Unknown -> res = ChessType.COVERED;
+            // case Empty -> res = ChessType.EMPTY;
+            default -> res = ChessType.EMPTY;
+        }
+        return res;
+    }
+
+    public boolean updatePiece(Piece piece) {
+        boolean changed = false;
+        ChessType newType = toDFXChessType(piece.getType());
+        if (newType != type) {
+            type = newType;
+            changed = true;
+        }
+        ChessSide newSide = piece.getSide() == Side.RED ? ChessSide.RED : ChessSide.BLACK;
+        if (newSide != side) {
+            side = newSide;
+            changed = true;
         }
         initializeView();
+        return changed;
     }
 
     private void initializeView() {

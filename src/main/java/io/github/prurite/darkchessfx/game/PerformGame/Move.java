@@ -1,10 +1,19 @@
 package io.github.prurite.darkchessfx.game.PerformGame;
 
+import io.github.prurite.darkchessfx.model.Pos;
+
 public class Move {
     int curx, cury;
     int newx, newy;
 
     public Move() { curx = cury = newx = newy = -1; }
+    public Move(Pos pos1, Pos pos2) {
+        curx = pos1.getX();
+        cury = pos1.getY();
+        newx = pos2.getX();
+        newy = pos2.getY();
+    }
+
     public Move(int x, int y,int a, int b) {
         curx = x;
         cury = y;

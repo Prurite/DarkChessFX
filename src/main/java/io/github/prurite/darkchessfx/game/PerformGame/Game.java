@@ -90,7 +90,7 @@ public class Game implements GameInterface {
         for(int i=0; i<4; ++i)
             System.arraycopy(chessboard[i], 0, a[i], 0, a[i].length);
         for(Pos p : revealedPos) {
-            a[p.x][p.y] = revealedChessboard[p.x][p.y];
+            a[p.getX()][p.getY()] = revealedChessboard[p.getX()][p.getY()];
         }
         return a;
     }
@@ -113,7 +113,7 @@ public class Game implements GameInterface {
     }
     public ArrayList<Pos> getValidMoves(Pos pos) {
         ArrayList<Pos> res = new ArrayList<>();
-        int x = pos.x, y = pos.y;
+        int x = pos.getX(), y = pos.getY();
         Piece piece = chessboard[x][y];
         if(piece.getType() == Chess.Unknown || piece.getType() == Chess.Empty) return null;
         PlayerInGame p = players[players[1].getSide() == piece.getSide() ? 1 : 0];

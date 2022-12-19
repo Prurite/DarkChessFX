@@ -63,7 +63,7 @@ public class Main extends Application {
                     }
 
                     if(game.checkEndGame()) {
-                        game.endGame();
+                        // game.endGame();
                     }
 
                     // set cur as qryCur, this is for local game only
@@ -133,7 +133,7 @@ public class Main extends Application {
                     //debug.setText(game.debugChessboard());
 
                     if(game.checkEndGame()) {
-                        game.endGame();
+                        // game.endGame();
                     }
                     assert(cur == 0);
                     if(!p[cur].equals(game.qryCur())) {
@@ -165,7 +165,7 @@ public class Main extends Application {
         });
 
         Button withdraw = new Button ("Withdraw");
-        withdraw.setOnAction(e -> {
+        /* withdraw.setOnAction(e -> {
             Move t = game.withdraw();
             label.setText("withdraw " + t.getCurx() + " " + t.getCury() + " " + t.getNewx() + " " + t.getNewy());
             playeris.setText("player " + game.qryCur().getPlayer().getName() + " is playing");
@@ -175,7 +175,7 @@ public class Main extends Application {
             UPD(buttons, game, t.getCurx(), t.getCury());
             if(t.getNewx() != -1) UPD(buttons, game, t.getNewx(), t.getNewy());
 
-        });
+        }); */
 
         VBox root = new VBox(grid, changePlayer, withdraw, label, playeris, youAre, explainSide, score/*, debug*/, eaten);
         Scene scene = new Scene(root, 800, 1500);
@@ -230,7 +230,7 @@ public class Main extends Application {
                     //debug.setText(game.debugChessboard());
 
                     if(game.checkEndGame()) {
-                        game.endGame();
+                        // game.endGame();
                         return;
                    }
                     assert(cur == 0);
@@ -270,7 +270,7 @@ public class Main extends Application {
         });
 
         Button withdraw = new Button ("Withdraw");
-        withdraw.setOnAction(e -> {
+        /* withdraw.setOnAction(e -> {
             Move t = game.withdraw();
             label.setText("withdraw " + t.getCurx() + " " + t.getCury() + " " + t.getNewx() + " " + t.getNewy());
             playeris.setText("player " + game.qryCur().getPlayer().getName() + " is playing");
@@ -280,7 +280,7 @@ public class Main extends Application {
             UPD(buttons, game, t.getCurx(), t.getCury());
             if(t.getNewx() != -1) UPD(buttons, game, t.getNewx(), t.getNewy());
 
-        });
+        }); */
 
         VBox root = new VBox(grid, changePlayer, withdraw, label, playeris, youAre, explainSide, score/*, debug*/, eaten);
         Scene scene = new Scene(root, 800, 1500);
