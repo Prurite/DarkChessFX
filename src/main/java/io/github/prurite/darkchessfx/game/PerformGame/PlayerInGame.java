@@ -75,7 +75,7 @@ public class PlayerInGame {
     }
 
     public String toString() {
-        return player.getName() + " " + side.toString() + " " + totalTime + " " + scoreProperty.getValue();
+        return player.getName() + " " + side.toString() + " " + totalTime + " " + scoreProperty.get();
     }
     public void init(String s) {
         String[] ss = s.split(" ");
