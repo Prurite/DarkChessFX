@@ -350,6 +350,7 @@ public class Game implements GameInterface {
     private void eatPiece(Piece x,int sgn) {
         if(sgn == 1) eatenPieces.eatPiece(x);
         players[(x.getSide() == players[1].getSide() ? 0 : 1)].addScore(x.getType().getScore() * sgn);
+        //System.out.println("SCORE:" + (sgn * x.getType().getScore()) + " " + players[(x.getSide() == players[1].getSide() ? 0 : 1)].getScore());
     }
 
     public void endGame(Player p1, Player p2, PlayerInGame winner) {

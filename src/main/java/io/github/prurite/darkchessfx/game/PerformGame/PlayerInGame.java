@@ -32,7 +32,10 @@ public class PlayerInGame {
         return player.getNameProperty();
     }
 
-    public void addScore(int x) { scoreProperty.add(x); }
+    public void addScore(int x) {
+        scoreProperty.set(scoreProperty.get() + x);
+        //System.out.printf("DEBUG: ADD SCORE %d -> %d  \n", x, scoreProperty.get());
+    }
     public void subTotalTime(double t) { totalTime += t; }
 
     public Player getPlayer() {
@@ -54,7 +57,10 @@ public class PlayerInGame {
     public SimpleIntegerProperty getScoreProperty() {
         return scoreProperty;
     }
-    public int getScore() { return scoreProperty.getValue(); }
+    public int getScore() {
+        //System.out.printf("DUBUG : GET SCORE %d\n", scoreProperty.get());
+        return scoreProperty.get();
+    }
 
     public void setScore(int score) {
         this.scoreProperty.set(score);
