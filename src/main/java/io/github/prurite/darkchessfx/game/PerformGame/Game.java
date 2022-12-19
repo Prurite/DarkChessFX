@@ -185,6 +185,8 @@ public class Game implements GameInterface {
         new Piece(Chess.Soldier, Side.BLACK),
     };
 
+    public void startGame() {}
+
     public PlayerInGame[] startGame(Player p1, Player p2) {
         revealedChessboard = new Piece[4][8];
         ArrayList<Piece> tmp = new ArrayList<Piece>();
@@ -256,7 +258,7 @@ public class Game implements GameInterface {
     public void hidePiece(Pos pos) {
         revealedPos.remove(pos);
     }
-    public void hideAllPiece() {
+    public void hideAllPieces() {
         revealedPos.clear();
     }
 

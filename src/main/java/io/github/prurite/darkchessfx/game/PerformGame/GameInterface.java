@@ -46,8 +46,8 @@ public interface GameInterface {
     void setPlayerInGame1(PlayerInGame p);
     void setPlayerInGame2(PlayerInGame p);
     void surrender(Player p1, Player p2, PlayerInGame p);
-    void revealPiece(Pair pos); // When this method is called, the piece at pos will be revealed
-    void hidePiece(Pair pos);
+    void revealPiece(Pos pos); // When this method is called, the piece at pos will be revealed
+    void hidePiece(Pos pos);
     void hideAllPieces();
     void startGame();
     // When this is called, the game will start
