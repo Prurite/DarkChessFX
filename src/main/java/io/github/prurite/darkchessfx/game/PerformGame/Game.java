@@ -40,6 +40,24 @@ public class Game implements GameInterface {
         currentMovePos = -1;
         revealedPos = new ArrayList<>();
 
+        revealedChessboard = new Piece[4][8];
+        ArrayList<Piece> tmp = new ArrayList<Piece>();
+        for(int i=0; i<32; ++i) tmp.add(new Piece(arrayOfPieces[i].getType(), arrayOfPieces[i].getSide()));
+        Collections.shuffle(tmp);
+        for(int i=0; i<32; ++i) revealedChessboard[i >> 3][i & 7] = tmp.get(i);
+
+        chessboard = new Piece[4][8];
+        System.out.println("Starting game"); // DEBUG
+        for(int i=0; i<4; ++i) for(int j=0; j<8; ++j) chessboard[i][j] = new Piece(Chess.Unknown, Side.RED);
+        eatenPieces = new EatenPieces();
+        revealedPieces = new EatenPieces();
+        lastChessboard = new ArrayList<>();
+        lastEatenPieces = new ArrayList<>();
+        lastMove = new ArrayList<>();
+
+        initTime();
+
+        curMove = new Move();
     }
     public Game() {
         this(new GameConfig());
@@ -200,8 +218,6 @@ public class Game implements GameInterface {
     public void loadGame(File file) throws IOException, IllegalFormatCodePointException {
         BufferedReader reader = new BufferedReader(new FileReader(file));
 
-        System.out.println("FINE");
-
         config.init(reader.readLine());
 
 
@@ -241,7 +257,6 @@ public class Game implements GameInterface {
             lastEatenPieces.add(e);
         }
 
-        System.out.println("FINE");
         currentMovePos = Integer.parseInt(reader.readLine());
 
         lastTurnTime = Long.parseLong(reader.readLine());
@@ -321,25 +336,6 @@ public class Game implements GameInterface {
     public void startGame() {
         setGameConfig(config);
         //setPlayers(config);
-
-        revealedChessboard = new Piece[4][8];
-        ArrayList<Piece> tmp = new ArrayList<Piece>();
-        for(int i=0; i<32; ++i) tmp.add(new Piece(arrayOfPieces[i].getType(), arrayOfPieces[i].getSide()));
-        Collections.shuffle(tmp);
-        for(int i=0; i<32; ++i) revealedChessboard[i >> 3][i & 7] = tmp.get(i);
-
-        chessboard = new Piece[4][8];
-        System.out.println("Starting game"); // DEBUG
-        for(int i=0; i<4; ++i) for(int j=0; j<8; ++j) chessboard[i][j] = new Piece(Chess.Unknown, Side.RED);
-        eatenPieces = new EatenPieces();
-        revealedPieces = new EatenPieces();
-        lastChessboard = new ArrayList<>();
-        lastEatenPieces = new ArrayList<>();
-        lastMove = new ArrayList<>();
-
-        initTime();
-
-        curMove = new Move();
     }
 //    public String firstMove(PlayerInGame u, int x, int y) {
 //        if(u.getPlayer().getName() != players[currentPlayer].getPlayer().getName()) return MoveChessMessage.NotCurrentTurnPlayer.getInfo();
