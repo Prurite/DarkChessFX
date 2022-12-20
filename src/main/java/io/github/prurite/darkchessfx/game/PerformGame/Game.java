@@ -337,10 +337,15 @@ public class Game implements GameInterface {
             new Piece(Chess.Soldier, Side.BLACK),
     };
     private void setPlayers(GameConfig config) {
-        players = new PlayerInGame[2];
-        players[0] = new PlayerInGame(new Player(config.player1), null);
-        players[1] = new PlayerInGame(new Player(config.player2), null);
-        currentPlayer = 0;
+        if(players == null || players[0] == null) {
+            players = new PlayerInGame[2];
+            players[0] = new PlayerInGame(new Player(config.player1), null);
+            players[1] = new PlayerInGame(new Player(config.player2), null);
+        }
+        else {
+            players[0].getPlayer().setName(config.player1);
+            players[1].getPlayer().setName(config.player2);
+        }
     }
     public void startGame() {
         setGameConfig(config);
