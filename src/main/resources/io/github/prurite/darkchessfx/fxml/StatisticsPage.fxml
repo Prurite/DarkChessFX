@@ -15,7 +15,7 @@
                 <SVGPath content="m 0 0 h 20 m -10 10 l -10 -10 l 10 -10" styleClass="buttonIcon" />
             </graphic>
         </Button>
-        <Label styleClass="title" text="Settings" />
+        <Label styleClass="title" text="Statistics" />
     </HBox>
     <VBox styleClass="card">
         <!-- Table with player statistics -->

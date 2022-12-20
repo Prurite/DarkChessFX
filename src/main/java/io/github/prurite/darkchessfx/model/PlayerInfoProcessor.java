@@ -1,7 +1,6 @@
 package io.github.prurite.darkchessfx.model;
 
 import java.io.*;
-import java.nio.file.Path;
 import java.util.ArrayList;
 
 public class PlayerInfoProcessor implements  PlayerInfoProcessorInterface {
@@ -46,7 +45,7 @@ public class PlayerInfoProcessor implements  PlayerInfoProcessorInterface {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
             for(Player p : players) {
-                writer.write(p.getName() + " " + p.getGameCount() + " " + p.getScoredGameCount() + " " + p.getWinnedGameCount() + " " + p.getTotalGameTime() + "\n");
+                writer.write(p.getName() + " " + p.getGameCount() + " " + p.getScoredGameCount() + " " + p.getWonGameCount() + " " + p.getTotalGameTime() + "\n");
                 writer.newLine();
             }
             writer.close();
@@ -63,7 +62,7 @@ public class PlayerInfoProcessor implements  PlayerInfoProcessorInterface {
                 Player player = new Player(info[0]);
                 player.setGameCount(Integer.parseInt(info[1]));
                 player.setScoredGameCount(Integer.parseInt(info[2]));
-                player.setWinnedGameCount(Integer.parseInt(info[3]));
+                player.setWonGameCount(Integer.parseInt(info[3]));
                 player.setTotalGameTime(Double.parseDouble(info[4]));
                 players.add(player);
             }
