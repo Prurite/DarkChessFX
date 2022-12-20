@@ -399,6 +399,7 @@ public class Game implements GameInterface {
     }
 
     public void endGame(Player p1, Player p2, PlayerInGame winner) {
+        System.out.println("winner: " +  winner.getName());
         double curTime = getCurrentTime();
         if(p2.getName().equals(players[0].getNameProperty().getValue())) {
             Player tmp = p1;
@@ -410,7 +411,11 @@ public class Game implements GameInterface {
         p2.addTime(curTime - startTime);
         if(scored) { p1.addScoredGameCount(); p2.addScoredGameCount(); }
         if(winner != null) {
-            winner.getPlayer().addWinnedGameCount();
+            if(p1.getName().equals(winner.getName())) {
+                p1.addWinnedGameCount();
+            } else {
+                p2.addWinnedGameCount();
+            }
             //    GameResultWindow.showResult(players[winner]);
         }
         //else GameResultWindow.showResult(null);

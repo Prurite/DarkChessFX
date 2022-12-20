@@ -29,6 +29,7 @@ public class PlayerInfoProcessor implements  PlayerInfoProcessorInterface {
 //        } catch (Exception e) {}
 //    }
     public Player getPlayer(String name) {
+        System.out.println("name:" + name);
         for(Player p : players) {
             if(p.getName().equals(name)) {
                 return p;
