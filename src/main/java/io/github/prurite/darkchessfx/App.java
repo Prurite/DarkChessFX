@@ -114,6 +114,7 @@ public class App extends Application {
                 loader.setLocation(DarkchessFXResourcesLoader.loadURL("fxml/StartGamePage.fxml"));
                 loader.setControllerFactory(c -> new StartGamePageSimpleController(game, this));
             } else {
+                game.startGame();
                 loader.setLocation(DarkchessFXResourcesLoader.loadURL("fxml/GamePage.fxml"));
                 loader.setControllerFactory(c -> new GamePageController(game, this));
             }
