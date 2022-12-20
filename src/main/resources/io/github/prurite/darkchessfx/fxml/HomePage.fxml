@@ -18,7 +18,7 @@
         <Button text="Start game" styleClass="homePageButton, mainButton" onAction="#selectMode"/>
         <Button text="Statistics" styleClass="homePageButton" onAction="#toStatistics" />
         <Button text="Settings" styleClass="homePageButton" onAction="#toSettings" />
-        <Button text="About" styleClass="homePageButton" />
+        <!-- <Button text="About" styleClass="homePageButton" /> -->
     </VBox>
     <VBox fx:id="selectModeButtons" styleClass="startGameButtonGroup">
         <Button text="New Game" styleClass="homePageButton, startGameButton" onAction="#toNewGame"/>

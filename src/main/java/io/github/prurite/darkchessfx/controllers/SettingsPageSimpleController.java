@@ -30,7 +30,7 @@ public class SettingsPageSimpleController implements Initializable, DFXSimpleCon
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Initialize color scheme combo box
-        colorSchemeComboBox.getItems().addAll("LTCatBlue", "LemonLime");
+        colorSchemeComboBox.getItems().addAll("LTCatBlue", "LemonLime", "LuckyPurple");
         colorSchemeComboBox.getSelectionModel().select(0);
     }
 
