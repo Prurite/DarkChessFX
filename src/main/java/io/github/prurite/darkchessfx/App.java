@@ -3,6 +3,7 @@ package io.github.prurite.darkchessfx;
 import fr.brouillard.oss.cssfx.CSSFX;
 import io.github.prurite.darkchessfx.controllers.*;
 import io.github.prurite.darkchessfx.game.PerformGame.Game;
+import io.github.prurite.darkchessfx.model.Player;
 import io.github.prurite.darkchessfx.model.PlayerInfoProcessor;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -39,8 +40,12 @@ public class App extends Application {
         playerList = new PlayerInfoProcessor();
         File f = new File("playerInfo.txt");
         try {
-            f.createNewFile();
+            boolean b = f.createNewFile();
+            System.out.println(b);
             playerList.readFromFile(f);
+            // print all player names
+            for (Player p : playerList.getPlayers())
+                System.out.println(p.getName());
         } catch (IOException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");

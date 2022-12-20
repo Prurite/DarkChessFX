@@ -25,7 +25,7 @@ tasks.withType(JavaCompile) {
 
 application {
     mainModule = 'io.github.prurite.darkchessfx'
-    mainClass = 'io.github.prurite.darkchessfx.HelloApplication'
+    mainClass = 'io.github.prurite.darkchessfx.App'
 }
 
 javafx {
