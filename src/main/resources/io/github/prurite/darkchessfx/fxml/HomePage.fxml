@@ -12,7 +12,7 @@
 <VBox  styleClass="rootPane" stylesheets="@../css/HomePage.css"
       alignment="CENTER"
       xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="io.github.prurite.darkchessfx.controllers.HomePageController">
+      fx:controller="io.github.prurite.darkchessfx.controllers.HomePageSimpleController">
     <Label styleClass="gameTitle" text="Chinese Dark Chess" />
     <VBox fx:id="homeButtons" styleClass="homeButtonGroup">
         <Button text="Start game" styleClass="homePageButton, mainButton" onAction="#selectMode"/>

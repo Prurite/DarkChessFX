@@ -8,7 +8,7 @@
 <?import io.github.prurite.darkchessfx.components.DFXSwitch?>
 <VBox styleClass="rootPane" stylesheets="@../css/SettingsPage.css"
       xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="io.github.prurite.darkchessfx.controllers.SettingsPageController">
+      fx:controller="io.github.prurite.darkchessfx.controllers.SettingsPageSimpleController">
     <HBox styleClass="titleBar" HBox.Hgrow="ALWAYS" >
         <Button styleClass="themeButton" onAction="#returnToHome">
             <graphic>

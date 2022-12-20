@@ -6,7 +6,8 @@
 
 <?import io.github.prurite.darkchessfx.components.DFXSlider?>
 <?import io.github.prurite.darkchessfx.components.DFXSwitch?>
-<VBox styleClass="rootPane" stylesheets="@../css/StartGamePage.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.prurite.darkchessfx.controllers.StartGamePageController">
+<?import javafx.scene.Group?>
+<VBox styleClass="rootPane" stylesheets="@../css/StartGamePage.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.prurite.darkchessfx.controllers.StartGamePageSimpleController">
     <HBox styleClass="titleBar" HBox.Hgrow="ALWAYS" >
         <Button styleClass="themeButton" onAction="#returnToHome">
             <graphic>
@@ -63,18 +64,18 @@
             <Label styleClass="generalLabel" text="Difficulty" GridPane.rowIndex="0" GridPane.columnIndex="3" />
             <ComboBox styleClass="buttonLabel" GridPane.rowIndex="0" GridPane.columnIndex="4" maxWidth="Infinity"
                       fx:id="difficultyComboBox" promptText="Select..." />
-            <Label styleClass="generalLabel" text="Open on LAN" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+            <Label styleClass="generalLabel" text="Open on LAN" GridPane.rowIndex="1" GridPane.columnIndex="0" managed="false" visible="false" />
             <RadioButton styleClass="generalLabel" GridPane.rowIndex="1" GridPane.columnIndex="1"
-                         fx:id="lanNoButton" text="No" />
+                         fx:id="lanNoButton" text="No" managed="false" visible="false" />
             <RadioButton styleClass="generalLabel" GridPane.rowIndex="1" GridPane.columnIndex="2"
-                         fx:id="lanYesButton" text="Yes" />
-            <Label styleClass="generalLabel" text="Port" GridPane.rowIndex="1" GridPane.columnIndex="3" />
+                         fx:id="lanYesButton" text="Yes" managed="false" visible="false" />
+            <Label styleClass="generalLabel" text="Port" GridPane.rowIndex="1" GridPane.columnIndex="3" managed="false" visible="false" />
             <TextField styleClass="buttonLabel"  GridPane.rowIndex="1" GridPane.columnIndex="4"
-                       fx:id="portTextField" promptText="Port..." />
-            <Label styleClass="generalLabel" text="Password" GridPane.rowIndex="2" GridPane.columnIndex="2" />
-            <Label styleClass="generalLabel" text="(optional)" GridPane.rowIndex="2" GridPane.columnIndex="3" />
+                       fx:id="portTextField" promptText="Port..." managed="false" visible="false" />
+            <Label styleClass="generalLabel" text="Password" GridPane.rowIndex="2" GridPane.columnIndex="2" managed="false" visible="false" />
+            <Label styleClass="generalLabel" text="(optional)" GridPane.rowIndex="2" GridPane.columnIndex="3" managed="false" visible="false" />
             <TextField styleClass="buttonLabel"  GridPane.rowIndex="2" GridPane.columnIndex="4"
-                       fx:id="passwordTextField" promptText="Password..." />
+                       fx:id="passwordTextField" promptText="Password..." managed="false" visible="false" />
         </GridPane>
         <GridPane styleClass="grid3">
             <columnConstraints>

@@ -1,10 +1,7 @@
 package io.github.prurite.darkchessfx;
 
 import fr.brouillard.oss.cssfx.CSSFX;
-import io.github.prurite.darkchessfx.controllers.DFXController;
-import io.github.prurite.darkchessfx.controllers.GameBoardController;
-import io.github.prurite.darkchessfx.controllers.GamePageController;
-import io.github.prurite.darkchessfx.controllers.StartGamePageController;
+import io.github.prurite.darkchessfx.controllers.*;
 import io.github.prurite.darkchessfx.game.PerformGame.Game;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -64,7 +61,7 @@ public class App extends Application {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(DarkchessFXResourcesLoader.loadURL("fxml/" + filename + ".fxml"));
             Pane pane = loader.load();
-            ((DFXController)loader.getController()).setApp(this);
+            ((DFXSimpleController)loader.getController()).setApp(this);
 //            System.out.println("Loading " + filename + ".fxml");
             return pane;
         } catch (IOException e) {
@@ -83,12 +80,20 @@ public class App extends Application {
 
     public void startGameFinish(Game game) {
         try {
-            game.startGame();
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(DarkchessFXResourcesLoader.loadURL("fxml/GamePage.fxml"));
-            loader.setControllerFactory(c -> new GamePageController(game, this));
-            Pane root = loader.load();
-            scene.setRoot(root);
+            if (game.getGameConfig().lanPort == 0) {
+                game.startGame();
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(DarkchessFXResourcesLoader.loadURL("fxml/GamePage.fxml"));
+                loader.setControllerFactory(c -> new GamePageController(game, this));
+                Pane root = loader.load();
+                scene.setRoot(root);
+            } else {
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(DarkchessFXResourcesLoader.loadURL("fxml/LANWaitPage.fxml"));
+                loader.setControllerFactory(c -> new LANWaitPageController(game, this));
+                Pane root = loader.load();
+                scene.setRoot(root);
+            }
         } catch (IOException e) {
 //          System.err.println("Failed to load GamePage.fxml");
             e.printStackTrace();
@@ -100,7 +105,7 @@ public class App extends Application {
             FXMLLoader loader = new FXMLLoader();
             if (!game.getGameConfig().isReplay) {
                 loader.setLocation(DarkchessFXResourcesLoader.loadURL("fxml/StartGamePage.fxml"));
-                loader.setControllerFactory(c -> new StartGamePageController(game, this));
+                loader.setControllerFactory(c -> new StartGamePageSimpleController(game, this));
             } else {
                 loader.setLocation(DarkchessFXResourcesLoader.loadURL("fxml/GamePage.fxml"));
                 loader.setControllerFactory(c -> new GamePageController(game, this));

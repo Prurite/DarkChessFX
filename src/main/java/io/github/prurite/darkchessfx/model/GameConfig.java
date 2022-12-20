@@ -10,6 +10,7 @@ public class GameConfig {
     public int lanPort; // 0 for disable
     public int defaultLanPort = 10900;
     public boolean isReplay;
+    public String lanHostIp;
     public String lanPassword;
     public String player1;
     public String defaultPlayer1 = "Player1";

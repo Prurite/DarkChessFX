@@ -165,9 +165,20 @@ public class GamePageController implements Initializable {
             javafx.animation.Timeline timeline = new javafx.animation.Timeline(new KeyFrame(
                     Duration.millis(1000),
                     ae -> {
-                        game.aiMove();
-                        gameBoardController.setStatus(GameBoardController.BoardStatus.WAITING);
-                        updatePage();
+                        try {
+                            if (game.getWinner() == null)
+                                game.aiMove();
+                            gameBoardController.setStatus(GameBoardController.BoardStatus.WAITING);
+                            updatePage();
+                        } catch (Exception e) {
+                            // Show a dialog with full error message
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Error");
+                            String s = "Error performing AI move:";
+                            alert.setContentText(s + '\n' + e);
+                            alert.setHeight(400);
+                            alert.show();
+                        }
                     }));
             timeline.play();
         }
@@ -188,8 +199,7 @@ public class GamePageController implements Initializable {
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == saveReplay)
                 saveGame();
-            else
-                returnToHome();
+            returnToHome();
         }
     }
 

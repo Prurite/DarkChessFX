@@ -12,7 +12,7 @@ import javafx.scene.control.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class StartGamePageController implements Initializable, DFXController {
+public class StartGamePageSimpleController implements Initializable, DFXSimpleController {
     @FXML private RadioButton aiNoButton;
     @FXML private RadioButton aiYesButton;
     @FXML private RadioButton lanNoButton;
@@ -36,12 +36,12 @@ public class StartGamePageController implements Initializable, DFXController {
     private Game game;
     private GameConfig gameConfig;
 
-    public StartGamePageController() {
+    public StartGamePageSimpleController() {
         game = new Game();
         gameConfig = game.getGameConfig();
     }
 
-    public StartGamePageController(Game loadedGame, App app) {
+    public StartGamePageSimpleController(Game loadedGame, App app) {
         game = loadedGame;
         gameConfig = game.getGameConfig();
         this.app = app;
@@ -140,28 +140,32 @@ public class StartGamePageController implements Initializable, DFXController {
         AIGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == aiYesButton) {
                 difficultyComboBox.setDisable(false);
-                gameConfig.aiDifficulty = difficultyComboBox.getSelectionModel().getSelectedIndex() + 1;
+                gameConfig.aiDifficulty = difficultyComboBox.getSelectionModel().getSelectedIndex();
                 player2TextField.setText("AI");
                 player2TextField.setDisable(true);
                 scoreSlider.setValue(60);
                 scoreSlider.setDisable(true);
+                // Disable LAN
+                lanNoButton.setSelected(true);
+                lanYesButton.setDisable(true);
+                portTextField.setDisable(true);
+                passwordTextField.setDisable(true);
             } else {
                 difficultyComboBox.setDisable(true);
                 gameConfig.aiDifficulty = 0;
-                player2TextField.setText(gameConfig.defaultPlayer2);
+                player2TextField.setText("");
                 player2TextField.setDisable(false);
                 scoreSlider.setDisable(false);
+                // Enable LAN
+                lanYesButton.setDisable(false);
+                portTextField.setDisable(false);
+                passwordTextField.setDisable(false);
             }
         });
-        if (gameConfig.aiDifficulty > 0)
-            AIGroup.selectToggle(aiYesButton);
-        else
-            AIGroup.selectToggle(aiNoButton);
 
         difficultyComboBox.getItems().addAll("Easy", "Medium", "Hard");
         difficultyComboBox.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
             gameConfig.aiDifficulty = newValue.intValue();
-            System.out.println("AI difficulty:" + gameConfig.aiDifficulty);
         });
 
         LANGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
@@ -169,19 +173,28 @@ public class StartGamePageController implements Initializable, DFXController {
                 portTextField.setDisable(false);
                 passwordTextField.setDisable(false);
                 player2TextField.setDisable(true);
+                player2TextField.setText("LAN");
+                // Disable AI
+                AIGroup.selectToggle(aiNoButton);
+                aiYesButton.setDisable(true);
+                difficultyComboBox.setDisable(true);
                 portTextField.setText("");
+                gameConfig.player2 = gameConfig.defaultPlayer2;
                 gameConfig.lanPort = gameConfig.defaultLanPort;
             } else {
                 portTextField.setDisable(true);
                 passwordTextField.setDisable(true);
                 player2TextField.setDisable(false);
+                // Enable AI
+                aiYesButton.setDisable(false);
+                if (gameConfig.aiDifficulty > 0)
+                    AIGroup.selectToggle(aiYesButton);
+                else
+                    AIGroup.selectToggle(aiNoButton);
+                difficultyComboBox.setDisable(false);
                 gameConfig.lanPort = 0;
             }
         });
-        if (gameConfig.lanPort > 0)
-            LANGroup.selectToggle(lanYesButton);
-        else
-            LANGroup.selectToggle(lanNoButton);
 
         portTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*"))
@@ -223,6 +236,17 @@ public class StartGamePageController implements Initializable, DFXController {
         player2TextField.setPromptText(gameConfig.defaultPlayer2);
         if (!gameConfig.player2.equals(gameConfig.defaultPlayer2))
             player2TextField.setText(gameConfig.player2);
+
+        if (gameConfig.aiDifficulty > 0) {
+            AIGroup.selectToggle(aiYesButton);
+            difficultyComboBox.getSelectionModel().select(gameConfig.aiDifficulty);
+        }
+        else
+            AIGroup.selectToggle(aiNoButton);
+        if (gameConfig.lanPort > 0)
+            LANGroup.selectToggle(lanYesButton);
+        else
+            LANGroup.selectToggle(lanNoButton);
     }
 
     public void returnToHome() {

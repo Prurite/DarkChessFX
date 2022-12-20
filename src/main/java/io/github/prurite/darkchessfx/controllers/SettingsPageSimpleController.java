@@ -8,10 +8,10 @@ import javafx.scene.control.ComboBox;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class SettingsPageController implements Initializable, DFXController {
+public class SettingsPageSimpleController implements Initializable, DFXSimpleController {
     @FXML private ComboBox<String> colorSchemeComboBox;
     private App app;
-    public SettingsPageController() {
+    public SettingsPageSimpleController() {
     }
 
     @Override

@@ -9,11 +9,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class HomePageController implements Initializable, DFXController {
+public class HomePageSimpleController implements Initializable, DFXSimpleController {
     private App app;
     @FXML
     private VBox homeButtons;

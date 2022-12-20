@@ -1,0 +1,10 @@
+@import "Common.css";
+
+.rootPane {
+    -fx-alignment: top-center;
+    -fx-spacing: 3em;
+}
+
+.card {
+    -fx-max-width: 120em;
+}
