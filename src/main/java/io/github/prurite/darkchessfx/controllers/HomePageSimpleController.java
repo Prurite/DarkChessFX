@@ -59,7 +59,7 @@ public class HomePageSimpleController implements Initializable, DFXSimpleControl
             FileChooser fileChooser = new FileChooser();
             // Select a file
             fileChooser.setTitle("Load Game");
-            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Dark Chess Game", "*.dcg"));
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Dark Chess Game", "*.*"));
             fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
             File file = fileChooser.showOpenDialog(app.getPrimaryStage());
             if (file != null) {
