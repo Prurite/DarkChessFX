@@ -68,6 +68,7 @@ public class PlayerInfoProcessor implements  PlayerInfoProcessorInterface {
                 player.setWinningRate(Double.parseDouble(info[5]));
                 players.add(player);
             }
+            reader.close();
         } catch (Exception e) {}
     }
 }
