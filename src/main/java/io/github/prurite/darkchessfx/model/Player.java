@@ -33,7 +33,7 @@ public class Player {
     public void addTime(double x) { totalGameTime.set(totalGameTime.get() + x); }
     public void addGameCount() { gameCount.set(gameCount.get() + 1); }
     public void addScoredGameCount() { scoredGameCount.set(scoredGameCount.get() + 1); UPDwinningRate();}
-    public void addWinnedGameCount() { wonGameCount.set(wonGameCount.get() + 1); }
+    public void addWinnedGameCount() { wonGameCount.set(wonGameCount.get() + 1); UPDwinningRate(); }
 
     public String getName() {
         return name.getValue();
