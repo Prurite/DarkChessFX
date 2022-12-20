@@ -46,7 +46,7 @@ public class PlayerInfoProcessor implements  PlayerInfoProcessorInterface {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
             for(Player p : players) {
-                writer.write(p.getName() + " " + p.getGameCount() + " " + p.getScoredGameCount() + " " + p.getWonGameCount() + " " + p.getTotalGameTime() + p.getWinningRate());
+                writer.write(p.getName() + " " + p.getGameCount() + " " + p.getScoredGameCount() + " " + p.getWonGameCount() + " " + p.getTotalGameTime() + " " + p.getWinningRate());
                 writer.newLine();
             }
             writer.close();
