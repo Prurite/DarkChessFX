@@ -193,11 +193,25 @@ public class GamePageController implements Initializable {
         Player player1 = app.getPlayerList().getPlayer(game.getPlayerInGame1().getNameProperty().getName());
         Player player2 = app.getPlayerList().getPlayer(game.getPlayerInGame2().getNameProperty().getName());
         game.endGame(player1, player2);
+        File f = new File("playerInfo.txt");
+        try {
+            f.createNewFile();
+            app.getPlayerList().saveToFile(f);
+        } catch (IOException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error saving player info file");
+            alert.setContentText(e.toString());
+            alert.showAndWait();
+        }
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Game Over");
         alert.setHeaderText("Game Over");
-        alert.setContentText(game.getWinner().getNameProperty().get() + " wins!");
+        if (game.getWinner() != null)
+            alert.setContentText(game.getWinner().getNameProperty().get() + " wins!");
+        else
+            alert.setContentText("Draw!");
         ButtonType saveReplay = new ButtonType("Save Replay");
         ButtonType returnToHome = new ButtonType("Return to Home");
         alert.getButtonTypes().setAll(saveReplay, returnToHome);

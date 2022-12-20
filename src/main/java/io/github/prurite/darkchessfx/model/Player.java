@@ -3,13 +3,12 @@ package io.github.prurite.darkchessfx.model;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 
 public class Player {
     private SimpleStringProperty name;
     private SimpleIntegerProperty gameCount;
     private SimpleIntegerProperty scoredGameCount;
-    private SimpleIntegerProperty winnedGameCount;
+    private SimpleIntegerProperty wonGameCount;
     private SimpleDoubleProperty totalGameTime;
     private SimpleDoubleProperty winningRate;
 
@@ -17,9 +16,9 @@ public class Player {
         this.name = new SimpleStringProperty(s);
         this.gameCount = new SimpleIntegerProperty(0);
         this.scoredGameCount = new SimpleIntegerProperty(0);
-        this.winnedGameCount = new SimpleIntegerProperty(0);
+        this.wonGameCount = new SimpleIntegerProperty(0);
         this.totalGameTime = new SimpleDoubleProperty(0);
-        this.winnedGameCount = new SimpleIntegerProperty(0);
+        this.wonGameCount = new SimpleIntegerProperty(0);
         this.winningRate = new SimpleDoubleProperty(0);
     }
 
@@ -30,11 +29,11 @@ public class Player {
         }
         return false;
     }
-    private void UPDwinningRate() { winningRate.set((double)winnedGameCount.get() / (double)scoredGameCount.get()); }
+    private void UPDwinningRate() { winningRate.set((double) wonGameCount.get() / (double)scoredGameCount.get()); }
     public void addTime(double x) { totalGameTime.set(totalGameTime.get() + x); }
     public void addGameCount() { gameCount.set(gameCount.get() + 1); }
     public void addScoredGameCount() { scoredGameCount.set(scoredGameCount.get() + 1); UPDwinningRate();}
-    public void addWinnedGameCount() { winnedGameCount.set(winnedGameCount.get() + 1); }
+    public void addWinnedGameCount() { wonGameCount.set(wonGameCount.get() + 1); }
 
     public String getName() {
         return name.getValue();
@@ -60,12 +59,12 @@ public class Player {
         this.scoredGameCount.set(scoredGameCount);
     }
 
-    public int getWinnedGameCount() {
-        return winnedGameCount.get();
+    public int getWonGameCount() {
+        return wonGameCount.get();
     }
 
-    public void setWinnedGameCount(int winnedGameCount) {
-        this.winnedGameCount.set(winnedGameCount);
+    public void setWonGameCount(int wonGameCount) {
+        this.wonGameCount.set(wonGameCount);
     }
 
     public double getTotalGameTime() {
@@ -88,7 +87,7 @@ public class Player {
         return scoredGameCount;
     }
     public SimpleIntegerProperty getWinnedGameCountProperty() {
-        return winnedGameCount;
+        return wonGameCount;
     }
     public SimpleDoubleProperty getTotalGameTimeProperty() {
         return totalGameTime;

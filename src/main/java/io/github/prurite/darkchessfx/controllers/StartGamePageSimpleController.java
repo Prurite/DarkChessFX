@@ -166,6 +166,10 @@ public class StartGamePageSimpleController implements Initializable, DFXSimpleCo
     }
 
     public void startGame() {
+        if (gameConfig.player1.equals(""))
+            gameConfig.player1 = gameConfig.defaultPlayer1;
+        if (gameConfig.player2.equals(""))
+            gameConfig.player2 = gameConfig.defaultPlayer2;
         app.startGameFinish(game);
     }
 }

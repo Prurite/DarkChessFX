@@ -50,8 +50,9 @@ public class StatisticsPageSimpleController implements Initializable, DFXSimpleC
         TableColumn scoredGameCountCol = new TableColumn("Scored Game Count");
         scoredGameCountCol.setCellValueFactory(new PropertyValueFactory<Player, Integer>("scoredGameCount"));
         TableColumn winCountCol = new TableColumn("Win Count");
-        winCountCol.setCellValueFactory(new PropertyValueFactory<Player, Integer>("winCount"));
+        winCountCol.setCellValueFactory(new PropertyValueFactory<Player, Integer>("wonGameCount"));
         statisticsTable.getColumns().addAll(nameCol, gameCountCol, scoredGameCountCol, winCountCol);
+        statisticsTable.setItems(playerObservableList);
     }
 
     @Override
