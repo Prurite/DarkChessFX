@@ -190,8 +190,8 @@ public class GamePageController implements Initializable {
     }
 
     public void endGame() {
-        Player player1 = app.getPlayerList().getPlayer(game.getPlayerInGame1().getNameProperty().getName());
-        Player player2 = app.getPlayerList().getPlayer(game.getPlayerInGame2().getNameProperty().getName());
+        Player player1 = app.getPlayerList().getPlayer(game.getPlayerInGame1().getNameProperty().get());
+        Player player2 = app.getPlayerList().getPlayer(game.getPlayerInGame2().getNameProperty().get());
         game.endGame(player1, player2);
         File f = new File("playerInfo.txt");
         try {

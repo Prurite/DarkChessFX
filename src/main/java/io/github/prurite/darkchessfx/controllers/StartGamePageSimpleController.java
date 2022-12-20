@@ -104,12 +104,14 @@ public class StartGamePageSimpleController implements Initializable, DFXSimpleCo
                 player2TextField.setDisable(true);
                 scoreSlider.setValue(60);
                 scoreSlider.setDisable(true);
+                withdrawToggle.setDisable(true);
             } else {
                 difficultyComboBox.setDisable(true);
                 gameConfig.aiDifficulty = -1;
                 player2TextField.setText("");
                 player2TextField.setDisable(false);
                 scoreSlider.setDisable(false);
+                withdrawToggle.setDisable(false);
             }
         });
 
@@ -170,6 +172,8 @@ public class StartGamePageSimpleController implements Initializable, DFXSimpleCo
             gameConfig.player1 = gameConfig.defaultPlayer1;
         if (gameConfig.player2.equals(""))
             gameConfig.player2 = gameConfig.defaultPlayer2;
+        if (gameConfig.aiDifficulty != -1)
+            gameConfig.allowWithdraw = false;
         app.startGameFinish(game);
     }
 }

@@ -30,18 +30,6 @@ public class StatisticsPageSimpleController implements Initializable, DFXSimpleC
     public void setApp(App app) {
         this.app = app;
         playerList = app.getPlayerList();
-        File f = new File("playerInfo.txt");
-        try {
-            f.createNewFile();
-            playerList.readFromFile(f);
-        } catch (IOException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Error reading player info file");
-            alert.setContentText(e.toString());
-            alert.showAndWait();
-            app.changePage("HomePage");
-        }
         ObservableList<Player> playerObservableList = FXCollections.observableArrayList(playerList.getPlayers());
         TableColumn nameCol = new TableColumn("Player Name");
         nameCol.setCellValueFactory(new PropertyValueFactory<Player, String>("name"));

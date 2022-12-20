@@ -9,10 +9,12 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.Pane;
 import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 
 public class App extends Application {
@@ -35,6 +37,17 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) {
         playerList = new PlayerInfoProcessor();
+        File f = new File("playerInfo.txt");
+        try {
+            f.createNewFile();
+            playerList.readFromFile(f);
+        } catch (IOException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error reading player info file");
+            alert.setContentText(e.toString());
+            alert.showAndWait();
+        }
         this.primaryStage = primaryStage;
         CSSFX.start();
         colorScheme = "LTCatBlue";
