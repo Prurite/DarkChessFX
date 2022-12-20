@@ -375,12 +375,13 @@ public class Game implements GameInterface {
         }
         //else GameResultWindow.showResult(null);
     }
+    PlayerInGame surrenderer;
     public void endGame(Player p1, Player p2) {
         PlayerInGame winner = (players[0].getScore() != players[1].getScore() && checkEndGame()) ? (players[0].getScore() > players[1].getScore() ? players[0] : players[1]) : null;
-        endGame(p1, p2, winner);
+        endGame(p1, p2, surrenderer == null ? winner : surrenderer);
     }
-    public void surrender(Player p1, Player p2, PlayerInGame p) {
-        endGame(p1, p2, players[p.getName().equals(players[0].getName()) ? 1 : 0]);
+    public void surrender(PlayerInGame p) {
+        surrenderer = players[0].getPlayer().getName().equals(p.getPlayer().getName()) ? players[1] : players[0];
     }
     public boolean checkEndGame() {
         return (players[0].getScore() >= WINNING_SCORE || players[1].getScore() >= WINNING_SCORE);
