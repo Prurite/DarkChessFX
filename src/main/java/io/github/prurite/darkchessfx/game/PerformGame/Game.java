@@ -300,6 +300,20 @@ public class Game implements GameInterface {
 
         reader.close();
 
+        int tmp = currentMovePos;
+
+        while(currentMovePos > 0) {
+            goToPrevMove();
+        }
+        while(currentMovePos + 1 < lastMove.size()) {
+            if(checkMove(getCurrentPlayer(), lastMove.get(currentMovePos + 1)) == null) {
+                goToNextMove();
+            } else {
+                throw new InvalidPreviousMove();
+            }
+        }
+
+
         resume();
 
     }
@@ -483,9 +497,14 @@ public class Game implements GameInterface {
         return count == 1;
     }
     private String checkMove(PlayerInGame player, Move move) {
+        if(move.getCurx() < 0 || move.getCurx() >= 4 || move.getCury() < 0 || move.getCury() >= 8) return MoveChessMessage.FirstClickError.getInfo();
         if(move.sameX() && move.sameY()) return MoveChessMessage.ChessToSamePosition.getInfo();
         if(player != players[currentPlayer]) return MoveChessMessage.NotCurrentTurnPlayer.getInfo();
         Piece u = chessboard[move.getCurx()][move.getCury()];
+        if(move.getNewx() == -1) {
+            if(chessboard[move.getCurx()][move.getCury()].getType() != Chess.Unknown) return MoveChessMessage.NeedSecondClick.getInfo();
+            else return null;
+        }
         Piece v = chessboard[move.getNewx()][move.getNewy()];
         if(u.getSide() != player.getSide()) return MoveChessMessage.FirstClickError.getInfo();
         if(u.getType() == Chess.Cannon) {

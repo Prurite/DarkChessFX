@@ -47,7 +47,7 @@ public class Piece {
     public void init(String s) throws InvalidChessType {
         String[] ss = s.split(" ");
         boolean flag = false;
-        for(Chess c : Chess.values()) if(c == Chess.valueOf(ss[0])) {
+        for(Chess c : Chess.values()) if(c.toString().equals(ss[0])) {
             type = c;
             flag = true;
             break;
