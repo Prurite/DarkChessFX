@@ -362,6 +362,13 @@ public class Game implements GameInterface {
     }
     public void startGame() {
         setGameConfig(config);
+
+        if(config.isReplay) {
+            while(currentMovePos > 0) {
+                goToPrevMove();
+            }
+        }
+
         //setPlayers(config);
     }
     //    public String firstMove(PlayerInGame u, int x, int y) {
