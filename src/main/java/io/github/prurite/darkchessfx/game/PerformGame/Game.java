@@ -89,9 +89,11 @@ public class Game implements GameInterface {
         private Piece[][] chessboard;
         public Board(Piece[][] chessboard) {
             this.chessboard = new Piece[4][8];
-            for(int i=0; i<4; ++i) {
-                System.arraycopy(chessboard[i], 0, this.chessboard[i], 0, this.chessboard[i].length);
-            }
+            for(int i=0; i<4; ++i)
+                for(int j=0; j<8; ++j) {
+                    this.chessboard[i][j] = new Piece(chessboard[i][j].getType(), chessboard[i][j].getSide());
+                }
+                //System.arraycopy(chessboard[i], 0, this.chessboard[i], 0, this.chessboard[i].length);
         }
 
         public Piece[][] getChessboard() {
@@ -455,9 +457,11 @@ public class Game implements GameInterface {
         currentPlayer = (currentPlayer + 1) % 2;
     }
     public void goToMove(int p) {
-        chessboard = lastChessboard.get(p).getChessboard();
-        eatenPieces = lastEatenPieces.get(p);
-        revealedPieces = lastRevealedPieces.get(p);
+        for(int i=0; i<4; ++i)
+        for(int j=0; j<8; ++j)
+            chessboard[i][j] = new Piece(lastChessboard.get(p).getChessboard()[i][j]);
+        eatenPieces = new EatenPieces( lastEatenPieces.get(p));
+        revealedPieces = new EatenPieces( lastRevealedPieces.get(p));
     }
     public void doLastMove(int p, int sgn) {
         Move move = lastMove.get(p);
@@ -543,18 +547,21 @@ public class Game implements GameInterface {
 //        lastMove.add(new Move(curMove.getCurx(), curMove.getCury(), curMove.getNewx(), curMove.getNewy()));
 //        lastChessboard.add(new Board(chessboard));
 //        lastEatenPieces.add(new EatenPieces(eatenPieces));
-        int pos = ++currentMovePos;
-        if(lastMove.size() <= currentMovePos) {
-            lastMove.add(new Move(curMove.getCurx(), curMove.getCury(), curMove.getNewx(), curMove.getNewy()));
-            lastChessboard.add(new Board(chessboard));
-            lastEatenPieces.add(new EatenPieces(eatenPieces));
-            lastRevealedPieces.add(new EatenPieces(revealedPieces));
-        } else {
-            lastMove.set(pos, new Move(curMove.getCurx(), curMove.getCury(), curMove.getNewx(), curMove.getNewy()));
-            lastChessboard.set(pos, new Board(chessboard));
-            lastEatenPieces.set(pos, new EatenPieces(eatenPieces));
-            lastRevealedPieces.set(pos, new EatenPieces(revealedPieces));
+        //int pos = ++currentMovePos;
+        currentMovePos ++;
+        if(lastMove.size() > 1) System.out.printf("CurrentMovePos: %d %d %s\n", currentMovePos, lastMove.size(), lastChessboard.get(lastChessboard.size()-2).getChessboard()[0][0].getType().toString());
+        while(lastMove.size() >= currentMovePos + 1) {
+            lastMove.remove(currentMovePos);
+            lastChessboard.remove(currentMovePos);
+            lastEatenPieces.remove(currentMovePos);
+            lastRevealedPieces.remove(currentMovePos);
         }
+        System.out.printf("CurrentMovePos: %d %d %s\n", currentMovePos, lastMove.size(), chessboard[0][0].getType().toString());
+        lastMove.add(new Move(curMove.getCurx(), curMove.getCury(), curMove.getNewx(), curMove.getNewy()));
+        lastChessboard.add(new Board(chessboard));
+        lastEatenPieces.add(new EatenPieces(eatenPieces));
+        lastRevealedPieces.add(new EatenPieces(revealedPieces));
+
     }
     public int getCurrentMovePos() { return currentMovePos; }
     public int getMoveCount() { return lastMove.size(); }
@@ -626,11 +633,12 @@ public class Game implements GameInterface {
         //int x = curMove.getCurx(), y = curMove.getCury();
         chessboard[x][y] = new Piece(revealedChessboard[x][y]);
         revealedPieces.eatPiece(revealedChessboard[x][y]);
+        curMove = new Move(x, y, -1, -1);
+        storeLastMove();
+
         updGUI(x, y);
         changePlayer();
 
-        curMove = new Move(x, y, -1, -1);
-        storeLastMove();
     }
 
     private void setCurMoveFrom(int x, int y) {
