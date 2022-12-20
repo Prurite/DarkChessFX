@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.SVGPath?>
+
+<?import io.github.prurite.darkchessfx.components.DFXSlider?>
+<?import io.github.prurite.darkchessfx.components.DFXSwitch?>
+<VBox styleClass="rootPane" stylesheets="@../css/StatisticsPage.css"
+      xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="io.github.prurite.darkchessfx.controllers.StatisticsPageSimpleController">
+    <HBox styleClass="titleBar" HBox.Hgrow="ALWAYS" >
+        <Button styleClass="themeButton" onAction="#returnToHome">
+            <graphic>
+                <SVGPath content="m 0 0 h 20 m -10 10 l -10 -10 l 10 -10" styleClass="buttonIcon" />
+            </graphic>
+        </Button>
+        <Label styleClass="title" text="Settings" />
+    </HBox>
+    <VBox styleClass="card">
+        <!-- Table with player statistics -->
+        <TableView fx:id="statisticsTable" styleClass="statisticsTable" />
+    </VBox>
+</VBox>

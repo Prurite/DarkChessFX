@@ -32,6 +32,7 @@ public class StartGamePageSimpleController implements Initializable, DFXSimpleCo
     @FXML private TextField passwordTextField;
     @FXML private TextField player1TextField;
     @FXML private TextField player2TextField;
+    private ToggleGroup aiToggleGroup;
     private App app;
     private Game game;
     private GameConfig gameConfig;
@@ -60,50 +61,10 @@ public class StartGamePageSimpleController implements Initializable, DFXSimpleCo
     public void initialize(URL location, ResourceBundle resources) {
         if (gameConfig == null)
             gameConfig = new GameConfig();
-        ToggleGroup AIGroup = new ToggleGroup(), LANGroup = new ToggleGroup();
-        aiNoButton.setToggleGroup(AIGroup);
-        aiYesButton.setToggleGroup(AIGroup);
-        lanNoButton.setToggleGroup(LANGroup);
-        lanYesButton.setToggleGroup(LANGroup);
+        aiToggleGroup = new ToggleGroup();
+        aiNoButton.setToggleGroup(aiToggleGroup);
+        aiYesButton.setToggleGroup(aiToggleGroup);
 
-        Slider turnTimeSlider = turnTimeDFXSlider.getSlider();
-        turnTimeSlider.setMin(0);
-        turnTimeSlider.setMax(300);
-        turnTimeSlider.setMajorTickUnit(60);
-        turnTimeSlider.setMinorTickCount(5);
-        turnTimeSlider.setSnapToTicks(true);
-        turnTimeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            gameConfig.maxTurnTime = newValue.intValue();
-            if (gameConfig.maxTurnTime > 0) {
-                turnTimeLabel.setText(gameConfig.maxTurnTime + "s");
-                turnTimeLabel.getStyleClass().remove("buttonLabel");
-                turnTimeLabel.getStyleClass().add("generalLabel");
-            } else {
-                turnTimeLabel.setText("Unlimited");
-                turnTimeLabel.getStyleClass().remove("generalLabel");
-                turnTimeLabel.getStyleClass().add("buttonLabel");
-            }
-        });
-        turnTimeSlider.setValue(gameConfig.maxTurnTime);
-        Slider totalTimeSlider = totalTimeDFXSlider.getSlider();
-        totalTimeSlider.setMin(0);
-        totalTimeSlider.setMax(3600);
-        totalTimeSlider.setMajorTickUnit(600);
-        totalTimeSlider.setMinorTickCount(9);
-        totalTimeSlider.setSnapToTicks(true);
-        totalTimeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            gameConfig.maxTotalTime = newValue.intValue();
-            if (gameConfig.maxTotalTime > 0) {
-                totalTimeLabel.setText(gameConfig.maxTotalTime / 60 + "min");
-                totalTimeLabel.getStyleClass().remove("buttonLabel");
-                totalTimeLabel.getStyleClass().add("generalLabel");
-            } else {
-                totalTimeLabel.setText("Unlimited");
-                totalTimeLabel.getStyleClass().remove("generalLabel");
-                totalTimeLabel.getStyleClass().add("buttonLabel");
-            }
-        });
-        totalTimeSlider.setValue(gameConfig.maxTotalTime);
         Slider scoreSlider = scoreDFXSlider.getSlider();
         scoreSlider.setMin(10);
         scoreSlider.setMax(100);
@@ -114,7 +75,6 @@ public class StartGamePageSimpleController implements Initializable, DFXSimpleCo
             gameConfig.minimumScore = newValue.intValue();
             scoreLabel.setText(gameConfig.minimumScore + "");
         });
-        scoreSlider.setValue(gameConfig.minimumScore);
 
         cheatToggle.getState().addListener((observable, oldValue, newValue) -> {
             gameConfig.allowCheat = newValue;
@@ -123,7 +83,7 @@ public class StartGamePageSimpleController implements Initializable, DFXSimpleCo
             else
                 unScoredLabel.setVisible(false);
         });
-        cheatToggle.getState().set(gameConfig.allowCheat);
+
         withdrawToggle.getState().addListener((observable, oldValue, newValue) -> {
             gameConfig.allowWithdraw = newValue;
             if (gameConfig.allowCheat || gameConfig.allowWithdraw)
@@ -131,89 +91,28 @@ public class StartGamePageSimpleController implements Initializable, DFXSimpleCo
             else
                 unScoredLabel.setVisible(false);
         });
-        withdrawToggle.getState().set(gameConfig.allowWithdraw);
-        if (gameConfig.allowCheat || gameConfig.allowWithdraw)
-            unScoredLabel.setVisible(true);
-        else
-            unScoredLabel.setVisible(false);
 
-        AIGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+        aiToggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == aiYesButton) {
                 difficultyComboBox.setDisable(false);
+                difficultyComboBox.getSelectionModel().select(0);
                 gameConfig.aiDifficulty = difficultyComboBox.getSelectionModel().getSelectedIndex();
                 player2TextField.setText("AI");
                 player2TextField.setDisable(true);
                 scoreSlider.setValue(60);
                 scoreSlider.setDisable(true);
-                // Disable LAN
-                lanNoButton.setSelected(true);
-                lanYesButton.setDisable(true);
-                portTextField.setDisable(true);
-                passwordTextField.setDisable(true);
             } else {
                 difficultyComboBox.setDisable(true);
-                gameConfig.aiDifficulty = 0;
+                gameConfig.aiDifficulty = -1;
                 player2TextField.setText("");
                 player2TextField.setDisable(false);
                 scoreSlider.setDisable(false);
-                // Enable LAN
-                lanYesButton.setDisable(false);
-                portTextField.setDisable(false);
-                passwordTextField.setDisable(false);
             }
         });
 
         difficultyComboBox.getItems().addAll("Easy", "Medium", "Hard");
         difficultyComboBox.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
             gameConfig.aiDifficulty = newValue.intValue();
-        });
-
-        LANGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue == lanYesButton) {
-                portTextField.setDisable(false);
-                passwordTextField.setDisable(false);
-                player2TextField.setDisable(true);
-                player2TextField.setText("LAN");
-                // Disable AI
-                AIGroup.selectToggle(aiNoButton);
-                aiYesButton.setDisable(true);
-                difficultyComboBox.setDisable(true);
-                portTextField.setText("");
-                gameConfig.player2 = gameConfig.defaultPlayer2;
-                gameConfig.lanPort = gameConfig.defaultLanPort;
-            } else {
-                portTextField.setDisable(true);
-                passwordTextField.setDisable(true);
-                player2TextField.setDisable(false);
-                // Enable AI
-                aiYesButton.setDisable(false);
-                if (gameConfig.aiDifficulty > 0)
-                    AIGroup.selectToggle(aiYesButton);
-                else
-                    AIGroup.selectToggle(aiNoButton);
-                difficultyComboBox.setDisable(false);
-                gameConfig.lanPort = 0;
-            }
-        });
-
-        portTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*"))
-                portTextField.setText(oldValue);
-        });
-        portTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            String text = portTextField.getText();
-            if (!text.equals("") && text.matches("\\d*")
-                    && Integer.parseInt(text) >= 1024 && Integer.parseInt(text) <= 65535)
-                gameConfig.lanPort = Integer.parseInt(text);
-            else {
-                portTextField.setText("");
-                gameConfig.lanPort = gameConfig.defaultLanPort;
-            }
-        });
-        portTextField.setPromptText(gameConfig.defaultLanPort + "");
-
-        passwordTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            gameConfig.lanPassword = newValue;
         });
 
         player1TextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -224,8 +123,6 @@ public class StartGamePageSimpleController implements Initializable, DFXSimpleCo
                 gameConfig.player1 = gameConfig.defaultPlayer1;
         });
         player1TextField.setPromptText(gameConfig.defaultPlayer1);
-        if (!gameConfig.player1.equals(gameConfig.defaultPlayer1))
-            player1TextField.setText(gameConfig.player1);
         player2TextField.textProperty().addListener((observable, oldValue, newValue) -> {
             gameConfig.player2 = newValue;
         });
@@ -234,19 +131,31 @@ public class StartGamePageSimpleController implements Initializable, DFXSimpleCo
                 gameConfig.player2 = gameConfig.defaultPlayer2;
         });
         player2TextField.setPromptText(gameConfig.defaultPlayer2);
+
+        updateFromGameConfig();
+    }
+    private void updateFromGameConfig()
+    {
+        scoreDFXSlider.getSlider().setValue(gameConfig.minimumScore);
+        cheatToggle.getState().set(gameConfig.allowCheat);
+        withdrawToggle.getState().set(gameConfig.allowWithdraw);
+        if (gameConfig.allowCheat || gameConfig.allowWithdraw)
+            unScoredLabel.setVisible(true);
+        else
+            unScoredLabel.setVisible(false);
+        if (!gameConfig.player1.equals(gameConfig.defaultPlayer1))
+            player1TextField.setText(gameConfig.player1);
         if (!gameConfig.player2.equals(gameConfig.defaultPlayer2))
             player2TextField.setText(gameConfig.player2);
-
-        if (gameConfig.aiDifficulty > 0) {
-            AIGroup.selectToggle(aiYesButton);
+        if (gameConfig.aiDifficulty >= 0) {
+            aiToggleGroup.selectToggle(aiYesButton);
             difficultyComboBox.getSelectionModel().select(gameConfig.aiDifficulty);
+            difficultyComboBox.setDisable(false);
         }
-        else
-            AIGroup.selectToggle(aiNoButton);
-        if (gameConfig.lanPort > 0)
-            LANGroup.selectToggle(lanYesButton);
-        else
-            LANGroup.selectToggle(lanNoButton);
+        else {
+            aiToggleGroup.selectToggle(aiNoButton);
+            difficultyComboBox.setDisable(true);
+        }
     }
 
     public void returnToHome() {

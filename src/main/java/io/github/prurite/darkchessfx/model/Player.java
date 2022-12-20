@@ -20,6 +20,7 @@ public class Player {
         this.winnedGameCount = new SimpleIntegerProperty(0);
         this.totalGameTime = new SimpleDoubleProperty(0);
         this.winnedGameCount = new SimpleIntegerProperty(0);
+        this.winningRate = new SimpleDoubleProperty(0);
     }
 
     @Override

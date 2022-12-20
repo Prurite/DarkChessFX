@@ -6,7 +6,7 @@ public class GameConfig {
     public int minimumScore;
     public boolean allowCheat;
     public boolean allowWithdraw;
-    public int aiDifficulty; // 0 for disable
+    public int aiDifficulty; // -1 for disable
     public int lanPort; // 0 for disable
     public int defaultLanPort = 10900;
     public boolean isReplay;
@@ -23,7 +23,7 @@ public class GameConfig {
         minimumScore = 60;
         allowCheat = false;
         allowWithdraw = false;
-        aiDifficulty = 0;
+        aiDifficulty = -1;
         lanPort = 0;
         lanPassword = "";
         player1 = defaultPlayer1;

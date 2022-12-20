@@ -80,4 +80,6 @@ public class HomePageSimpleController implements Initializable, DFXSimpleControl
     public void toSettings() {
         app.changePage("SettingsPage");
     }
+
+    public void toStatistics() { app.changePage("StatisticsPage"); }
 }

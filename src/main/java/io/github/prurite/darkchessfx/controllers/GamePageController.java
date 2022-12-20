@@ -4,6 +4,7 @@ import io.github.prurite.darkchessfx.App;
 import io.github.prurite.darkchessfx.game.PerformGame.Game;
 import io.github.prurite.darkchessfx.game.PerformGame.Side;
 import io.github.prurite.darkchessfx.model.GameConfig;
+import io.github.prurite.darkchessfx.model.Player;
 import io.github.prurite.darkchessfx.model.PlayerInfoProcessor;
 import javafx.animation.KeyFrame;
 import javafx.fxml.FXML;
@@ -83,7 +84,7 @@ public class GamePageController implements Initializable {
         gameArea.getChildren().add(gameBoard);
         if (gameConfig.lanPort != 0)
             gameType = GameType.LAN;
-        else if (gameConfig.aiDifficulty != 0)
+        else if (gameConfig.aiDifficulty != -1)
             gameType = GameType.AI;
         else
             gameType = GameType.LOCAL;
@@ -121,11 +122,12 @@ public class GamePageController implements Initializable {
     }
 
     public void askForDraw() {
-        // game.endGame(); TODO
+        endGame();
     }
 
     public void surrender() {
-        // game.surrender(game.getCurrentPlayer()); TODO
+        game.surrender(game.getCurrentPlayer());
+        endGame();
     }
 
     public void undoMove() {
@@ -160,7 +162,7 @@ public class GamePageController implements Initializable {
 
     public void performMoveFinish() {
         updatePage();
-        if (game.getWinner() == null && game.getGameConfig().aiDifficulty > 0 && game.getCurrentPlayer() == game.getPlayerInGame2()) {
+        if (game.getWinner() == null && gameType == GameType.AI && game.getCurrentPlayer() == game.getPlayerInGame2()) {
             gameBoardController.setStatus(GameBoardController.BoardStatus.LOCKED);
             javafx.animation.Timeline timeline = new javafx.animation.Timeline(new KeyFrame(
                     Duration.millis(1000),
@@ -184,23 +186,29 @@ public class GamePageController implements Initializable {
         }
     }
 
+    public void endGame() {
+        Player player1 = app.getPlayerList().getPlayer(game.getPlayerInGame1().getNameProperty().getName());
+        Player player2 = app.getPlayerList().getPlayer(game.getPlayerInGame2().getNameProperty().getName());
+        game.endGame(player1, player2);
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Game Over");
+        alert.setHeaderText("Game Over");
+        alert.setContentText(game.getWinner().getNameProperty().get() + " wins!");
+        ButtonType saveReplay = new ButtonType("Save Replay");
+        ButtonType returnToHome = new ButtonType("Return to Home");
+        alert.getButtonTypes().setAll(saveReplay, returnToHome);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == saveReplay)
+            saveGame();
+        returnToHome();
+    }
+
     public void updatePage() {
         gameBoardController.updateBoard();
         updatePanel();
-        if (game.getWinner() != null) {
-            // Pop up a dialog showing the winner's name, with one button to return and another to save replay
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Game Over");
-            alert.setHeaderText("Game Over");
-            alert.setContentText(game.getWinner().getNameProperty().get() + " wins!");
-            ButtonType saveReplay = new ButtonType("Save Replay");
-            ButtonType returnToHome = new ButtonType("Return to Home");
-            alert.getButtonTypes().setAll(saveReplay, returnToHome);
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.isPresent() && result.get() == saveReplay)
-                saveGame();
-            returnToHome();
-        }
+        if (game.getWinner() != null)
+            endGame();
     }
 
     public void updatePanel() {

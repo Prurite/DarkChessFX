@@ -16,7 +16,7 @@
     <Label styleClass="gameTitle" text="Chinese Dark Chess" />
     <VBox fx:id="homeButtons" styleClass="homeButtonGroup">
         <Button text="Start game" styleClass="homePageButton, mainButton" onAction="#selectMode"/>
-        <Button text="Statistics" styleClass="homePageButton" />
+        <Button text="Statistics" styleClass="homePageButton" onAction="#toStatistics" />
         <Button text="Settings" styleClass="homePageButton" onAction="#toSettings" />
         <Button text="About" styleClass="homePageButton" />
     </VBox>

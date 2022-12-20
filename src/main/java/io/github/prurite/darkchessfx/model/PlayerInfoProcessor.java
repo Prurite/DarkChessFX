@@ -39,6 +39,8 @@ public class PlayerInfoProcessor implements  PlayerInfoProcessorInterface {
         players.add(p);
         return p;
     }
+    public ArrayList<Player> getPlayers() { return players; }
+
     public void saveToFile(File file) throws IOException {
         // write players information from players into path
         try {

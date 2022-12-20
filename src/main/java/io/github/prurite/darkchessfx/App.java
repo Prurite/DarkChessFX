@@ -3,6 +3,7 @@ package io.github.prurite.darkchessfx;
 import fr.brouillard.oss.cssfx.CSSFX;
 import io.github.prurite.darkchessfx.controllers.*;
 import io.github.prurite.darkchessfx.game.PerformGame.Game;
+import io.github.prurite.darkchessfx.model.PlayerInfoProcessor;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -18,6 +19,7 @@ public class App extends Application {
     private Stage primaryStage;
     private Scene scene;
     private String colorScheme;
+    private PlayerInfoProcessor playerList;
 
     public Stage getPrimaryStage() {
         return primaryStage;
@@ -26,8 +28,13 @@ public class App extends Application {
         return scene;
     }
 
+    public PlayerInfoProcessor getPlayerList() {
+        return playerList;
+    }
+
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage primaryStage) {
+        playerList = new PlayerInfoProcessor();
         this.primaryStage = primaryStage;
         CSSFX.start();
         colorScheme = "LTCatBlue";
