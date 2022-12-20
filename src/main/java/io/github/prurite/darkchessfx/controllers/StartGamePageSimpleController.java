@@ -59,8 +59,11 @@ public class StartGamePageSimpleController implements Initializable, DFXSimpleCo
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        if (gameConfig == null)
+        if (gameConfig == null) {
+            title.setText("Start Game");
             gameConfig = new GameConfig();
+        } else
+            title.setText("Load Game");
         aiToggleGroup = new ToggleGroup();
         aiNoButton.setToggleGroup(aiToggleGroup);
         aiYesButton.setToggleGroup(aiToggleGroup);

@@ -51,7 +51,8 @@ public class GamePageController implements Initializable {
     enum GameType {
         LOCAL("Local Game"),
         AI("Local Game - with AI"),
-        LAN("LAN Game");
+        LAN("LAN Game"),
+        REPLAY("Replay");
 
         final String title;
         GameType(String s)
@@ -82,7 +83,9 @@ public class GamePageController implements Initializable {
         gameBoardController = loader.getController();
         gameBoardController.setGamePageController(this);
         gameArea.getChildren().add(gameBoard);
-        if (gameConfig.lanPort != 0)
+        if (gameConfig.isReplay)
+            gameType = GameType.REPLAY;
+        else if (gameConfig.lanPort != 0)
             gameType = GameType.LAN;
         else if (gameConfig.aiDifficulty != -1)
             gameType = GameType.AI;
@@ -217,10 +220,14 @@ public class GamePageController implements Initializable {
             toggleCheatButton.setDisable(true);
             drawButton.setDisable(true);
             surrenderButton.setDisable(true);
+            undoButton.setText("Prev Move");
+            redoButton.setText("Next Move");
         }
         toggleCheatButton.setDisable(!game.getGameConfig().allowCheat);
-        undoButton.setDisable(!game.getGameConfig().allowWithdraw || game.getCurrentMovePos() == -1);
-        redoButton.setDisable(!game.getGameConfig().allowWithdraw || game.getCurrentMovePos() == game.getMoveCount() - 1);
+        undoButton.setDisable((gameType!=GameType.REPLAY && !game.getGameConfig().allowWithdraw)
+                || game.getCurrentMovePos() <= 0);
+        redoButton.setDisable((gameType!=GameType.REPLAY && !game.getGameConfig().allowWithdraw)
+                || game.getCurrentMovePos() == game.getMoveCount() - 1);
         player1Name.getStyleClass().removeAll("textRed", "textBlack");
         player2Name.getStyleClass().removeAll("textRed", "textBlack");
         if (game.getPlayerInGame1().getSide() != null)
