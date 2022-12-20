@@ -136,7 +136,7 @@ public class State {
     }
     public void init(String s) throws WrongChessBoardSize, InvalidChessType {
         String[] ss = s.split(" ");
-        if(ss.length != 36) {
+        if(ss.length != 68) {
             throw new WrongChessBoardSize();
         }
         int k = 0;
